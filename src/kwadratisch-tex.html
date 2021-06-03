@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Kwadratische vergelijkingen</title>
+    <script src="kwadratisch-xml.js"></script>
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script src="EquationHelper.js"></script>
+    <script src="Equation.js"></script>
+    <script src="QuadraticEquation.js"></script>
+</head>
+<body>
+
+    <div>
+        <p>Tex example</p>
+        $$x = {-b \pm \sqrt{b^2 - 4ac} \over 2a} \lor x = 2$$
+    </div>
+
+    <button onClick="
+        document.getElementById('ejemplo').appendChild(MathJax.tex2chtml(
+            'x = {-b \\pm \\sqrt{b^2 - 4ac} \\over 2a}' +
+            ' \\lor ' +
+            'x = {-b \\pm \\sqrt{b^2 - 4ac} \\over 2a}'
+        ));
+    ">
+        Generate Tex!
+    </button>
+    <div id="ejemplo">
+    </div>
+</body>
+</html>

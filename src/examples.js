@@ -1,0 +1,144 @@
+
+const examples = [
+    // x (x + 1) = 0
+    `
+        <equation>
+            <member>
+                <product>
+                    <factor>x</factor>
+                    <factor>
+                        <sum>
+                            <term>x</term>
+                            <term>1</term>
+                        </sum>
+                    </factor>
+                </product>
+            </member>
+            <member>0</member>
+        </equation>
+    `,
+    // 2x^2 + 3x - 1 = 0
+    `
+        <equation>
+            <member>
+                <sum>
+                    <term>
+                        <product>
+                            <factor>2</factor>
+                            <factor>
+                                <power>
+                                    <base>x</base>
+                                    <exponent>2</exponent>
+                                </power>
+                            </factor>
+                        </product>
+                    </term>
+                    <term>
+                        3x
+                    </term>
+                    <term>
+                        -1
+                    </term>
+                </sum>
+            </member>
+            <member>0</member>
+        </equation>
+    `,
+    // x = y = ±5√2
+    `
+        <equation>
+            <member>
+                x
+            </member>
+            <member>
+                y
+            </member>
+            <member>
+                <product>
+                    <factor>
+                        ±5
+                    </factor>
+                    <factor>
+                        <root>2</root>
+                    </factor>
+                </product>
+            </member>
+        </equation>
+    `,
+    // x = ∛27
+    `
+        <equation>
+            <member>
+                x
+            </member>
+            <member>
+                <cuberoot>27</cuberoot>
+            </member>
+        </equation>
+    `,
+    // x = 1 v x = -4
+    `
+        <equation>
+            <or>
+                <atom>
+                    <equation>
+                        <member>
+                            x
+                        </member>
+                        <member>
+                            1
+                        </member>
+                    </equation>
+                </atom>
+                <atom>
+                    <equation>
+                        <member>
+                            x
+                        </member>
+                        <member>
+                            -4
+                        </member>
+                    </equation>
+                </atom>
+            </or>
+        </equation>
+    `,
+    // quadratic formula
+    `
+        <equation>
+            <member>
+                x<sub>1,2</sub>
+            </member>
+            <member>
+                <fraction>
+                    <numerator>
+                        <sum>
+                            <term class="minus">
+                                b
+                            </term>
+                            <term class="plusminus">
+                                <root>
+                                    <sum>
+                                        <term>
+                                            <power>
+                                                <base>b</base>
+                                                <exponent>2</exponent>
+                                            </power>
+                                        </term>
+                                        <term class="minus">
+                                            4ac
+                                        </term>
+                                    </sum>
+                                </root>
+                            </term>
+                        </sum>
+                    </numerator>
+                    <denominator>
+                        2a
+                    </denominator>
+                </fraction>
+            </member>
+        </equation>
+    `
+];
+
