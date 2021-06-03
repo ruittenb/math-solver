@@ -5,36 +5,33 @@
 
 class Equation {
 
-    constructor(limit = null, value = null) {
-        // store limit of random natural numbers
-        this.setLimit(limit)
-        // initialize
-        if (value) {
-            this.value = value;
-        } else {
-            this.generate();
-        }
-        // bind
-        this._xmlNodeToTex = this._xmlNodeToTex.bind(this._xmlNodeToTex)
-    };
+    constructor(value) {
+        this._init(value);
+    }
 
     /** **********************************************************************
-     * generator function
+     * initialization
      */
-    generate() {
-        this.value = '<equation></equation>'
-    };
+
+    _init(value) {
+        // store value or initialize empty
+        this.setValue(value ? value : '<equation></equation>');
+        // bind
+        this._xmlNodeToTex = this._xmlNodeToTex.bind(this)
+    }
 
     /** **********************************************************************
      * setters
      */
-    setLimit(limit) {
-        this.limit = limit ? limit : 12;
+
+    setValue(value) {
+        this.value = value
     }
 
     /** **********************************************************************
      * getters
      */
+
     getAsHtmlStr() {
         return this.value;
     }
@@ -54,12 +51,43 @@ class Equation {
         return xmlDoc;
     }
 
-    getAsTexDoc() {
-        return MathJax.tex2chtml(
-            this._xmlNodeToTex(this.getAsXmlDoc().documentElement)
-        )
+    getAsTexStr() {
+        return this._xmlNodeToTex(this.getAsXmlDoc().documentElement);
     }
 
+    getAsMathDoc() {
+        return MathJax.tex2chtml(this.getAsTexStr())
+    }
+
+    /** **********************************************************************
+     * XML node processing
+     */
+
+    // Convert a DOM node list to a regular array.
+    _nodeListToArray(nodeList) {
+        let result = [];
+        for (const node of nodeList) {
+            result.push(node);
+        }
+        return result;
+    }
+
+    // Perform a function over every element of a html node collection.
+    _nodeListForEach(nodeList, fn) {
+        return this._nodeListToArray(nodeList).map(fn);
+    }
+
+    // Try to find the first child element with a particular node name.
+    // Return undefined if not found.
+    _getChildElementByName(node, name) {
+        const nameUpper = name.toUpperCase();
+        const filteredNodes = this._nodeListToArray(node.children).filter(
+            childNode => childNode.nodeName.toUpperCase() === nameUpper
+        );
+        return filteredNodes.length ? filteredNodes[0] : undefined;
+    }
+
+    // Convert the entire xml node to a TeX string
     _xmlNodeToTex(xmlNode) {
         if (xmlNode.nodeType === Node.TEXT_NODE) {
             return xmlNode;
@@ -67,25 +95,25 @@ class Equation {
             return '';
         }
         // continue with element nodes
+		const elementChild = xmlNode.firstElementChild;
         switch (xmlNode.nodeName) {
             case 'or':
-                return nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' \\or ');
+                return this._nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' \\or ');
             case 'atom':
                 return this._xmlNodeToTex(xmlNode.firstChild);
             case 'equation':
-                return nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' = ');
+                return this._nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' = ');
             case 'member':
                 return ' {' + this._xmlNodeToTex(xmlNode.firstChild) + '} ';
             case 'sum':
                 // TODO fix terms with minuses or plusminuses ( one optional sign, rest mandatory signs?)
-                return nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' + ');
+                return this._nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' + ');
             case 'term':
                 return this._xmlNodeToTex(xmlNode.firstElementChild || xmlNode.firstChild);
             case 'product':
                 // TODO joins with multiplication signs or not
-                return nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' \cdot ');
-            case 'factor':
-                const elementChild = xmlNode.firstElementChild;
+                return this._nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' \cdot ');
+            case 'factor': // TODO move to _xmlFactorToTex()
                 if (!elementChild) {
                     // just text
                     return xmlNode.firstChild;
@@ -96,18 +124,38 @@ class Equation {
                     return this._xmlNodeToTex(elementChild);
                 }
             case 'fraction':
-                return ' { ' +
-                    this._xmlNodeToTex(getChildElementByName(xmlNode, 'numerator')) +
-                    ' \\over ' +
-                    this._xmlNodeToTex(getChildElementByName(xmlNode, 'denominator')) +
+                return ' \\frac{ ' +
+                    this._xmlNodeToTex(this._getChildElementByName(xmlNode, 'numerator')) +
+                    ' } { ' +
+                    this._xmlNodeToTex(this._getChildElementByName(xmlNode, 'denominator')) +
                     ' } ';
-            /*
             case 'power': // TODO
-            case 'base': // TODO
-            case 'exponent': // TODO
-            */
+                return this._xmlNodeToTex(this._getChildElementByName(xmlNode, 'base')) +
+                    ' ^{ ' +
+                    this._xmlNodeToTex(this._getChildElementByName(xmlNode, 'exponent')) +
+                    ' } ';
+            case 'base': // TODO move to  _xmlBaseToTex()
+                if (!elementChild) {
+                    // just text
+                    return xmlNode.firstChild;
+                } else if (elementChild.nodeName.toUpperCase() === 'SUM'
+                    || elementChild.nodeName.toUpperCase() === 'PRODUCT'
+                ) {
+                    // is sum: put in brackets
+                    return ' ( ' + this._xmlNodeToTex(elementChild) + ' ) ';
+                } else {
+                    return this._xmlNodeToTex(elementChild);
+                }
+            case 'exponent':
+                // TODO move to _xmlExponentToTex()
+                if (!elementChild) {
+                    // just text
+                    return xmlNode.firstChild;
+                } else {
+                    return this._xmlNodeToTex(elementChild);
+                }
             case 'root':
-                return ' \\sqrt{' + this._xmlNodeToTex(xmlNode.firstChild) + '} ';
+                return ' \\sqrt{ ' + this._xmlNodeToTex(xmlNode.firstChild) + ' } ';
             default:
                 throw new Error(`unknown node name: ${xmlNode.nodeName}`);
         }
@@ -116,6 +164,7 @@ class Equation {
     /** **********************************************************************
      * equation components
      */
+
     _equation(...memberValues) {
         const members = memberValues.map(this._member.bind(this));
         return this._enclose(
@@ -181,3 +230,4 @@ class Equation {
     }
 }
 
+// vim: set ts=4 sw=4 et nu fdm=marker:

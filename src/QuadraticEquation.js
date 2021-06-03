@@ -1,6 +1,10 @@
 
 /**
- * Equation shapes:
+ * requires: Equation
+ */
+
+/**
+ * QuadraticEquation shapes:
  *
  * 0.  FactorSimple:  x (x + p) = 0
  * 1.  FactorSimple:  x (x + p) = r
@@ -15,18 +19,29 @@
  * 10. FullQuadratic: a x^2 + b x + c = r
  */
 
-/**
- * requires: Equation
- */
-
 class QuadraticEquation extends Equation {
+
+	constructor(value, limit) {
+		super(value);
+        // store limit of random natural numbers
+		this.setLimit(limit);
+	}
+
+    /** **********************************************************************
+     * setters
+     */
+
+    setLimit(limit) {
+        this.limit = limit ? limit : 12;
+    }
 
     /** **********************************************************************
      * generator functions
      */
+
     generate() {
         const shape = Math.floor(Math.random() * 11)
-        const rightMember = randomNoZero(this.limit)
+        const rightMember = this._randomNumber()
         switch (shape) {
             case 0:
                 this.value = this._generateShapeFactorSimple(0);
@@ -68,7 +83,7 @@ class QuadraticEquation extends Equation {
         return this._equation(
             this._product(
                 'x',
-                this._sum('x', randomNoZero(12))
+                this._sum('x', this._randomNumber())
             ),
             rightMember
         )
@@ -77,8 +92,8 @@ class QuadraticEquation extends Equation {
     _generateShapeFactorHard(rightMember) {
         return this._equation(
             this._product(
-                this._sum('x', randomNoZero(12)),
-                this._sum('x', randomNoZero(12))
+                this._sum('x', this._randomNumber()),
+                this._sum('x', this._randomNumber())
             ),
             rightMember
         )
@@ -87,7 +102,7 @@ class QuadraticEquation extends Equation {
     _generateShapeSquare(rightMember) {
         return this._equation(
             this._product(
-                randomNoZero(12),
+                this._randomNumber(),
                 this._power('x', 2)
             ),
             rightMember
@@ -98,10 +113,10 @@ class QuadraticEquation extends Equation {
         return this._equation(
             this._sum(
                 this._product(
-                    randomNoZero(12),
+                    this._randomNumber(),
                     this._power('x', 2)
                 ),
-                randomNoZero(12)
+                this._randomNumber()
             ),
             rightMember
         )
@@ -111,11 +126,11 @@ class QuadraticEquation extends Equation {
         return this._equation(
             this._sum(
                 this._product(
-                    randomNoZero(12),
+                    this._randomNumber(),
                     this._power('x', 2)
                 ),
                 this._product(
-                    randomNoZero(12),
+                    this._randomNumber(),
                     'x'
                 )
             ),
@@ -127,17 +142,37 @@ class QuadraticEquation extends Equation {
         return this._equation(
             this._sum(
                 this._product(
-                    randomNoZero(12),
+                    this._randomNumber(),
                     this._power('x', 2)
                 ),
                 this._product(
-                    randomNoZero(12),
+                    this._randomNumber(),
                     'x'
                 ),
-                randomNoZero(12),
+                this._randomNumber(),
             ),
             rightMember
         )
+    }
+
+    /** **********************************************************************
+     * helpers: random numbers
+     */
+
+    // 10 => -10 .. 9
+    _random(n) {
+        return Math.floor(Math.random() * n * 2 - n)
+    }
+
+    // 10 => -10 .. -1, 1 .. 10
+    _randomNoZero(n) {
+        const res = this._random(n);
+        return res !== 0 ? res : n
+    }
+
+    // use this.value
+    _randomNumber() {
+        return this._randomNoZero(this.limit);
     }
 }
 
