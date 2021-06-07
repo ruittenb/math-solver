@@ -5,6 +5,8 @@
 
 class Equation {
 
+    static whitespaceAtStartOrEnd = /(^[ \t\n]+|[ \t\n]+$)/g;
+
     constructor(value) {
         this._init(value);
     }
@@ -77,6 +79,11 @@ class Equation {
         return this._nodeListToArray(nodeList).map(fn);
     }
 
+    // Remove leading and trailing whitespace from a text node
+    _getNodeText(node) {
+        return node.data.replace(Equation.whitespaceAtStartOrEnd, ' ');
+    }
+
     // Try to find the first child element with a particular node name.
     // Return undefined if not found.
     _getChildElementByName(node, name) {
@@ -90,7 +97,7 @@ class Equation {
     // Convert the entire xml node to a TeX string
     _xmlNodeToTex(xmlNode) {
         if (xmlNode.nodeType === Node.TEXT_NODE) {
-            return xmlNode;
+            return this._getNodeText(xmlNode);
         } else if (xmlNode.nodeType !== Node.ELEMENT_NODE) {
             return '';
         }
@@ -112,11 +119,11 @@ class Equation {
                 return this._xmlNodeToTex(xmlNode.firstElementChild || xmlNode.firstChild);
             case 'product':
                 // TODO joins with multiplication signs or not
-                return this._nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' \cdot ');
+                return this._nodeListForEach(xmlNode.children, this._xmlNodeToTex).join(' \\cdot ');
             case 'factor': // TODO move to _xmlFactorToTex()
                 if (!elementChild) {
                     // just text
-                    return xmlNode.firstChild;
+                    return this._getNodeText(xmlNode.firstChild);
                 } else if (elementChild.nodeName.toUpperCase() === 'SUM') {
                     // is sum: put in brackets
                     return ' ( ' + this._xmlNodeToTex(elementChild) + ' ) ';
@@ -137,7 +144,7 @@ class Equation {
             case 'base': // TODO move to  _xmlBaseToTex()
                 if (!elementChild) {
                     // just text
-                    return xmlNode.firstChild;
+                    return this._getNodeText(xmlNode.firstChild);
                 } else if (elementChild.nodeName.toUpperCase() === 'SUM'
                     || elementChild.nodeName.toUpperCase() === 'PRODUCT'
                 ) {
@@ -150,7 +157,7 @@ class Equation {
                 // TODO move to _xmlExponentToTex()
                 if (!elementChild) {
                     // just text
-                    return xmlNode.firstChild;
+                    return this._getNodeText(xmlNode.firstChild);
                 } else {
                     return this._xmlNodeToTex(elementChild);
                 }
