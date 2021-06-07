@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Kwadratische vergelijkingen</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script src="Equation.js"></script>
+    <script src="QuadraticEquation.js"></script>
+    <script src="examples.js"></script>
+	<script>
+        const displayNodeId = 'displayFrame';
+        let displayNode;
+        let currentExampleIndex = 0;
+
+        window.addEventListener('load', function () {
+            displayNode = document.getElementById(displayNodeId);
+        });
+
+		function showFormula(num) {
+            const exampleFormula = num === undefined ? num : examples[num];
+            const equation = new QuadraticEquation(exampleFormula);
+            const eqValue = equation.getAsObject();
+            const texStr = equation.getAsTexStr();
+            console.log(texStr);
+            const equationNode = equation.getAsMathDoc();
+            displayNode.appendChild(equationNode);
+            MathJax.typeset(displayNodeId);
+            //displayNode.replaceChild(equationNode, displayNode.firstElementChild);
+		}
+
+        //renderMathML(math, doc) {
+        //    math.typesetRoot = document.createElement('mjx-container');
+        //    math.typesetRoot.innerHTML = MathJax.startup.toMML(math.root);
+        //    math.display && math.typesetRoot.setAttribute('display', 'block');
+        //}
+
+	</script>
+    <style>
+        button {
+            margin-right: 10px;
+        }
+        mjx-container {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <button onClick="showFormula()">
+        Generate
+    </button>
+    <button onClick="showFormula(currentExampleIndex++ % examples.length)">
+        Example
+    </button>
+    <div id="displayFrame">
+        <br><!-- node to replace -->
+    </div>
+</body>
+</html>
