@@ -94,7 +94,30 @@ const examples = [
             }]
         }
     },
-    // x = 5V3125
+    // y = (3x)^5
+    {
+        equation: {
+            members: [{
+                primitive: 'y'
+            }, {
+                power: {
+                    base: {
+                        product: {
+                            factors: [{
+                                primitive: '3'
+                            }, {
+                                primitive: 'x'
+                            }]
+                        }
+                    },
+                    exponent: {
+                        primitive: '5'
+                    }
+                }
+            }]
+        }
+    },
+    // x = (x + 5) V 3125
     {
         equation: {
             members: [{

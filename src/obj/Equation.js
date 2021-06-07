@@ -27,6 +27,7 @@ class Equation {
 
     setValue(value) {
         this.value = value
+        this._normalizePrimitives(this.value);
     }
 
     /** **********************************************************************
@@ -42,15 +43,43 @@ class Equation {
     }
 
     getAsMathDoc() {
+        return MathJax.tex2chtml(this.getAsTexStr());
+    }
+
+    render(DOMNodeId) {
         //const doc = MathJax.tex2chtml(this.getAsTexStr());
         //MathJax.typeset();
         //return doc;
-        return MathJax.tex2chtml(this.getAsTexStr(), {});
+        MathJax.tex2chtmlPromise(this.getAsTexStr(), {});
+            MathJax.typeset(DOMNodeId)
+        }).catch(err => {
+            console.error(`Error during rendering: ${JSON.stringify(err)}`);
+        });
     }
 
     /** **********************************************************************
      * Equation object processing
      */
+
+    // Make sure that every primitive node has a separate `primitive` and `sign` property
+    _normalizePrimitives(eqnNode) {
+        if (!eqnNode.primitive) {
+            // eqnNode is not primitive
+            for (const subNode of Object.values(eqnNode)) {
+                this._normalizePrimitives(subNode);
+            }
+        } else {
+            // eqnNode is primitive
+            eqnNode.primitive.replace(/^[ \t\n]+/, '');
+            if (eqnNode.primitive.match(/^[-+±]/)) {
+                eqnNode.sign = eqnNode.primitive.substr(0, 1);
+                eqnNode.primitive = eqnNode.primitive.substr(2);
+            } else {
+                // no leading sign on 'primitive': default positive
+                eqnNode.sign = '+';
+            }
+        }
+    }
 
     // decide whether to apply parenthesis around a factor
     _eqnFactorToTex(factor) {
@@ -62,17 +91,25 @@ class Equation {
     }
 
     // Convert the entire equation object to a TeX string
-    _eqnObjToTex(eqn, suppressSign = false) {
+    _eqnObjToTex(eqn, signMode = 'nonplus') { // 'nonplus', 'all', 'none'
+        console.log('_eqnObjToTex: signMode === ', signMode);
         if (eqn.primitive) {
-            const sign = (eqn.sign && !suppressSign) ? eqn.sign : '';
-            const texSign = sign === '±' ? ' \\pm ' : sign
-            return texSign + eqn.primitive;
+            const sign = eqn.sign;
+            if (
+                signMode === 'none' || (sign === '+' && signMode === 'nonplus')
+            ) {
+                return eqn.primitive;
+            } else {
+                const texSign = sign === '±' ? ' \\pm ' : sign
+                return texSign + eqn.primitive;
+            }
         } else if (eqn.or) {
             return eqn.or.atoms.map(this._eqnObjToTex).join(' \\lor  ');
         } else if (eqn.equation) {
             return eqn.equation.members.map(this._eqnObjToTex).join(' = ');
         } else if (eqn.sum) {
             // TODO fix terms with minuses or plusminuses ( one optional sign, rest mandatory signs?)
+            console.log('Processing SUM', eqn.sum);
             return eqn.sum.terms.map(this._eqnObjToTex).join(' + ');
         } else if (eqn.product) {
             return eqn.product.factors.map(this._eqnFactorToTex).join(' \\cdot ');
@@ -141,6 +178,11 @@ class Equation {
             index: a,
             radicand: b
         } };
+    }
+    _primitive(a) {
+        return {
+            primitive: a, sign
+        }
     }
 }
 

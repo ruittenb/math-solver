@@ -18,14 +18,13 @@
         });
 
 		function showFormula(num) {
-            const exampleFormula = num === undefined ? num : examples[num];
+            const exampleFormula = num === undefined ? undefined : examples[num];
             const equation = new QuadraticEquation(exampleFormula);
-            const eqValue = equation.getAsObject();
             const texStr = equation.getAsTexStr();
             console.log(texStr);
-            const equationNode = equation.getAsMathDoc();
+            equation.render(displayNodeId);
+            //MathJax.typeset(displayNodeId);
             displayNode.appendChild(equationNode);
-            MathJax.typeset(displayNodeId);
             //displayNode.replaceChild(equationNode, displayNode.firstElementChild);
 		}
 
@@ -46,7 +45,6 @@
     </style>
 </head>
 <body>
-
     <button onClick="showFormula()">
         Generate
     </button>
