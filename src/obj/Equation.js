@@ -21,6 +21,14 @@ class Equation {
         this._eqnFactorToTex = this._eqnFactorToTex.bind(this);
     }
 
+    async render(DOMNodeId) {
+        console.log('render:A');
+        await MathJax.tex2chtmlPromise(this.getAsTexStr(), {});
+        console.log('render:B');
+        await MathJax.typesetPromise(DOMNodeId);
+        console.log('render:C');
+    }
+
     /** **********************************************************************
      * setters
      */
@@ -46,85 +54,105 @@ class Equation {
         return MathJax.tex2chtml(this.getAsTexStr());
     }
 
-    render(DOMNodeId) {
-        //const doc = MathJax.tex2chtml(this.getAsTexStr());
-        //MathJax.typeset();
-        //return doc;
-        MathJax.tex2chtmlPromise(this.getAsTexStr(), {});
-            MathJax.typeset(DOMNodeId)
-        }).catch(err => {
-            console.error(`Error during rendering: ${JSON.stringify(err)}`);
-        });
-    }
-
     /** **********************************************************************
      * Equation object processing
      */
 
-    // Make sure that every primitive node has a separate `primitive` and `sign` property
-    _normalizePrimitives(eqnNode) {
-        if (!eqnNode.primitive) {
-            // eqnNode is not primitive
-            for (const subNode of Object.values(eqnNode)) {
-                this._normalizePrimitives(subNode);
-            }
+    // Normalize a node that is a primitive. Fills in the 'sign' property
+    // by transferring the sign from the 'primitive' property.
+    _normalizePrimitive(eqnNode) {
+        if (eqnNode.sign) {
+            return;
+        }
+        eqnNode.primitive = String(eqnNode.primitive).replace(/^[ \t\n]+/, '');
+        if (eqnNode.primitive.match(/^[-+±]/)) {
+            eqnNode.sign = eqnNode.primitive.substr(0, 1);
+            eqnNode.primitive = eqnNode.primitive.substr(2);
         } else {
-            // eqnNode is primitive
-            eqnNode.primitive.replace(/^[ \t\n]+/, '');
-            if (eqnNode.primitive.match(/^[-+±]/)) {
-                eqnNode.sign = eqnNode.primitive.substr(0, 1);
-                eqnNode.primitive = eqnNode.primitive.substr(2);
-            } else {
-                // no leading sign on 'primitive': default positive
-                eqnNode.sign = '+';
-            }
+            // no leading sign on 'primitive': default positive
+            eqnNode.sign = '+';
         }
     }
 
-    // decide whether to apply parenthesis around a factor
-    _eqnFactorToTex(factor) {
-        if (factor.sum) {
-            return ' ( ' + this._eqnObjToTex(factor) + ' ) ';
+    // Make sure that every primitive node has 'primitive' and 'sign' properties
+    _normalizePrimitives(eqnNode) {
+        if (typeof eqnNode !== 'object' || eqnNode === null) {
+            throw new Error(`Error: equation node expected, but got ${typeof eqnNode}`);
+        }
+        if (!eqnNode.primitive) {
+            // eqnNode is not primitive: recurse
+            for (const subNode of Object.values(eqnNode)) {
+                if (typeof subNode === 'object') {
+                    this._normalizePrimitives(subNode);
+                }
+            }
         } else {
-            return this._eqnObjToTex(factor);
+            // eqnNode is primitive
+            this._normalizePrimitive(eqnNode);
+        }
+    }
+
+    // Format a factor node with or without parenthesis
+    _eqnFactorToTex(eqnNode) {
+        if (eqnNode.sum) {
+            return ' ( ' + this._eqnObjToTex(eqnNode) + ' ) ';
+        } else {
+            return this._eqnObjToTex(eqnNode);
+        }
+    }
+
+    // return the correct sign for a node
+    _eqnLeadingSign(eqnNode, signMode) {
+        const sign = eqnNode.sign;
+        if (
+            signMode === 'none' || (sign === '+' && signMode === 'nonplus')
+        ) {
+            return '';
+        } else {
+            return sign === '±' ? ' \\pm ' : sign
         }
     }
 
     // Convert the entire equation object to a TeX string
-    _eqnObjToTex(eqn, signMode = 'nonplus') { // 'nonplus', 'all', 'none'
-        console.log('_eqnObjToTex: signMode === ', signMode);
+    _eqnObjToTex(eqn, signMode = 'nonplus') { // signMode : 'nonplus' | 'all' | 'none'
         if (eqn.primitive) {
-            const sign = eqn.sign;
-            if (
-                signMode === 'none' || (sign === '+' && signMode === 'nonplus')
-            ) {
-                return eqn.primitive;
-            } else {
-                const texSign = sign === '±' ? ' \\pm ' : sign
-                return texSign + eqn.primitive;
-            }
+            return this._eqnLeadingSign(eqn, signMode) + eqn.primitive;
         } else if (eqn.or) {
-            return eqn.or.atoms.map(this._eqnObjToTex).join(' \\lor  ');
+            return eqn.or.atoms.map(
+                atom => this._eqnObjToTex(atom)
+            ).join(' \\lor  ');
         } else if (eqn.equation) {
-            return eqn.equation.members.map(this._eqnObjToTex).join(' = ');
+            return eqn.equation.members.map(
+                member => this._eqnObjToTex(member)
+            ).join(' = ');
         } else if (eqn.sum) {
-            // TODO fix terms with minuses or plusminuses ( one optional sign, rest mandatory signs?)
-            console.log('Processing SUM', eqn.sum);
-            return eqn.sum.terms.map(this._eqnObjToTex).join(' + ');
+            // one term with optional sign
+            const firstTerm = eqn.sum.terms[0];
+            const texFirstTerm = this._eqnObjToTex(firstTerm);
+            // rest of terms without sign. join them with the term's sign.
+            const result = texFirstTerm + eqn.sum.terms.slice(1).map(term => { 
+                const sign = term.sign
+                    ? term.sign
+                    : ' + ';
+                return sign + this._eqnObjToTex(term, 'none')
+            }).join('');
+            return result;
         } else if (eqn.product) {
-            return eqn.product.factors.map(this._eqnFactorToTex).join(' \\cdot ');
+            return eqn.product.factors.map(
+                factor => this._eqnFactorToTex(factor)
+            ).join(' \\cdot ');
         } else if (eqn.fraction) {
             return ' \\frac{ ' +
                 this._eqnObjToTex(eqn.fraction.numerator) +
                 ' } { ' +
                 this._eqnObjToTex(eqn.fraction.denominator) +
                 ' } ';
-        } else if (eqn.power) { // TODO TESTME
+        } else if (eqn.power) {
             const useParens = eqn.power.base.sum || eqn.power.base.product;
             const texBase = this._eqnObjToTex(eqn.power.base)
             const texExponent = this._eqnObjToTex(eqn.power.exponent)
             const texParenBase = useParens
-                ?  ` ( ${texBase} ) `
+                ? ` ( ${texBase} ) `
                 : texBase
             return texParenBase + ` ^{ ${texExponent} } `;
         } else if (eqn.squareroot) {
@@ -150,22 +178,16 @@ class Equation {
         return { equation: { members } };
     }
     _sum(...terms) {
-        return { sum: { terms } }; // TODO signs
+        return { sum: { terms } };
     }
     _product(...factors) {
         return { product: { factors } };
     }
-    _fraction(a, b) {
-        return { fraction: {
-            numerator: a,
-            denominator: b
-        } };
+    _fraction(numerator, denominator) {
+        return { fraction: { numerator, denominator } };
     }
-    _power(a, b) {
-        return { power: {
-            base: a,
-            exponent: b
-        } };
+    _power(base, exponent) {
+        return { power: { base, exponent } };
     }
     _squareroot(a) {
         return { squareroot: a };
@@ -173,16 +195,13 @@ class Equation {
     _cuberoot(a) {
         return { cuberoot: a };
     }
-    _root(a, b) {
-        return { root: {
-            index: a,
-            radicand: b
-        } };
+    _root(index, radicand) {
+        return { root: { index, radicand } };
     }
     _primitive(a) {
-        return {
-            primitive: a, sign
-        }
+        return this._normalizePrimitive(
+            { primitive: a }
+        );
     }
 }
 

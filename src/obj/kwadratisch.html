@@ -12,19 +12,20 @@
         const displayNodeId = 'displayFrame';
         let displayNode;
         let currentExampleIndex = 0;
+        let equation;
 
         window.addEventListener('load', function () {
             displayNode = document.getElementById(displayNodeId);
         });
 
-		function showFormula(num) {
+		async function showFormula(num) {
             const exampleFormula = num === undefined ? undefined : examples[num];
-            const equation = new QuadraticEquation(exampleFormula);
+            equation = new QuadraticEquation(exampleFormula);
             const texStr = equation.getAsTexStr();
             console.log(texStr);
-            equation.render(displayNodeId);
+            await equation.render(displayNodeId);
             //MathJax.typeset(displayNodeId);
-            displayNode.appendChild(equationNode);
+            //displayNode.appendChild(equationNode);
             //displayNode.replaceChild(equationNode, displayNode.firstElementChild);
 		}
 

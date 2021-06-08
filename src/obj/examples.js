@@ -61,6 +61,29 @@ const examples = [
             }]
         }
     },
+    // x = 1 v x = -4
+    {
+        or: {
+            atoms: [{
+                equation: {
+                    members: [{
+                        primitive: 'x'
+                    }, {
+                        primitive: '1'
+                    }]
+                }
+            }, {
+                equation: {
+                    members: [{
+                        primitive: 'x'
+                    }, {
+                        sign: '-',
+                        primitive: '4'
+                    }]
+                }
+            }]
+        }
+    },
     // x = y = ±5√2
     {
         equation: {
@@ -117,7 +140,7 @@ const examples = [
             }]
         }
     },
-    // x = (x + 5) V 3125
+    // x = (x + 5) √ 3125
     {
         equation: {
             members: [{
@@ -136,29 +159,6 @@ const examples = [
                     radicand: {
                         primitive: '3125'
                     }
-                }
-            }]
-        }
-    },
-    // x = 1 v x = -4
-    {
-        or: {
-            atoms: [{
-                equation: {
-                    members: [{
-                        primitive: 'x'
-                    }, {
-                        primitive: '1'
-                    }]
-                }
-            }, {
-                equation: {
-                    members: [{
-                        primitive: 'x'
-                    }, {
-                        sign: '-',
-                        primitive: '4'
-                    }]
                 }
             }]
         }
