@@ -6,6 +6,7 @@
 class Equation {
 
     constructor(value) {
+        this.DELIMITER = '$$';
         this._init(value);
     }
 
@@ -21,12 +22,9 @@ class Equation {
         this._eqnFactorToTex = this._eqnFactorToTex.bind(this);
     }
 
-    async render(DOMNodeId) {
-        console.log('render:A');
-        await MathJax.tex2chtmlPromise(this.getAsTexStr(), {});
-        console.log('render:B');
-        await MathJax.typesetPromise(DOMNodeId);
-        console.log('render:C');
+    render(DOMNode) {
+        DOMNode.innerHTML = this.getAsTexStr();
+        MathJax.typeset();
     }
 
     /** **********************************************************************
@@ -47,7 +45,7 @@ class Equation {
     }
 
     getAsTexStr() {
-        return this._eqnObjToTex(this.value);
+        return this.DELIMITER + this._eqnObjToTex(this.value) + this.DELIMITER;
     }
 
     getAsMathDoc() {
@@ -127,11 +125,12 @@ class Equation {
                 member => this._eqnObjToTex(member)
             ).join(' = ');
         } else if (eqn.sum) {
+            // TODO suppress sign if there is a sign in de subNode when it is a <product> or <squareroot>
             // one term with optional sign
             const firstTerm = eqn.sum.terms[0];
             const texFirstTerm = this._eqnObjToTex(firstTerm);
             // rest of terms without sign. join them with the term's sign.
-            const result = texFirstTerm + eqn.sum.terms.slice(1).map(term => { 
+            const result = texFirstTerm + eqn.sum.terms.slice(1).map(term => {
                 const sign = term.sign
                     ? term.sign
                     : ' + ';
@@ -139,6 +138,7 @@ class Equation {
             }).join('');
             return result;
         } else if (eqn.product) {
+            // TODO don't show dots everywhere
             return eqn.product.factors.map(
                 factor => this._eqnFactorToTex(factor)
             ).join(' \\cdot ');
@@ -203,6 +203,14 @@ class Equation {
         return this._normalizePrimitive(
             { primitive: a }
         );
+    }
+
+    /** **********************************************************************
+     * formula management
+     */
+
+    simplify() {
+        console.log('TODO not yet implemented');
     }
 }
 

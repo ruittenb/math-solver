@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>Kwadratische vergelijkingen</title>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
     </script>
     <script src="Equation.js"></script>
     <script src="QuadraticEquation.js"></script>
     <script src="examples.js"></script>
-	<script>
+    <script>
         const displayNodeId = 'displayFrame';
         let displayNode;
         let currentExampleIndex = 0;
@@ -18,30 +18,16 @@
             displayNode = document.getElementById(displayNodeId);
         });
 
-		async function showFormula(num) {
+        async function showFormula(num) {
             const exampleFormula = num === undefined ? undefined : examples[num];
             equation = new QuadraticEquation(exampleFormula);
-            const texStr = equation.getAsTexStr();
-            console.log(texStr);
-            await equation.render(displayNodeId);
-            //MathJax.typeset(displayNodeId);
-            //displayNode.appendChild(equationNode);
-            //displayNode.replaceChild(equationNode, displayNode.firstElementChild);
-		}
+            equation.render(displayNode);
+        }
 
-        //renderMathML(math, doc) {
-        //    math.typesetRoot = document.createElement('mjx-container');
-        //    math.typesetRoot.innerHTML = MathJax.startup.toMML(math.root);
-        //    math.display && math.typesetRoot.setAttribute('display', 'block');
-        //}
-
-	</script>
+    </script>
     <style>
         button {
             margin-right: 10px;
-        }
-        mjx-container {
-            display: block;
         }
     </style>
 </head>
@@ -57,3 +43,4 @@
     </div>
 </body>
 </html>
+<!-- vim: set ts=4 sw=4 et: -->
