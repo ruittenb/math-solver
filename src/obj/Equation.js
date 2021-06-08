@@ -62,16 +62,17 @@ class Equation {
     // by transferring the sign from the 'primitive' property.
     _normalizePrimitive(eqnNode) {
         if (eqnNode.sign) {
-            return;
+            return eqnNode;
         }
         eqnNode.primitive = String(eqnNode.primitive).replace(/^[ \t\n]+/, '');
         if (eqnNode.primitive.match(/^[-+±]/)) {
             eqnNode.sign = eqnNode.primitive.substr(0, 1);
-            eqnNode.primitive = eqnNode.primitive.substr(2);
+            eqnNode.primitive = eqnNode.primitive.substr(1);
         } else {
             // no leading sign on 'primitive': default positive
             eqnNode.sign = '+';
         }
+        return eqnNode;
     }
 
     // Make sure that every primitive node has 'primitive' and 'sign' properties
@@ -148,7 +149,7 @@ class Equation {
                 this._eqnObjToTex(eqn.fraction.denominator) +
                 ' } ';
         } else if (eqn.power) {
-            const useParens = eqn.power.base.sum || eqn.power.base.product;
+            const useParens = eqn.power.base && (eqn.power.base.sum || eqn.power.base.product);
             const texBase = this._eqnObjToTex(eqn.power.base)
             const texExponent = this._eqnObjToTex(eqn.power.exponent)
             const texParenBase = useParens

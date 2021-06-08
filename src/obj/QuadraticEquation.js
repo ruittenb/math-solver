@@ -22,9 +22,14 @@
 class QuadraticEquation extends Equation {
 
 	constructor(value, limit) {
+        // initialize with given value
 		super(value);
         // store limit of random natural numbers
 		this.setLimit(limit);
+        // or generate new value
+        if (!value) {
+            this.generate();
+        }
 	}
 
     /** **********************************************************************
@@ -42,116 +47,145 @@ class QuadraticEquation extends Equation {
     generate() {
         const shape = Math.floor(Math.random() * 11)
         const rightMember = this._randomNumber()
+        let value;
         switch (shape) {
             case 0:
-                this.value = this._generateShapeFactorSimple(0);
+                value = this._generateShapeFactorSimple(0);
                 break;
             case 1:
-                this.value = this._generateShapeFactorSimple(rightMember);
+                value = this._generateShapeFactorSimple(rightMember);
                 break;
             case 2:
-                this.value = this._generateShapeFactorHard(0);
+                value = this._generateShapeFactorHard(0);
                 break;
             case 3:
-                this.value = this._generateShapeFactorHard(rightMember);
+                value = this._generateShapeFactorHard(rightMember);
                 break;
             case 4:
-                this.value = this._generateShapeSquare(rightMember);
+                value = this._generateShapeSquare(rightMember);
                 break;
             case 5:
-                this.value = this._generateShapeSquareConst(0);
+                value = this._generateShapeSquareConst(0);
                 break;
             case 6:
-                this.value = this._generateShapeSquareConst(rightMember);
+                value = this._generateShapeSquareConst(rightMember);
                 break;
             case 7:
-                this.value = this._generateShapeSquareLinear(0);
+                value = this._generateShapeSquareLinear(0);
                 break;
             case 8:
-                this.value = this._generateShapeSquareLinear(rightMember);
+                value = this._generateShapeSquareLinear(rightMember);
                 break;
             case 9:
-                this.value = this._generateShapeFullQuadratic(0);
+                value = this._generateShapeFullQuadratic(0);
                 break;
             case 10:
-                this.value = this._generateShapeFullQuadratic(rightMember);
+                value = this._generateShapeFullQuadratic(rightMember);
                 break;
         }
+        this.setValue(value);
     };
 
+    /* 0, 1 */
     _generateShapeFactorSimple(rightMember) {
         return this._equation(
             this._product(
-                'x',
-                this._sum('x', this._randomNumber())
+                this._primitive('x'),
+                this._sum(
+                    this._primitive('x'),
+                    this._randomNumberPrimitive()
+                )
             ),
-            rightMember
+            this._primitive(rightMember)
         )
     }
 
+    /* 2, 3 */
     _generateShapeFactorHard(rightMember) {
         return this._equation(
             this._product(
-                this._sum('x', this._randomNumber()),
-                this._sum('x', this._randomNumber())
+                this._sum(
+                    this._primitive('x'),
+                    this._randomNumberPrimitive()
+                ),
+                this._sum(
+                    this._primitive('x'),
+                    this._randomNumberPrimitive()
+                )
             ),
-            rightMember
+            this._primitive(rightMember)
         )
     }
 
+    /* 4 */
     _generateShapeSquare(rightMember) {
         return this._equation(
             this._product(
-                this._randomNumber(),
-                this._power('x', 2)
+                this._randomNumberPrimitive(),
+                this._power(
+                    this._primitive('x'),
+                    this._primitive('2')
+                )
             ),
-            rightMember
+            this._primitive(rightMember)
         )
     }
 
+    /* 5, 6 */
     _generateShapeSquareConst(rightMember) {
         return this._equation(
             this._sum(
                 this._product(
-                    this._randomNumber(),
-                    this._power('x', 2)
+                    this._randomNumberPrimitive(),
+                    this._power(
+                        this._primitive('x'),
+                        this._primitive('2')
+                    )
                 ),
-                this._randomNumber()
+                this._randomNumberPrimitive()
             ),
-            rightMember
+            this._primitive(rightMember)
         )
     }
 
+    /* 7, 8 */
     _generateShapeSquareLinear(rightMember) {
         return this._equation(
             this._sum(
                 this._product(
-                    this._randomNumber(),
-                    this._power('x', 2)
+                    this._randomNumberPrimitive(),
+                    this._power(
+                        this._primitive('x'),
+                        this._primitive('2')
+                    )
                 ),
                 this._product(
-                    this._randomNumber(),
-                    'x'
+                    this._randomNumberPrimitive(),
+                    this._primitive('x'),
                 )
             ),
-            rightMember
+            this._primitive(rightMember)
         )
     }
 
+    /* 9, 10 */
     _generateShapeFullQuadratic(rightMember) {
         return this._equation(
             this._sum(
                 this._product(
-                    this._randomNumber(),
-                    this._power('x', 2)
+                    this._randomNumberPrimitive(),
+                    this._power(
+                        this._primitive('x'),
+                        this._primitive('2')
+                    )
                 ),
                 this._product(
-                    this._randomNumber(),
-                    'x'
+                    this._randomNumberPrimitive(),
+                    this._primitive('x')
                 ),
-                this._randomNumber(),
+                this._randomNumberPrimitive(),
             ),
-            rightMember
+            this._primitive(rightMember)
         )
     }
 
@@ -159,20 +193,27 @@ class QuadraticEquation extends Equation {
      * helpers: random numbers
      */
 
+    //  n =>  -n .. n - 1     e.g.
     // 10 => -10 .. 9
     _random(n) {
         return Math.floor(Math.random() * n * 2 - n)
     }
 
+    //  n =>  -n .. -1, 1 .. n       e.g.
     // 10 => -10 .. -1, 1 .. 10
     _randomNoZero(n) {
         const res = this._random(n);
         return res !== 0 ? res : n
     }
 
-    // use this.value
+    // use this.limit
     _randomNumber() {
         return this._randomNoZero(this.limit);
+    }
+
+    // return random number as primitive node
+    _randomNumberPrimitive() {
+        return this._primitive(this._randomNumber());
     }
 }
 
