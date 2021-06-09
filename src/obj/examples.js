@@ -1,5 +1,42 @@
 
 const examples = [
+    // x = 3 2/9 - 1 1/12
+    {
+        equation: {
+            members: [{
+                primitive: 'x'
+            }, {
+                sum: {
+                    terms: [{
+                        fraction: {
+                            integer: {
+                                primitive: '3'
+                            },
+                            numerator: {
+                                primitive: '2'
+                            },
+                            denominator: {
+                                primitive: '9'
+                            }
+                        }
+                    }, {
+                        sign: '-',
+                        fraction: {
+                            integer: {
+                                primitive: '1'
+                            },
+                            numerator: {
+                                primitive: '1'
+                            },
+                            denominator: {
+                                primitive: '12'
+                            }
+                        }
+                    }]
+                }
+            }]
+        }
+    },
     // x (x + 1) = 0
     {
         equation: {
@@ -17,8 +54,7 @@ const examples = [
                         }
                     }]
                 }
-            },
-            {
+            }, {
                 primitive: '0'
             }]
         }

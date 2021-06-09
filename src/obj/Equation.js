@@ -5,22 +5,26 @@
 
 class Equation {
 
+    /** **********************************************************************
+     * initialization
+     */
+
     constructor(value) {
         this.DELIMITER = '$$';
         this._init(value);
     }
 
-    /** **********************************************************************
-     * initialization
-     */
-
     _init(value) {
         // store value or initialize empty
         this.setValue(value ? value : {});
         // bind
-        this._eqnObjToTex = this._eqnObjToTex.bind(this);
+        this._nodeToTex = this._nodeToTex.bind(this);
         this._eqnFactorToTex = this._eqnFactorToTex.bind(this);
     }
+
+    /** **********************************************************************
+     * rendering
+     */
 
     render(DOMNode) {
         DOMNode.innerHTML = this.getAsTexStr();
@@ -28,28 +32,23 @@ class Equation {
     }
 
     /** **********************************************************************
-     * setters
+     * getters/setters
      */
 
     setValue(value) {
+        if (typeof value !== 'object' || value === null) {
+            throw new Error(`setValue(): invalid parameter (should be object), got ${value}`);
+        }
         this.value = value
         this._normalizePrimitives(this.value);
     }
-
-    /** **********************************************************************
-     * getters
-     */
 
     getAsObject() {
         return this.value;
     }
 
     getAsTexStr() {
-        return this.DELIMITER + this._eqnObjToTex(this.value) + this.DELIMITER;
-    }
-
-    getAsMathDoc() {
-        return MathJax.tex2chtml(this.getAsTexStr());
+        return this.DELIMITER + this._nodeToTex(this.value) + this.DELIMITER;
     }
 
     /** **********************************************************************
@@ -94,9 +93,9 @@ class Equation {
     // Format a factor node with or without parenthesis
     _eqnFactorToTex(eqnNode) {
         if (eqnNode.sum) {
-            return ' ( ' + this._eqnObjToTex(eqnNode) + ' ) ';
+            return ' ( ' + this._nodeToTex(eqnNode) + ' ) ';
         } else {
-            return this._eqnObjToTex(eqnNode);
+            return this._nodeToTex(eqnNode);
         }
     }
 
@@ -113,28 +112,28 @@ class Equation {
     }
 
     // Convert the entire equation object to a TeX string
-    _eqnObjToTex(eqn, signMode = 'nonplus') { // signMode : 'nonplus' | 'all' | 'none'
+    _nodeToTex(eqn, signMode = 'nonplus') { // signMode : 'nonplus' | 'all' | 'none'
         if (eqn.primitive) {
             return this._eqnLeadingSign(eqn, signMode) + eqn.primitive;
         } else if (eqn.or) {
             return eqn.or.atoms.map(
-                atom => this._eqnObjToTex(atom)
+                atom => this._nodeToTex(atom)
             ).join(' \\lor  ');
         } else if (eqn.equation) {
             return eqn.equation.members.map(
-                member => this._eqnObjToTex(member)
+                member => this._nodeToTex(member)
             ).join(' = ');
         } else if (eqn.sum) {
             // TODO suppress sign if there is a sign in de subNode when it is a <product> or <squareroot>
             // one term with optional sign
             const firstTerm = eqn.sum.terms[0];
-            const texFirstTerm = this._eqnObjToTex(firstTerm);
+            const texFirstTerm = this._nodeToTex(firstTerm);
             // rest of terms without sign. join them with the term's sign.
             const result = texFirstTerm + eqn.sum.terms.slice(1).map(term => {
                 const sign = term.sign
                     ? term.sign
                     : ' + ';
-                return sign + this._eqnObjToTex(term, 'none')
+                return sign + this._nodeToTex(term, 'none')
             }).join('');
             return result;
         } else if (eqn.product) {
@@ -143,29 +142,58 @@ class Equation {
                 factor => this._eqnFactorToTex(factor)
             ).join(' \\cdot ');
         } else if (eqn.fraction) {
-            return ' \\frac{ ' +
-                this._eqnObjToTex(eqn.fraction.numerator) +
+            const integer = eqn.fraction.integer;
+            return (integer ? this._nodeToTex(integer) : '') +
+                ' \\frac{ ' +
+                this._nodeToTex(eqn.fraction.numerator) +
                 ' } { ' +
-                this._eqnObjToTex(eqn.fraction.denominator) +
+                this._nodeToTex(eqn.fraction.denominator) +
                 ' } ';
         } else if (eqn.power) {
             const useParens = eqn.power.base && (eqn.power.base.sum || eqn.power.base.product);
-            const texBase = this._eqnObjToTex(eqn.power.base)
-            const texExponent = this._eqnObjToTex(eqn.power.exponent)
+            const texBase = this._nodeToTex(eqn.power.base)
+            const texExponent = this._nodeToTex(eqn.power.exponent)
             const texParenBase = useParens
                 ? ` ( ${texBase} ) `
                 : texBase
             return texParenBase + ` ^{ ${texExponent} } `;
         } else if (eqn.squareroot) {
-            return ' \\sqrt{ ' + this._eqnObjToTex(eqn.squareroot) + ' } ';
+            return ' \\sqrt{ ' + this._nodeToTex(eqn.squareroot) + ' } ';
         } else if (eqn.cuberoot) {
-            const texRadicand = this._eqnObjToTex(eqn.cuberoot);
+            const texRadicand = this._nodeToTex(eqn.cuberoot);
             return ` \\sqrt[3]{ ${texRadicand} }`
         } else if (eqn.root) {
-            const texIndex = this._eqnObjToTex(eqn.root.index);
-            const texRadicand = this._eqnObjToTex(eqn.root.radicand);
+            const texIndex = this._nodeToTex(eqn.root.index);
+            const texRadicand = this._nodeToTex(eqn.root.radicand);
             return ` \\sqrt[ ${texIndex} ]{ ${texRadicand} }`
         }
+    }
+
+    /** **********************************************************************
+     * node properties
+     */
+
+    isVariablePrimitive(node) {
+        return node.primitive && typeof node.primitive === 'string';
+    }
+
+    isConstantPrimitive(node) {
+        return node.primitive && typeof node.primitive === 'number';
+    }
+
+    /** **********************************************************************
+     * formula management
+     */
+
+    simplify() {
+        console.log('TODO not yet implemented');
+        // cancel +6-5, +6x -5x, sqrt(x^2) etc.
+    }
+
+    // for presentation purposes, e.g.
+    // no roots in the denominator; no fractions under a radical sign; simplify fractions
+    cleanup() {
+        console.log('TODO not yet implemented');
     }
 
     /** **********************************************************************
@@ -203,14 +231,6 @@ class Equation {
         return this._normalizePrimitive(
             { primitive: a }
         );
-    }
-
-    /** **********************************************************************
-     * formula management
-     */
-
-    simplify() {
-        console.log('TODO not yet implemented');
     }
 }
 
