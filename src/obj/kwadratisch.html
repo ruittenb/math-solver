@@ -10,18 +10,13 @@
     <script src="examples.js"></script>
     <script>
         const displayNodeId = 'displayFrame';
-        let displayNode;
         let currentExampleIndex = 0;
         let equation;
-
-        window.addEventListener('load', function () {
-            displayNode = document.getElementById(displayNodeId);
-        });
 
         async function showFormula(num) {
             const exampleFormula = num === undefined ? undefined : examples[num];
             equation = new QuadraticEquation(exampleFormula);
-            equation.render(displayNode);
+            equation.render(displayNodeId);
         }
 
     </script>
@@ -39,7 +34,6 @@
         Example
     </button>
     <div id="displayFrame">
-        <br><!-- node to replace -->
     </div>
 </body>
 </html>

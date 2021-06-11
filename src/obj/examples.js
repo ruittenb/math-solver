@@ -10,26 +10,26 @@ const examples = [
                     terms: [{
                         fraction: {
                             integer: {
-                                primitive: '3'
+                                primitive: 3
                             },
                             numerator: {
-                                primitive: '2'
+                                primitive: 2
                             },
                             denominator: {
-                                primitive: '9'
+                                primitive: 9
                             }
                         }
                     }, {
                         sign: '-',
                         fraction: {
                             integer: {
-                                primitive: '1'
+                                primitive: 1
                             },
                             numerator: {
-                                primitive: '1'
+                                primitive: 1
                             },
                             denominator: {
-                                primitive: '12'
+                                primitive: 12
                             }
                         }
                     }]
@@ -49,13 +49,13 @@ const examples = [
                             terms: [{
                                 primitive: 'x'
                             }, {
-                                primitive: '1'
+                                primitive: 1
                             }]
                         }
                     }]
                 }
             }, {
-                primitive: '0'
+                primitive: 0
             }]
         }
     },
@@ -67,14 +67,14 @@ const examples = [
                     terms: [{
                         product: {
                             factors: [{
-                                primitive: '2'
+                                primitive: 2
                             }, {
                                 power: {
                                     base: {
                                         primitive: 'x'
                                     },
                                     exponent: {
-                                        primitive: '2'
+                                        primitive: 2
                                     }
                                 }
                             }]
@@ -82,18 +82,18 @@ const examples = [
                     }, {
                         product: {
                             factors: [{
-                                primitive: '3'
+                                primitive: 3
                             }, {
                                 primitive: 'x'
                             }]
                         }
                     }, {
                         sign: '-',
-                        primitive: '1'
+                        primitive: 1
                     }]
                 }
             }, {
-                primitive: '0'
+                primitive: 0
             }]
         }
     },
@@ -105,7 +105,7 @@ const examples = [
                     members: [{
                         primitive: 'x'
                     }, {
-                        primitive: '1'
+                        primitive: 1
                     }]
                 }
             }, {
@@ -114,7 +114,7 @@ const examples = [
                         primitive: 'x'
                     }, {
                         sign: '-',
-                        primitive: '4'
+                        primitive: 4
                     }]
                 }
             }]
@@ -131,10 +131,10 @@ const examples = [
                 product: {
                     factors: [{
                         sign: '±',
-                        primitive: '5'
+                        primitive: 5
                     }, {
                         squareroot: {
-                            primitive: '2'
+                            primitive: 2
                         }
                     }]
                 }
@@ -148,7 +148,7 @@ const examples = [
                 primitive: 'x'
             }, {
                 cuberoot: {
-                    primitive: '27'
+                    primitive: 27
                 }
             }]
         }
@@ -163,14 +163,14 @@ const examples = [
                     base: {
                         product: {
                             factors: [{
-                                primitive: '3'
+                                primitive: 3
                             }, {
                                 primitive: 'x'
                             }]
                         }
                     },
                     exponent: {
-                        primitive: '5'
+                        primitive: 5
                     }
                 }
             }]
@@ -188,12 +188,12 @@ const examples = [
                             terms: [{
                                 primitive: 'x'
                             }, {
-                                primitive: '5'
+                                primitive: 5
                             }]
                         }
                     },
                     radicand: {
-                        primitive: '3125'
+                        primitive: 3125
                     }
                 }
             }]
@@ -203,7 +203,8 @@ const examples = [
     {
         equation: {
             members: [{
-                primitive: 'x' // sub 1,2
+                primitive: 'x',
+                subscript: '1,2'
             }, {
                 fraction: {
                     numerator: {
@@ -221,14 +222,14 @@ const examples = [
                                                     primitive: 'b'
                                                 },
                                                 exponent: {
-                                                    primitive: '2'
+                                                    primitive: 2
                                                 }
                                             }
                                         }, {
                                             sign: '-',
                                             product: {
                                                 factors: [{
-                                                    primitive: '4',
+                                                    primitive: 4,
                                                 }, {
                                                     primitive: 'a',
                                                 }, {
@@ -244,7 +245,7 @@ const examples = [
                     denominator: {
                         product: {
                             factors: [{
-                                primitive: '2'
+                                primitive: 2
                             }, {
                                 primitive: 'a'
                             }]

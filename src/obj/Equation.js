@@ -26,7 +26,15 @@ class Equation {
      * rendering
      */
 
-    render(DOMNode) {
+    render(target) {
+        let DOMNode;
+        if (target instanceof HTMLElement) {
+            DOMNode = target;
+        } else if (typeof target === 'string') {
+            DOMNode = document.getElementById(target);
+        } else {
+            throw new Error('render(): Expected HTML element or ID string');
+        }
         DOMNode.innerHTML = this.getAsTexStr();
         MathJax.typeset();
     }
@@ -57,51 +65,66 @@ class Equation {
 
     // Normalize a node that is a primitive. Fills in the 'sign' property
     // by transferring the sign from the 'primitive' property.
-    _normalizePrimitive(eqnNode) {
-        if (eqnNode.sign) {
-            return eqnNode;
+    _normalizePrimitive(node) {
+        if (node.primitive === undefined) {
+            throw new Error('Request to normalize a primitive node that is not a primitive');
         }
-        eqnNode.primitive = String(eqnNode.primitive).replace(/^[ \t\n]+/, '');
-        if (eqnNode.primitive.match(/^[-+±]/)) {
-            eqnNode.sign = eqnNode.primitive.substr(0, 1);
-            eqnNode.primitive = eqnNode.primitive.substr(1);
+        if (node.sign) {
+            // already present
+            return node;
+        }
+        if (this.isConstantPrimitive(node)) {
+            // constant, e.g. 0, -13, 8
+            if (node.primitive < 0) {
+                node.sign = '-';
+                node.primitive = Math.abs(node.primitive);
+            } else {
+                node.sign = '+'
+            }
         } else {
-            // no leading sign on 'primitive': default positive
-            eqnNode.sign = '+';
+            // variable, e.g. a, b, x
+            node.primitive = String(node.primitive).replace(/^[ \t\n]+/, '');
+            if (node.primitive.match(/^[-+±]/)) {
+                node.sign = node.primitive.substr(0, 1);
+                node.primitive = node.primitive.substr(1);
+            } else {
+                // no leading sign on 'primitive': default positive
+                node.sign = '+';
+            }
         }
-        return eqnNode;
+        return node;
     }
 
     // Make sure that every primitive node has 'primitive' and 'sign' properties
-    _normalizePrimitives(eqnNode) {
-        if (typeof eqnNode !== 'object' || eqnNode === null) {
-            throw new Error(`Error: equation node expected, but got ${typeof eqnNode}`);
+    _normalizePrimitives(node) {
+        if (typeof node !== 'object' || node === null) {
+            throw new Error(`Error: equation node expected, but got ${typeof node}`);
         }
-        if (!eqnNode.primitive) {
-            // eqnNode is not primitive: recurse
-            for (const subNode of Object.values(eqnNode)) {
+        if (node.primitive === undefined) {
+            // node is not primitive: recurse
+            for (const subNode of Object.values(node)) {
                 if (typeof subNode === 'object') {
                     this._normalizePrimitives(subNode);
                 }
             }
         } else {
-            // eqnNode is primitive
-            this._normalizePrimitive(eqnNode);
+            // node is primitive
+            this._normalizePrimitive(node);
         }
     }
 
     // Format a factor node with or without parenthesis
-    _eqnFactorToTex(eqnNode) {
-        if (eqnNode.sum) {
-            return ' ( ' + this._nodeToTex(eqnNode) + ' ) ';
+    _eqnFactorToTex(node) {
+        if (node.sum) {
+            return ' ( ' + this._nodeToTex(node) + ' ) ';
         } else {
-            return this._nodeToTex(eqnNode);
+            return this._nodeToTex(node);
         }
     }
 
     // return the correct sign for a node
-    _eqnLeadingSign(eqnNode, signMode) {
-        const sign = eqnNode.sign;
+    _eqnLeadingSign(node, signMode) {
+        const sign = node.sign;
         if (
             signMode === 'none' || (sign === '+' && signMode === 'nonplus')
         ) {
@@ -111,60 +134,67 @@ class Equation {
         }
     }
 
+    // Format a primitive
+    _eqnPrimitiveToTex(node, signMode) {
+        return this._eqnLeadingSign(node, signMode) +
+            String(node.primitive) +
+            (node.subscript ? ` _{ ${node.subscript} }` : '');
+    }
+
     // Convert the entire equation object to a TeX string
-    _nodeToTex(eqn, signMode = 'nonplus') { // signMode : 'nonplus' | 'all' | 'none'
-        if (eqn.primitive) {
-            return this._eqnLeadingSign(eqn, signMode) + eqn.primitive;
-        } else if (eqn.or) {
-            return eqn.or.atoms.map(
+    _nodeToTex(node, signMode = 'nonplus') { // signMode : 'nonplus' | 'all' | 'none'
+        if (node.primitive !== undefined) {
+            return this._eqnPrimitiveToTex(node, signMode);
+        } else if (node.or) {
+            return node.or.atoms.map(
                 atom => this._nodeToTex(atom)
             ).join(' \\lor  ');
-        } else if (eqn.equation) {
-            return eqn.equation.members.map(
+        } else if (node.equation) {
+            return node.equation.members.map(
                 member => this._nodeToTex(member)
             ).join(' = ');
-        } else if (eqn.sum) {
+        } else if (node.sum) {
             // TODO suppress sign if there is a sign in de subNode when it is a <product> or <squareroot>
             // one term with optional sign
-            const firstTerm = eqn.sum.terms[0];
+            const firstTerm = node.sum.terms[0];
             const texFirstTerm = this._nodeToTex(firstTerm);
             // rest of terms without sign. join them with the term's sign.
-            const result = texFirstTerm + eqn.sum.terms.slice(1).map(term => {
+            const result = texFirstTerm + node.sum.terms.slice(1).map(term => {
                 const sign = term.sign
                     ? term.sign
                     : ' + ';
                 return sign + this._nodeToTex(term, 'none')
             }).join('');
             return result;
-        } else if (eqn.product) {
+        } else if (node.product) {
             // TODO don't show dots everywhere
-            return eqn.product.factors.map(
+            return node.product.factors.map(
                 factor => this._eqnFactorToTex(factor)
             ).join(' \\cdot ');
-        } else if (eqn.fraction) {
-            const integer = eqn.fraction.integer;
+        } else if (node.fraction) {
+            const integer = node.fraction.integer;
             return (integer ? this._nodeToTex(integer) : '') +
                 ' \\frac{ ' +
-                this._nodeToTex(eqn.fraction.numerator) +
+                this._nodeToTex(node.fraction.numerator) +
                 ' } { ' +
-                this._nodeToTex(eqn.fraction.denominator) +
+                this._nodeToTex(node.fraction.denominator) +
                 ' } ';
-        } else if (eqn.power) {
-            const useParens = eqn.power.base && (eqn.power.base.sum || eqn.power.base.product);
-            const texBase = this._nodeToTex(eqn.power.base)
-            const texExponent = this._nodeToTex(eqn.power.exponent)
+        } else if (node.power) {
+            const useParens = node.power.base && (node.power.base.sum || node.power.base.product);
+            const texBase = this._nodeToTex(node.power.base)
+            const texExponent = this._nodeToTex(node.power.exponent)
             const texParenBase = useParens
                 ? ` ( ${texBase} ) `
                 : texBase
             return texParenBase + ` ^{ ${texExponent} } `;
-        } else if (eqn.squareroot) {
-            return ' \\sqrt{ ' + this._nodeToTex(eqn.squareroot) + ' } ';
-        } else if (eqn.cuberoot) {
-            const texRadicand = this._nodeToTex(eqn.cuberoot);
+        } else if (node.squareroot) {
+            return ' \\sqrt{ ' + this._nodeToTex(node.squareroot) + ' } ';
+        } else if (node.cuberoot) {
+            const texRadicand = this._nodeToTex(node.cuberoot);
             return ` \\sqrt[3]{ ${texRadicand} }`
-        } else if (eqn.root) {
-            const texIndex = this._nodeToTex(eqn.root.index);
-            const texRadicand = this._nodeToTex(eqn.root.radicand);
+        } else if (node.root) {
+            const texIndex = this._nodeToTex(node.root.index);
+            const texRadicand = this._nodeToTex(node.root.radicand);
             return ` \\sqrt[ ${texIndex} ]{ ${texRadicand} }`
         }
     }
@@ -227,10 +257,15 @@ class Equation {
     _root(index, radicand) {
         return { root: { index, radicand } };
     }
-    _primitive(a) {
-        return this._normalizePrimitive(
-            { primitive: a }
-        );
+    _primitive(prim, subscript) {
+        const subscriptNode = subscript ? { subscript } : {};
+        return this._normalizePrimitive({
+            primitive: prim,
+            ...subscriptNode
+        });
+    }
+    _text(text) {
+        return { text };
     }
 }
 
