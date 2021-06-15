@@ -1,11 +1,15 @@
 
-/* ****************************************************************************
- * declarations
+/** ****************************************************************************
+ * Type declarations
  */
 
-// suppress warnings like
-// "the label 'sign' is defined in both types 'product' and 'power'" etc.
+// suppress warnings like "the label 'sign' is defined
+// in both types 'product' and 'power'" etc.
 @@warning("-30")
+
+/** ****************************************************************************
+ * Simples
+ */
 
 type sign =
     | Plus
@@ -15,7 +19,7 @@ type sign =
 type varPrimitive = {
     sign: sign,
     primitive: string,
-    subscript: string
+    subscript: option<string>
 }
 
 type constPrimitive = {
@@ -27,41 +31,53 @@ type primitive =
     | VarPrimitive(varPrimitive)
     | ConstPrimitive(constPrimitive)
 
+/** ****************************************************************************
+ * Expression and its components
+ */
+
 type rec sum = {
     terms: array<expression>
 }
+
 and product = {
     sign: sign,
     factors: array<expression>
 }
+
 and varFraction = {
     sign: sign,
     numerator: expression,
     denominator: expression
 }
+
 and constFraction = {
     sign: sign,
-    integer: constPrimitive,
-    numerator: constPrimitive,
-    denominator: constPrimitive
+    integer: constPrimitive, // TODO int?
+    numerator: constPrimitive, // TODO int?
+    denominator: constPrimitive // TODO int?
 }
+
 and fraction =
-	| VarFraction(varFraction)
-	| ConstFraction(constFraction)
+    | VarFraction(varFraction)
+    | ConstFraction(constFraction)
+
 and power = {
     sign: sign,
     base: expression,
     exponent: expression
 }
+
+and squareroot = {
+    sign: sign,
+    radicand: expression
+}
+
 and root = {
     sign: sign,
     index: expression,
     radicand: expression
 }
-and squareroot = {
-    sign: sign,
-    radicand: expression
-}
+
 and expression =
     | TextExpression(string)
     | PrimitiveExpression(primitive)
@@ -71,6 +87,10 @@ and expression =
     | PowerExpression(power)
     | RootExpression(root)
     | SquarerootExpression(squareroot)
+
+/** ****************************************************************************
+ * Formula in terms of Expressions
+ */
 
 type equation = {
     members: array<expression>
@@ -85,7 +105,9 @@ type formula =
     | Equation(equation)
     | Text(string)
 
-// conversions
+/** ****************************************************************************
+ * Shortcuts for conversions
+ */
 
 let varPrimitiveExpression = (n: varPrimitive) => n->VarPrimitive->PrimitiveExpression
 let constPrimitiveExpression = (n: constPrimitive) => n->ConstPrimitive->PrimitiveExpression
@@ -93,62 +115,4 @@ let constPrimitiveExpression = (n: constPrimitive) => n->ConstPrimitive->Primiti
 let varFractionExpression = (n: varFraction) => n->VarFraction->FractionExpression
 let constFractionExpression = (n: constFraction) => n->ConstFraction->FractionExpression
 
-
-/* ****************************************************************************
- * data
- */
-
-let minusb: expression = varPrimitiveExpression({ sign: Minus, primitive: "b", subscript: "" })
-
-let b2: expression = PowerExpression({
-    sign: Plus,
-    base: varPrimitiveExpression({ sign: Plus, primitive: "b", subscript: "" }),
-    exponent: constPrimitiveExpression({ sign: Plus, primitive: 2. })
-})
-
-let four: expression = constPrimitiveExpression({ sign: Plus, primitive: 4. })
-let a: expression = varPrimitiveExpression({ sign: Plus, primitive: "a", subscript: "" })
-let c: expression = varPrimitiveExpression({ sign: Plus, primitive: "c", subscript: "" })
-let two: expression = constPrimitiveExpression({ sign: Plus, primitive: 2. })
-
-let abcNumerator: expression = SumExpression({
-    terms: [
-        minusb,
-        SquarerootExpression({
-            sign: PlusMinus,
-            radicand: SumExpression({
-                terms: [
-                    b2,
-                    ProductExpression({
-                        sign: Minus,
-                        factors: [ four, a, c ]
-                    })
-                ]
-            })
-        })
-    ]
-})
-
-let abcDenominator: expression = ProductExpression({
-    sign: Plus,
-    factors: [ two, a ]
-})
-
-let abcLeft = varPrimitiveExpression({ sign: Minus, primitive: "x", subscript: "1,2" })
-let abcRight = varFractionExpression({
-    sign: Plus,
-    numerator: abcNumerator,
-    denominator: abcDenominator
-})
-
-let abcEquation = {
-    members: [
-        abcLeft,
-        abcRight
-    ]
-}
-
-Js.log(abcEquation)
-
-
-/* vim: set ts=4 sw=4 et: */
+// vim: set ts=4 sw=4 et list nu fdm=marker:
