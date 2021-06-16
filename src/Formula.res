@@ -1,9 +1,12 @@
 
 /** ****************************************************************************
- * Requires: Types
+ * Formula: Formula rendering
+ *
+ * Requires: Types, Greek
  */
 
 open Types
+open Greek
 
 type signMode =
     | NoSign
@@ -13,7 +16,7 @@ type signMode =
 let delimiter: string = "$$"
 
 /** **********************************************************************
- * Conversions of Simples to Tex
+ * Conversions of attributes and leaf nodes to Tex
  */
 
 // Format text
@@ -42,6 +45,13 @@ let _subscriptAttrToTex = (subscript: option<string>): string => {
     }
 }
 
+let _variablePrimitiveToTex = (variable: string) => {
+    switch Js.Dict.get(unicodeToTex, variable) {
+        | Some(texString) => texString
+        | None            => variable
+    }
+}
+
 // Format a primitive
 let _primitiveNodeToTex = (primitive: primitive, signMode: signMode): string => {
     switch primitive {
@@ -50,7 +60,7 @@ let _primitiveNodeToTex = (primitive: primitive, signMode: signMode): string => 
             Belt.Float.toString(const.primitive)
         | VarPrimitive(var) =>
             _signAttrToTex(var.sign, signMode) ++
-            var.primitive ++
+            _variablePrimitiveToTex(var.primitive) ++
             _subscriptAttrToTex(var.subscript)
     }
 }
@@ -94,9 +104,9 @@ and _productNodeToTex = (product: product, signMode: signMode): string => {
 and _termNodeToTex = (expression: expression, signMode: signMode): string => {
     switch expression {
         | TextExpression(text)             => _textToTex(text)                          // has no sign property
-        | SumExpression(sum)               => "+ " ++ _sumNodeToTex(sum)                // has no sign property
+        | SumExpression(sum)               => _sumNodeToTex(sum)                        // has no sign property
         | PrimitiveExpression(primitive)   => _primitiveNodeToTex(primitive,  AllSign)  // has no immediate sign property
-        | FractionExpression(fraction)     => _fractionNodeToTex(fraction,    AllSign)  // has no immediate sign property
+        | FractionExpression(fraction)     => _fractionNodeToTex(fraction,    signMode) // has no immediate sign property
         | ProductExpression(product)       => _signAttrToTex(product.sign,    signMode) ++ " " ++ _productNodeToTex(product, NoSign)
         | PowerExpression(power)           => _signAttrToTex(power.sign,      signMode) ++ " " ++ _powerNodeToTex(power, NoSign)
         | SquarerootExpression(squareroot) => _signAttrToTex(squareroot.sign, signMode) ++ " " ++ _squarerootNodeToTex(squareroot, NoSign)
@@ -130,10 +140,14 @@ and _fractionToTex = (numerator: expression, denominator: expression): string =>
 // Format a fraction node
 and _fractionNodeToTex = (fractionNode: fraction, signMode: signMode): string => {
     switch (fractionNode) {
-        | ConstFraction(fraction) =>
+        | ConstFraction(fraction) => {
+            let fractionInteger = fraction.integer.primitive !== 0.
+                ? _primitiveNodeToTex(fraction.integer->ConstPrimitive, NoSign)
+                : ""
             _signAttrToTex(fraction.sign, signMode) ++ " " ++
-            _primitiveNodeToTex(fraction.integer->ConstPrimitive, NoSign) ++
+            fractionInteger ++
             _fractionToTex(fraction.numerator->constPrimitiveExpression, fraction.denominator->constPrimitiveExpression)
+        }
         | VarFraction(fraction) =>
             _signAttrToTex(fraction.sign, signMode) ++ " " ++
             _fractionToTex(fraction.numerator, fraction.denominator) // note that numerator and denominator are expressions
@@ -197,21 +211,5 @@ let formulaNodeToTex = (formula: formula): string => {
     }
     delimiter ++ texFormula ++ delimiter
 }
-
-/** **********************************************************************
- * formula management
- */
-
-//    simplify() {
-//        console.log('TODO not yet implemented');
-//        // cancel +6-5, +6x -5x, sqrt(x^2) etc.
-//    }
-//
-//    // for presentation purposes, e.g.
-//    // no roots in the denominator; no fractions under a radical sign; simplify fractions
-//    cleanup() {
-//        console.log('TODO not yet implemented');
-//    }
-
 
 // vim: set ts=4 sw=4 et list nu fdm=marker:

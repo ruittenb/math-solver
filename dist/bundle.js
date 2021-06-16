@@ -150,7 +150,204 @@ function dup(prim) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.examples = exports.formulaNodeToTex = exports._logicalOrNodeToTex = exports._equationNodeToTex = exports._rootNodeToTex = exports._squarerootNodeToTex = exports._powerNodeToTex = exports._fractionNodeToTex = exports._fractionToTex = exports._sumNodeToTex = exports._termNodeToTex = exports._productNodeToTex = exports._factorNodeToTex = exports._expressionNodeToTex = exports._primitiveNodeToTex = exports._subscriptAttrToTex = exports._signAttrToTex = exports._textToTex = exports.delimiter = void 0;
+exports.nullable_to_opt = nullable_to_opt;
+exports.undefined_to_opt = undefined_to_opt;
+exports.null_to_opt = null_to_opt;
+exports.valFromOption = valFromOption;
+exports.some = some;
+exports.isNested = isNested;
+exports.option_get = option_get;
+exports.option_unwrap = option_unwrap;
+
+function isNested(x) {
+  return x.BS_PRIVATE_NESTED_SOME_NONE !== undefined;
+}
+
+function some(x) {
+  if (x === undefined) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: 0
+    };
+  } else if (x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== undefined) {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: x.BS_PRIVATE_NESTED_SOME_NONE + 1 | 0
+    };
+  } else {
+    return x;
+  }
+}
+
+function nullable_to_opt(x) {
+  if (x == null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+
+function undefined_to_opt(x) {
+  if (x === undefined) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+
+function null_to_opt(x) {
+  if (x === null) {
+    return;
+  } else {
+    return some(x);
+  }
+}
+
+function valFromOption(x) {
+  if (!(x !== null && x.BS_PRIVATE_NESTED_SOME_NONE !== undefined)) {
+    return x;
+  }
+
+  var depth = x.BS_PRIVATE_NESTED_SOME_NONE;
+
+  if (depth === 0) {
+    return;
+  } else {
+    return {
+      BS_PRIVATE_NESTED_SOME_NONE: depth - 1 | 0
+    };
+  }
+}
+
+function option_get(x) {
+  if (x === undefined) {
+    return;
+  } else {
+    return valFromOption(x);
+  }
+}
+
+function option_unwrap(x) {
+  if (x !== undefined) {
+    return x.VAL;
+  } else {
+    return x;
+  }
+}
+/* No side effect */
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.get = get;
+exports.entries = entries;
+exports.values = values;
+exports.fromList = fromList;
+exports.fromArray = fromArray;
+exports.map = map;
+exports.unsafeDeleteKey = void 0;
+
+var Caml_option = _interopRequireWildcard(require("./caml_option.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function get(dict, k) {
+  if (k in dict) {
+    return Caml_option.some(dict[k]);
+  }
+}
+
+var unsafeDeleteKey = function (dict, key) {
+  delete dict[key];
+};
+
+exports.unsafeDeleteKey = unsafeDeleteKey;
+
+function entries(dict) {
+  var keys = Object.keys(dict);
+  var l = keys.length;
+  var values = new Array(l);
+
+  for (var i = 0; i < l; ++i) {
+    var key = keys[i];
+    values[i] = [key, dict[key]];
+  }
+
+  return values;
+}
+
+function values(dict) {
+  var keys = Object.keys(dict);
+  var l = keys.length;
+  var values$1 = new Array(l);
+
+  for (var i = 0; i < l; ++i) {
+    values$1[i] = dict[keys[i]];
+  }
+
+  return values$1;
+}
+
+function fromList(entries) {
+  var dict = {};
+  var _param = entries;
+
+  while (true) {
+    var param = _param;
+
+    if (!param) {
+      return dict;
+    }
+
+    var match = param.hd;
+    dict[match[0]] = match[1];
+    _param = param.tl;
+    continue;
+  }
+
+  ;
+}
+
+function fromArray(entries) {
+  var dict = {};
+  var l = entries.length;
+
+  for (var i = 0; i < l; ++i) {
+    var match = entries[i];
+    dict[match[0]] = match[1];
+  }
+
+  return dict;
+}
+
+function map(f, source) {
+  var target = {};
+  var keys = Object.keys(source);
+  var l = keys.length;
+
+  for (var i = 0; i < l; ++i) {
+    var key = keys[i];
+    target[key] = f(source[key]);
+  }
+
+  return target;
+}
+/* No side effect */
+
+},{"./caml_option.js":2}],4:[function(require,module,exports){
+// Generated by ReScript, PLEASE EDIT WITH CARE
+/* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
+
+},{}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.examples = exports.formulaNodeToTex = exports._logicalOrNodeToTex = exports._equationNodeToTex = exports._rootNodeToTex = exports._squarerootNodeToTex = exports._powerNodeToTex = exports._fractionNodeToTex = exports._fractionToTex = exports._sumNodeToTex = exports._termNodeToTex = exports._productNodeToTex = exports._factorNodeToTex = exports._expressionNodeToTex = exports._primitiveNodeToTex = exports._variablePrimitiveToTex = exports._subscriptAttrToTex = exports._signAttrToTex = exports._textToTex = exports.delimiter = void 0;
 
 var Types$MathSolver = _interopRequireWildcard(require("./Types.bs.js"));
 
@@ -162,6 +359,70 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 // Generated by ReScript, PLEASE EDIT WITH CARE
 var examples = [{
+  TAG:
+  /* Equation */
+  1,
+  _0: {
+    members: [Types$MathSolver.varPrimitiveExpression({
+      sign:
+      /* Plus */
+      0,
+      primitive: "x",
+      subscript: undefined
+    }), {
+      TAG:
+      /* SumExpression */
+      2,
+      _0: {
+        terms: [Types$MathSolver.constFractionExpression({
+          sign:
+          /* Plus */
+          0,
+          integer: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 0
+          },
+          numerator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 1
+          },
+          denominator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 2
+          }
+        }), Types$MathSolver.constFractionExpression({
+          sign:
+          /* Plus */
+          0,
+          integer: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 0
+          },
+          numerator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 1
+          },
+          denominator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 3
+          }
+        })]
+      }
+    }]
+  }
+}, {
   TAG:
   /* Equation */
   1,
@@ -220,6 +481,28 @@ var examples = [{
             /* Plus */
             0,
             primitive: 12
+          }
+        }), Types$MathSolver.constFractionExpression({
+          sign:
+          /* Plus */
+          0,
+          integer: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 0
+          },
+          numerator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 1
+          },
+          denominator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 6
           }
         })]
       }
@@ -415,7 +698,7 @@ var examples = [{
           sign:
           /* Plus */
           0,
-          primitive: 5
+          primitive: 3
         }), {
           TAG:
           /* SquarerootExpression */
@@ -429,6 +712,168 @@ var examples = [{
               /* Plus */
               0,
               primitive: 2
+            })
+          }
+        }]
+      }
+    }]
+  }
+}, {
+  TAG:
+  /* Equation */
+  1,
+  _0: {
+    members: [Types$MathSolver.varPrimitiveExpression({
+      sign:
+      /* Plus */
+      0,
+      primitive: "\xcf\x86",
+      subscript: undefined
+    }), {
+      TAG:
+      /* SumExpression */
+      2,
+      _0: {
+        terms: [Types$MathSolver.constFractionExpression({
+          sign:
+          /* Plus */
+          0,
+          integer: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 0
+          },
+          numerator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 1
+          },
+          denominator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 2
+          }
+        }), {
+          TAG:
+          /* ProductExpression */
+          3,
+          _0: {
+            sign:
+            /* Plus */
+            0,
+            factors: [Types$MathSolver.constFractionExpression({
+              sign:
+              /* Plus */
+              0,
+              integer: {
+                sign:
+                /* Plus */
+                0,
+                primitive: 0
+              },
+              numerator: {
+                sign:
+                /* Plus */
+                0,
+                primitive: 1
+              },
+              denominator: {
+                sign:
+                /* Plus */
+                0,
+                primitive: 2
+              }
+            }), {
+              TAG:
+              /* SquarerootExpression */
+              7,
+              _0: {
+                sign:
+                /* Plus */
+                0,
+                radicand: Types$MathSolver.constPrimitiveExpression({
+                  sign:
+                  /* Plus */
+                  0,
+                  primitive: 5
+                })
+              }
+            }]
+          }
+        }]
+      }
+    }]
+  }
+}, {
+  TAG:
+  /* Equation */
+  1,
+  _0: {
+    members: [Types$MathSolver.varPrimitiveExpression({
+      sign:
+      /* Plus */
+      0,
+      primitive: "V",
+      subscript: undefined
+    }), {
+      TAG:
+      /* ProductExpression */
+      3,
+      _0: {
+        sign:
+        /* Plus */
+        0,
+        factors: [Types$MathSolver.constFractionExpression({
+          sign:
+          /* Plus */
+          0,
+          integer: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 0
+          },
+          numerator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 4
+          },
+          denominator: {
+            sign:
+            /* Plus */
+            0,
+            primitive: 3
+          }
+        }), Types$MathSolver.varPrimitiveExpression({
+          sign:
+          /* Plus */
+          0,
+          primitive: "\xcf\x80",
+          subscript: undefined
+        }), {
+          TAG:
+          /* PowerExpression */
+          5,
+          _0: {
+            sign:
+            /* Plus */
+            0,
+            base: Types$MathSolver.varPrimitiveExpression({
+              sign:
+              /* Plus */
+              0,
+              primitive: "r",
+              subscript: undefined
+            }),
+            exponent: Types$MathSolver.constPrimitiveExpression({
+              sign:
+              /* Plus */
+              0,
+              primitive: 3
             })
           }
         }]
@@ -695,6 +1140,8 @@ var _signAttrToTex = Formula$MathSolver._signAttrToTex;
 exports._signAttrToTex = _signAttrToTex;
 var _subscriptAttrToTex = Formula$MathSolver._subscriptAttrToTex;
 exports._subscriptAttrToTex = _subscriptAttrToTex;
+var _variablePrimitiveToTex = Formula$MathSolver._variablePrimitiveToTex;
+exports._variablePrimitiveToTex = _variablePrimitiveToTex;
 var _primitiveNodeToTex = Formula$MathSolver._primitiveNodeToTex;
 exports._primitiveNodeToTex = _primitiveNodeToTex;
 var _expressionNodeToTex = Formula$MathSolver._expressionNodeToTex;
@@ -726,7 +1173,7 @@ var formulaNodeToTex = Formula$MathSolver.formulaNodeToTex;
 
 exports.formulaNodeToTex = formulaNodeToTex;
 
-},{"./Formula.bs.js":3,"./Types.bs.js":5}],3:[function(require,module,exports){
+},{"./Formula.bs.js":6,"./Types.bs.js":9}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -735,6 +1182,7 @@ Object.defineProperty(exports, "__esModule", {
 exports._textToTex = _textToTex;
 exports._signAttrToTex = _signAttrToTex;
 exports._subscriptAttrToTex = _subscriptAttrToTex;
+exports._variablePrimitiveToTex = _variablePrimitiveToTex;
 exports._primitiveNodeToTex = _primitiveNodeToTex;
 exports._expressionNodeToTex = _expressionNodeToTex;
 exports._factorNodeToTex = _factorNodeToTex;
@@ -751,7 +1199,11 @@ exports._logicalOrNodeToTex = _logicalOrNodeToTex;
 exports.formulaNodeToTex = formulaNodeToTex;
 exports.delimiter = void 0;
 
+var Js_dict = _interopRequireWildcard(require("rescript/lib/es6/js_dict.js"));
+
 var Caml_array = _interopRequireWildcard(require("rescript/lib/es6/caml_array.js"));
+
+var Greek$MathSolver = _interopRequireWildcard(require("./Greek.bs.js"));
 
 var Types$MathSolver = _interopRequireWildcard(require("./Types.bs.js"));
 
@@ -813,12 +1265,22 @@ function _subscriptAttrToTex(subscript) {
   }
 }
 
+function _variablePrimitiveToTex(variable) {
+  var texString = Js_dict.get(Greek$MathSolver.unicodeToTex, variable);
+
+  if (texString !== undefined) {
+    return texString;
+  } else {
+    return variable;
+  }
+}
+
 function _primitiveNodeToTex(primitive, signMode) {
   if (primitive.TAG ===
   /* VarPrimitive */
   0) {
     var $$var = primitive._0;
-    return _signAttrToTex($$var.sign, signMode) + $$var.primitive + _subscriptAttrToTex($$var.subscript);
+    return _signAttrToTex($$var.sign, signMode) + _variablePrimitiveToTex($$var.primitive) + _subscriptAttrToTex($$var.subscript);
   }
 
   var $$const = primitive._0;
@@ -912,7 +1374,7 @@ function _termNodeToTex(expression, signMode) {
     case
     /* SumExpression */
     2:
-      return "+ " + _sumNodeToTex(expression._0);
+      return _sumNodeToTex(expression._0);
 
     case
     /* ProductExpression */
@@ -925,9 +1387,7 @@ function _termNodeToTex(expression, signMode) {
     case
     /* FractionExpression */
     4:
-      return _fractionNodeToTex(expression._0,
-      /* AllSign */
-      2);
+      return _fractionNodeToTex(expression._0, signMode);
 
     case
     /* PowerExpression */
@@ -989,14 +1449,15 @@ function _fractionNodeToTex(fractionNode, signMode) {
   }
 
   var fraction$1 = fractionNode._0;
-  return _signAttrToTex(fraction$1.sign, signMode) + " " + _primitiveNodeToTex({
+  var fractionInteger = fraction$1.integer.primitive !== 0 ? _primitiveNodeToTex({
     TAG:
     /* ConstPrimitive */
     1,
     _0: fraction$1.integer
   },
   /* NoSign */
-  0) + _fractionToTex(Types$MathSolver.constPrimitiveExpression(fraction$1.numerator), Types$MathSolver.constPrimitiveExpression(fraction$1.denominator));
+  0) : "";
+  return _signAttrToTex(fraction$1.sign, signMode) + " " + fractionInteger + _fractionToTex(Types$MathSolver.constPrimitiveExpression(fraction$1.numerator), Types$MathSolver.constPrimitiveExpression(fraction$1.denominator));
 }
 
 function _powerNodeToTex(power, signMode) {
@@ -1077,13 +1538,31 @@ function formulaNodeToTex(formula) {
 
   return delimiter + texFormula + delimiter;
 }
-/* No side effect */
+/* Greek-MathSolver Not a pure module */
 
-},{"./Types.bs.js":5,"rescript/lib/es6/caml_array.js":1}],4:[function(require,module,exports){
+},{"./Greek.bs.js":7,"./Types.bs.js":9,"rescript/lib/es6/caml_array.js":1,"rescript/lib/es6/js_dict.js":3}],7:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.unicodeToTex = void 0;
+
+var Js_dict = _interopRequireWildcard(require("rescript/lib/es6/js_dict.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 // Generated by ReScript, PLEASE EDIT WITH CARE
-/* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
+var unicodeToTex = Js_dict.fromArray([["\xce\x91", "\\Alpha"], ["\xce\xb1", "\\alpha"], ["\xce\x92", "\\Beta"], ["\xce\xb2", "\\beta"], ["\xce\x93", "\\Gamma"], ["\xce\xb3", "\\gamma"], ["\xce\x94", "\\Delta"], ["\xce\xb4", "\\delta"], ["\xce\x95", "\\Epsilon"], ["\xcf\xb5", "\\epsilon"], ["\xce\xb5", "\\varepsilon"], ["\xce\x96", "\\Zeta"], ["\xce\xb6", "\\zeta"], ["\xce\x97", "\\Eta"], ["\xce\xb7", "\\eta"], ["\xce\x98", "\\Theta"], ["\xce\xb8", "\\theta"], ["\xcf\x91", "\\vartheta"], ["\xce\x99", "\\Iota"], ["\xce\xb9", "\\iota"], ["\xce\x9a", "\\Kappa"], ["\xce\xba", "\\kappa"], ["\xcf\xb0", "\\varkappa"], ["\xce\x9b", "\\Lambda"], ["\xce\xbb", "\\lambda"], ["\xce\x9c", "\\Mu"], ["\xce\xbc", "\\mu"], ["\xce\x9d", "\\Nu"], ["\xce\xbd", "\\nu"], ["\xce\x9e", "\\Xi"], ["\xce\xbe", "\\xi"], ["\xce\x9f", "\\Omicron"], ["\xce\xbf", "\\omicron"], ["\xce\xa0", "\\Pi"], ["\xcf\x80", "\\pi"], ["\xcf\x96", "\\varpi"], ["\xce\xa1", "\\Rho"], ["\xcf\x81", "\\rho"], ["\xcf\xb1", "\\varrho"], ["\xce\xa3", "\\Sigma"], ["\xcf\x83", "\\sigma"], ["\xcf\x82", "\\varsigma"], ["\xce\xa4", "\\Tau"], ["\xcf\x84", "\\tau"], ["\xce\xa5", "\\Upsilon"], ["\xcf\x85", "\\upsilon"], ["\xce\xa6", "\\Phi"], ["\xcf\x95", "\\phi"], ["\xcf\x86", "\\varphi"], ["\xce\xa7", "\\Chi"], ["\xcf\x87", "\\chi"], ["\xce\xa8", "\\Psi"], ["\xcf\x88", "\\psi"], ["\xce\xa9", "\\Omega"], ["\xcf\x89", "\\omega"]]);
+/* unicodeToTex Not a pure module */
 
-},{}],5:[function(require,module,exports){
+exports.unicodeToTex = unicodeToTex;
+
+},{"rescript/lib/es6/js_dict.js":3}],8:[function(require,module,exports){
+arguments[4][4][0].apply(exports,arguments)
+},{"dup":4}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1152,7 +1631,7 @@ function constFractionExpression(n) {
 }
 /* No side effect */
 
-},{}],6:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 var Formula = _interopRequireWildcard(require("./Formula.bs"));
@@ -1163,8 +1642,6 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-//const Formula = require('./Formula.bs');
-//const Examples = require('./Examples.bs');
 class MathSolver {
   constructor(displayNodeId) {
     this.formulaNodeToTex = Formula.formulaNodeToTex;
@@ -1185,13 +1662,13 @@ class MathSolver {
   }
 
   example() {
-    this.currentExampleIndex = ++this.currentExampleIndex % this.examples.length;
-    const formula = this.examples[this.currentExampleIndex];
+    const formula = this.examples[this.currentExampleIndex++];
+    this.currentExampleIndex %= this.examples.length;
     this.render(formula);
   }
 
 }
 
-window.mathSolver = new MathSolver('displayFrame');
+window.MathSolver = MathSolver;
 
-},{"./Examples.bs":2,"./Formula.bs":3}]},{},[2,3,4,5,6]);
+},{"./Examples.bs":5,"./Formula.bs":6}]},{},[4,5,6,7,8,9,10]);

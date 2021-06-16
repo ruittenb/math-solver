@@ -5,6 +5,7 @@
         <title>Kwadratische vergelijkingen</title>
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
         </script>
+        <script src="bundle.js"></script>
         <style>
             button {
                 margin-right: 10px;
@@ -20,7 +21,9 @@
         </button>
         <div id="displayFrame">
         </div>
-        <script src="bundle.js"></script>
+        <script>
+            const mathSolver = new MathSolver('displayFrame');
+        </script>
     </body>
 </html>
 <!-- vim: set ts=4 sw=4 et: -->

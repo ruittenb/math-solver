@@ -2,9 +2,6 @@
 import * as Formula from './Formula.bs';
 import * as Examples from './Examples.bs';
 
-//const Formula = require('./Formula.bs');
-//const Examples = require('./Examples.bs');
-
 class MathSolver {
 
     constructor(displayNodeId) {
@@ -25,12 +22,11 @@ class MathSolver {
     }
 
     example() {
-        this.currentExampleIndex =
-            ++this.currentExampleIndex % this.examples.length;
-        const formula = this.examples[this.currentExampleIndex];
+        const formula = this.examples[this.currentExampleIndex++];
+        this.currentExampleIndex %= this.examples.length;
         this.render(formula);
     }
 }
 
-window.mathSolver = new MathSolver('displayFrame');
+window.MathSolver = MathSolver;
 

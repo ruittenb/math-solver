@@ -1,6 +1,6 @@
 
 /** ****************************************************************************
- * Examples
+ * Examples: Example formulas
  *
  * Requires: Types, Formula
  */
@@ -10,6 +10,28 @@ open Types
 include Formula
 
 let examples: array<formula> = [
+    // x = 1/2 + 1/3
+    Equation({
+        members: [
+            varPrimitiveExpression({ sign: Plus, primitive: "x", subscript: None }),
+            SumExpression({
+                terms: [
+                    constFractionExpression({
+                        sign: Plus,
+                        integer: { sign: Plus, primitive: 0. },
+                        numerator: { sign: Plus, primitive: 1. },
+                        denominator: { sign: Plus, primitive: 2. }
+                    }),
+                    constFractionExpression({
+                        sign: Plus,
+                        integer: { sign: Plus, primitive: 0. },
+                        numerator: { sign: Plus, primitive: 1. },
+                        denominator: { sign: Plus, primitive: 3. },
+                    }),
+                ]
+            })
+        ]
+    }),
     // x = 3 2/9 - 1 1/12
     Equation({
         members: [
@@ -27,7 +49,13 @@ let examples: array<formula> = [
                         integer: { sign: Plus, primitive: 1. },
                         numerator: { sign: Plus, primitive: 1. },
                         denominator: { sign: Plus, primitive: 12. },
-                    })
+                    }),
+                    constFractionExpression({
+                        sign: Plus,
+                        integer: { sign: Plus, primitive: 0. },
+                        numerator: { sign: Plus, primitive: 1. },
+                        denominator: { sign: Plus, primitive: 6. },
+                    }),
                 ]
             })
         ]
@@ -97,7 +125,7 @@ let examples: array<formula> = [
             ]
         }]
     }),
-    // x = y = ±5√2
+    // x = y = ±3√2
     Equation({
         members: [
             varPrimitiveExpression({ sign: Plus, primitive: "x", subscript: None }),
@@ -105,10 +133,64 @@ let examples: array<formula> = [
             ProductExpression({
                 sign: PlusMinus,
                 factors: [
-                    constPrimitiveExpression({ sign: Plus, primitive: 5. }),
+                    constPrimitiveExpression({ sign: Plus, primitive: 3. }),
                     SquarerootExpression({
                         sign: Plus,
                         radicand: constPrimitiveExpression({ sign: Plus, primitive: 2. })
+                    })
+                ]
+            })
+        ]
+    }),
+    // φ = 1/2 + 1/2√5
+    Equation({
+        members: [
+            varPrimitiveExpression({ sign: Plus, primitive: "φ", subscript: None }),
+            SumExpression({
+                terms: [
+                    constFractionExpression({
+                        sign: Plus,
+                        integer: { sign: Plus, primitive: 0. },
+                        numerator: { sign: Plus, primitive: 1. },
+                        denominator: { sign: Plus, primitive: 2. },
+                    }),
+                    ProductExpression({
+                        sign: Plus,
+                        factors: [
+                            constFractionExpression({
+                                sign: Plus,
+                                integer: { sign: Plus, primitive: 0. },
+                                numerator: { sign: Plus, primitive: 1. },
+                                denominator: { sign: Plus, primitive: 2. },
+                            }),
+                            SquarerootExpression({
+                                sign: Plus,
+                                radicand: constPrimitiveExpression({ sign: Plus, primitive: 5. })
+                            })
+                        ]
+                    })
+                ]
+            })
+        ]
+    }),
+    // V = 4/3 πr^3
+    Equation({
+        members: [
+            varPrimitiveExpression({ sign: Plus, primitive: "V", subscript: None }),
+            ProductExpression({
+                sign: Plus,
+                factors: [
+                    constFractionExpression({
+                        sign: Plus,
+                        integer: { sign: Plus, primitive: 0. },
+                        numerator: { sign: Plus, primitive: 4. },
+                        denominator: { sign: Plus, primitive: 3. },
+                    }),
+                    varPrimitiveExpression({ sign: Plus, primitive: "π", subscript: None }),
+                    PowerExpression({
+                        sign: Plus,
+                        base: varPrimitiveExpression({ sign: Plus, primitive: "r", subscript: None }),
+                        exponent: constPrimitiveExpression({ sign: Plus, primitive: 3. })
                     })
                 ]
             })

@@ -1,6 +1,6 @@
 
 /** ****************************************************************************
- * Type declarations
+ * Types: Type declarations
  */
 
 // suppress warnings like "the label 'sign' is defined
