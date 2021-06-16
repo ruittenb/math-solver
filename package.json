@@ -7,7 +7,7 @@
   "homepage": "https://github.com/ruittenb/math-solver",
   "scripts": {
     "re:build": "rescript",
-    "re:start": "rescript build -w"
+    "re:watch": "rescript build -w"
   },
   "devDependencies": {
     "browserify": "^17.0.0",

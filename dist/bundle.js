@@ -1367,9 +1367,7 @@ function _termNodeToTex(expression, signMode) {
     case
     /* PrimitiveExpression */
     1:
-      return _primitiveNodeToTex(expression._0,
-      /* AllSign */
-      2);
+      return _primitiveNodeToTex(expression._0, signMode);
 
     case
     /* SumExpression */
