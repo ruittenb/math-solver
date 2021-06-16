@@ -1,212 +1,207 @@
 
-/**
- * requires: Types
+/** ****************************************************************************
+ * Requires: Types
  */
 
-module Formula = {
+open Types
 
-    open Types
+type signMode =
+    | NoSign
+    | NoPlus
+    | AllSign
 
-    type signMode =
-        | NoSign
-        | NoPlus
-        | AllSign
+let delimiter: string = "$$"
 
-    let delimiter: string = "$$"
+/** **********************************************************************
+ * Conversions of Simples to Tex
+ */
 
-    /** **********************************************************************
-     * Conversions of Simples to Tex
-     */
+// Format text
+let _textToTex = (text: string): string => {
+    ` \\\\text{ ${text} } `
+}
 
-    // Format text
-    let _textToTex = (text: string): string => {
-        ` \\\\text{ ${text} } `
+// Return the correct sign for a node, but suppress 
+// pluses if they are not necessary
+let _signAttrToTex = (sign: sign, signMode: signMode): string => {
+    switch sign {
+        | Minus if signMode !== NoSign => "-"
+        | Minus => ""
+        | PlusMinus if signMode !== NoSign => " \\pm "
+        | PlusMinus => ""
+        | Plus if signMode === AllSign => "+"
+        | Plus => ""
     }
+}
 
-    // Return the correct sign for a node, but suppress 
-    // pluses if they are not necessary
-    let _signAttrToTex = (sign: sign, signMode: signMode): string => {
-        switch sign {
-            | Minus if signMode !== NoSign => "-"
-            | Minus => ""
-            | PlusMinus if signMode !== NoSign => " \\pm "
-            | PlusMinus => ""
-            | Plus if signMode === AllSign => "+"
-            | Plus => ""
-        }
+// Format the subscript for a primitive node
+let _subscriptAttrToTex = (subscript: option<string>): string => {
+    switch subscript {
+        | Some(str) => ` _{ ${str} } `
+        | None      => ""
     }
+}
 
-    // Format the subscript for a primitive node
-    let _subscriptAttrToTex = (subscript: option<string>): string => {
-        switch subscript {
-            | Some(str) => ` _{ ${str} } `
-            | None      => ""
-        }
+// Format a primitive
+let _primitiveNodeToTex = (primitive: primitive, signMode: signMode): string => {
+    switch primitive {
+        | ConstPrimitive(const) =>
+            _signAttrToTex(const.sign, signMode) ++
+            Belt.Float.toString(const.primitive)
+        | VarPrimitive(var) =>
+            _signAttrToTex(var.sign, signMode) ++
+            var.primitive ++
+            _subscriptAttrToTex(var.subscript)
     }
+}
 
-    // Format a primitive
-    let _primitiveNodeToTex = (primitive: primitive, signMode: signMode): string => {
-        switch primitive {
-            | ConstPrimitive(const) =>
-                _signAttrToTex(const.sign, signMode) ++
-                Belt.Float.toString(const.primitive)
-            | VarPrimitive(var) =>
-                _signAttrToTex(var.sign, signMode) ++
-                var.primitive ++
-                _subscriptAttrToTex(var.subscript)
-        }
+/** **********************************************************************
+ * Conversion of Expressions to Tex
+ */
+
+// Format any expression
+let rec _expressionNodeToTex = (expression: expression): string => {
+    switch expression {
+        | TextExpression(text)             => _textToTex(text)
+        | PrimitiveExpression(primitive)   => _primitiveNodeToTex(primitive, NoPlus)
+        | SumExpression(sum)               => _sumNodeToTex(sum)
+        | ProductExpression(product)       => _productNodeToTex(product, NoPlus)
+        | FractionExpression(fraction)     => _fractionNodeToTex(fraction, NoPlus)
+        | PowerExpression(power)           => _powerNodeToTex(power, NoPlus)
+        | SquarerootExpression(squareroot) => _squarerootNodeToTex(squareroot, NoPlus)
+        | RootExpression(root)             => _rootNodeToTex(root, NoPlus)
     }
+}
 
-    /** **********************************************************************
-     * Conversion of Expressions to Tex
-     */
-
-    // Format any expression
-    let rec _expressionNodeToTex = (expression: expression): string => {
-        switch expression {
-            | TextExpression(text)             => _textToTex(text)
-            | PrimitiveExpression(primitive)   => _primitiveNodeToTex(primitive, NoPlus)
-            | SumExpression(sum)               => _sumNodeToTex(sum)
-            | ProductExpression(product)       => _productNodeToTex(product)
-            | FractionExpression(fraction)     => _fractionNodeToTex(fraction)
-            | PowerExpression(power)           => _powerNodeToTex(power)
-            | SquarerootExpression(squareroot) => _squarerootNodeToTex(squareroot)
-            | RootExpression(root)             => _rootNodeToTex(root)
-        }
+// Format a factor with or without parenthesis
+and _factorNodeToTex = (factor: expression): string => {
+    switch factor {
+        | SumExpression(sum) => " ( " ++ _sumNodeToTex(sum) ++ " ) "
+        | _                  => _expressionNodeToTex(factor)
     }
+}
 
-    // Format a factor with or without parenthesis
-    and _factorNodeToTex = (factor: expression): string => {
-        switch factor {
-            | SumExpression(sum) => " ( " ++ _sumNodeToTex(sum) ++ " ) "
-            | _                  => _expressionNodeToTex(factor)
-        }
+// Format a product of expressions
+and _productNodeToTex = (product: product, signMode: signMode): string => {
+    _signAttrToTex(product.sign, signMode) ++
+    Js.Array.map(
+        _factorNodeToTex,
+        product.factors
+        // TODO don't show dots everywhere... maybe mapi() ?
+    )->Js.Array2.joinWith(" \\cdot ")
+}
+
+and _termNodeToTex = (expression: expression, signMode: signMode): string => {
+    switch expression {
+        | TextExpression(text)             => _textToTex(text)                          // has no sign property
+        | SumExpression(sum)               => "+ " ++ _sumNodeToTex(sum)                // has no sign property
+        | PrimitiveExpression(primitive)   => _primitiveNodeToTex(primitive,  AllSign)  // has no immediate sign property
+        | FractionExpression(fraction)     => _fractionNodeToTex(fraction,    AllSign)  // has no immediate sign property
+        | ProductExpression(product)       => _signAttrToTex(product.sign,    signMode) ++ " " ++ _productNodeToTex(product, NoSign)
+        | PowerExpression(power)           => _signAttrToTex(power.sign,      signMode) ++ " " ++ _powerNodeToTex(power, NoSign)
+        | SquarerootExpression(squareroot) => _signAttrToTex(squareroot.sign, signMode) ++ " " ++ _squarerootNodeToTex(squareroot, NoSign)
+        | RootExpression(root)             => _signAttrToTex(root.sign,       signMode) ++ " " ++ _rootNodeToTex(root, NoSign)
     }
+}
 
-    // Format a product of expressions
-    and _productNodeToTex = (product: product): string => {
-        Js.Array.map(
-            _factorNodeToTex,
-            product.factors
-            // TODO don't show dots everywhere... maybe mapi() ?
-        )->Js.Array2.joinWith(" \\cdot ")
+// Format a sum of expressions
+and _sumNodeToTex = (sum: sum): string => {
+    if Js.Array.length(sum.terms) === 0 {
+        ""
+    } else {
+        // only show the sign on the first term when it's not plus
+        let texFirstTerm: string = _termNodeToTex(sum.terms[0], NoPlus);
+        // rest of terms without sign. the sign is used to join terms.
+        let texOtherTerms: string = Js.Array.map(
+            term => _termNodeToTex(term, AllSign),
+            sum.terms->Js.Array2.sliceFrom(1)
+        )->Js.Array2.joinWith("")
+        texFirstTerm ++ texOtherTerms
     }
+}
 
-//    and _termNodeToTex = (term: expression, signMode): string => {
-//        switch term {
-//            | PrimitiveExpression(primitive) => _primitiveNodeToTex(primitive, signMode)
-//            | _                              => _expressionNodeToTex(term)
-//        }
-//    }
+// Format a numerator/denominator
+and _fractionToTex = (numerator: expression, denominator: expression): string => {
+    let texNumerator = _expressionNodeToTex(numerator)
+    let texDenominator = _expressionNodeToTex(denominator)
+    ` \\\\frac{ ${texNumerator} } { ${texDenominator} } `
+}
 
-    and _termNodeToTex = (expression: expression): string => {
-        switch expression {
-            | TextExpression(text)           => _textToTex(text) // has no sign
-            | PrimitiveExpression(primitive) => _signAttrToTex(primitive.sign, AllSign) ++ _primitiveNodeToTex(primitive, NoSign)
-            | SumExpression(sum)             => _signAttrToTex(Plus, AllSign) ++ _sumNodeToTex(sum)
-            // TODO
-            | ProductExpression(product)     => _productNodeToTex(product.sign, AllSign) ++ _productNodeToTex(product)
-            | FractionExpression(fraction)   => _termNodeToTex(expression, NoSign) // no sign
-            | PowerExpression(power)           => _powerNodeToTex(power)
-            | SquarerootExpression(squareroot) => _squarerootNodeToTex(squareroot)
-            | RootExpression(root)             => _rootNodeToTex(root)
-        }
+// Format a fraction node
+and _fractionNodeToTex = (fractionNode: fraction, signMode: signMode): string => {
+    switch (fractionNode) {
+        | ConstFraction(fraction) =>
+            _signAttrToTex(fraction.sign, signMode) ++ " " ++
+            _primitiveNodeToTex(fraction.integer->ConstPrimitive, NoSign) ++
+            _fractionToTex(fraction.numerator->constPrimitiveExpression, fraction.denominator->constPrimitiveExpression)
+        | VarFraction(fraction) =>
+            _signAttrToTex(fraction.sign, signMode) ++ " " ++
+            _fractionToTex(fraction.numerator, fraction.denominator) // note that numerator and denominator are expressions
     }
+}
 
-    // Format a sum of expressions
-    and _sumNodeToTex = (sum: sum): string => {
-        if Js.Array.length(sum.terms) === 0 {
-            ""
-        } else {
-            // only show the sign on the first term when it's not plus
-            let texFirstTerm: string = _termNodeToTex(sum.terms[0], NoPlus);
-            // rest of terms without sign. the sign is used to join terms.
-            let texOtherTerms: string = Js.Array.map(
-                // TODO DONE? suppress sign if there is a sign in the subNode when it is a <product> or <squareroot>
-                term => _termNodeToTex(term),
-                sum.terms.sliceFrom(1)
-            )->Js.Array2.joinWith("")
-            texFirstTerm ++ texOtherTerms
-        }
+// Format a power node
+and _powerNodeToTex = (power: power, signMode: signMode): string => {
+    let texSign = _signAttrToTex(power.sign, signMode)
+    let texBase = _expressionNodeToTex(power.base)
+    let texExponent = _expressionNodeToTex(power.exponent)
+    let texParenBase = switch power.base {
+        | SumExpression(_)     => ` ( ${texBase} ) `
+        | ProductExpression(_) => ` ( ${texBase} ) `
+        | _ => texBase
     }
+    ` ${texSign}${texParenBase}^{ ${texExponent} } `
+}
 
-    // Format a numerator/denominator
-    and _fractionToTex = (numerator: expression, denominator: expression): string => {
-        let texNumerator = _expressionNodeToTex(numerator)
-        let texDenominator = _expressionNodeToTex(denominator)
-        ` \\\\frac{ ${texNumerator} } { ${texDenominator} } `
+// Format a square root
+and _squarerootNodeToTex = (squareroot: squareroot, signMode: signMode): string => {
+    let texSign = _signAttrToTex(squareroot.sign, signMode)
+    let texRadicand = _expressionNodeToTex(squareroot.radicand)
+    ` ${texSign} \\\\sqrt{ ${texRadicand} } `
+}
+
+// Format any root
+and _rootNodeToTex = (root: root, signMode: signMode): string => {
+    let texSign = _signAttrToTex(root.sign, signMode)
+    let texIndex    = _expressionNodeToTex(root.index)
+    let texRadicand = _expressionNodeToTex(root.radicand)
+    ` ${texSign} \\\\sqrt[ ${texIndex} ]{ ${texRadicand} }`
+}
+
+/** **********************************************************************
+ * Conversion of Formula to Tex
+ */
+
+// Equation
+let _equationNodeToTex = (equation: equation) => {
+    Js.Array.map(
+        member => _expressionNodeToTex(member),
+        equation.members
+    )->Js.Array2.joinWith(" = ")
+}
+
+// Logical OR
+let _logicalOrNodeToTex = (logicalOr: logicalOr): string => {
+    Js.Array.map(
+        atom => _equationNodeToTex(atom),
+        logicalOr.atoms
+    )->Js.Array2.joinWith(" \\lor ")
+}
+
+// Convert the entire formula object to a TeX string
+let formulaNodeToTex = (formula: formula): string => {
+    let texFormula = switch formula {
+        | LogicalOr(logicalOr) => _logicalOrNodeToTex(logicalOr)
+        | Equation(eq) => _equationNodeToTex(eq)
+        | Text(text) => _textToTex(text)
     }
+    delimiter ++ texFormula ++ delimiter
+}
 
-    // Format a fraction node
-    and _fractionNodeToTex = (fraction: fraction): string => {
-        switch (fraction) {
-            | ConstFraction(fraction) =>
-                Belt.Float.toString(fraction.integer) ++
-                _fractionToTex(fraction.numerator, fraction.denominator)
-            | VarFraction(fraction) =>
-                _fractionToTex(fraction.numerator, fraction.denominator)
-        }
-    }
+/** **********************************************************************
+ * formula management
+ */
 
-    // Format a power node
-    and _powerNodeToTex = (power: power): string => {
-        let texBase = _expressionNodeToTex(power.base)
-        let texExponent = _expressionNodeToTex(power.exponent)
-        let texParenBase = switch power.base {
-            | SumExpression(_)     => ` ( ${texBase} ) `
-            | ProductExpression(_) => ` ( ${texBase} ) `
-            | _ => texBase
-        }
-        ` ${texParenBase} ^{ ${texExponent} } `
-    }
-
-    // Format a square root
-    and _squarerootNodeToTex = (squareroot: squareroot): string => {
-        let texRadicand = _expressionNodeToTex(squareroot.radicand)
-        ` \\\\sqrt{ ${texRadicand} } `
-    }
-
-    // Format any root
-    and _rootNodeToTex = (root: root): string => {
-        let texIndex    = _expressionNodeToTex(root.index)
-        let texRadicand = _expressionNodeToTex(root.radicand)
-        ` \\\\sqrt[ ${texIndex} ]{ ${texRadicand} }`
-    }
-
-    /** **********************************************************************
-     * Conversion of Formula to Tex
-     */
-
-    // Equation
-    let _equationNodeToTex = (equation: equation) => {
-        Js.Array.map(
-            member => _expressionNodeToTex(member),
-            equation.members
-        )->Js.Array2.joinWith(" = ")
-    }
-
-    // Logical OR
-    let _logicalOrNodeToTex = (logicalOr: logicalOr): string => {
-        Js.Array.map(
-            atom => _equationNodeToTex(atom),
-            logicalOr.atoms
-        )->Js.Array2.joinWith(" \\lor ")
-    }
-
-    // Convert the entire formula object to a TeX string
-    let formulaNodeToTex = (formula: formula): string => {
-        let texFormula = switch node {
-            | LogicalOr(logicalOr) => _logicalOrNodeToTex(logicalOr)
-            | Equation(eq) => _equationNodeToTex(eq)
-            | Text(text) => _textToTex(text)
-        }
-        delimiter ++ texFormula ++ delimiter
-    }
-
-    /** **********************************************************************
-     * formula management
-     */
-  
 //    simplify() {
 //        console.log('TODO not yet implemented');
 //        // cancel +6-5, +6x -5x, sqrt(x^2) etc.
@@ -218,6 +213,5 @@ module Formula = {
 //        console.log('TODO not yet implemented');
 //    }
 
-}
 
 // vim: set ts=4 sw=4 et list nu fdm=marker:

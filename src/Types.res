@@ -97,7 +97,7 @@ type equation = {
 }
 
 type logicalOr = {
-    equations: array<equation>
+    atoms: array<equation>
 }
 
 type formula =
