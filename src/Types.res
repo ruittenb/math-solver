@@ -84,6 +84,8 @@ and root = {
     radicand: expression
 }
 
+// possible extensions: absolute values
+
 and expression =
     | TextExpression(string)
     | PrimitiveExpression(primitive)

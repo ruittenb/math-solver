@@ -15,4 +15,15 @@
 //    }
 
 
+// add like terms
+
+// simplify fractions
+
+// add constant fractions
+
+// multiply constants
+
+// sum constants
+
+// reverse some orders like [ FractionExpression, constPrimitive ]
 

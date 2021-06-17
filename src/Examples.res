@@ -239,7 +239,7 @@ let examples: array<formula> = [
                     ]
                 }),
                 radicand: {
-                    floatPrimitiveExpression({ sign: Plus, primitive: 3125. })
+                    intPrimitiveExpression({ sign: Plus, primitive: 3125 })
                 }
             })
         ]

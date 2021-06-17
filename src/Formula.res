@@ -2,11 +2,12 @@
 /** ****************************************************************************
  * Formula: Formula rendering
  *
- * Requires: Types, Greek
+ * Requires: Types, Greek, MultiplicationSymbol
  */
 
 open Types
 open Greek
+include MultiplicationSymbol
 
 type signMode =
     | NoSign
@@ -86,23 +87,6 @@ let rec _expressionNodeToTex = (expression: expression): string => {
     }
 }
 
-// Format a factor with or without parenthesis
-and _factorNodeToTex = (factor: expression): string => {
-    switch factor {
-        | SumExpression(sum) => " ( " ++ _sumNodeToTex(sum) ++ " ) "
-        | _                  => _expressionNodeToTex(factor)
-    }
-}
-
-// Format a product of expressions
-and _productNodeToTex = (product: product, signMode: signMode): string => {
-    _signAttrToTex(product.sign, signMode) ++
-    product.factors
-        ->Js.Array2.map(_factorNodeToTex)
-        // TODO don't show dots everywhere... maybe mapi() ?
-        ->Js.Array2.joinWith(" \\cdot ")
-}
-
 // Format a term. We use the sign of the second (and following) expressions
 // as sign between the terms; e.g. sum(prim(4), prim(-5)) is rendered as "4 - 5"
 and _termNodeToTex = (expression: expression, signMode: signMode): string => {
@@ -132,6 +116,30 @@ and _sumNodeToTex = (sum: sum): string => {
             ->Js.Array2.joinWith("")
         texFirstTerm ++ texOtherTerms
     }
+}
+
+// Format a factor with or without parenthesis
+and _factorNodeToTex = (factor: expression): string => {
+    switch factor {
+        | SumExpression(sum) => " ( " ++ _sumNodeToTex(sum) ++ " ) "
+        | _                  => _expressionNodeToTex(factor)
+    }
+}
+
+// Format a product of expressions
+and _productNodeToTex = (product: product, signMode: signMode): string => {
+    _signAttrToTex(product.sign, signMode) ++
+    product.factors
+        ->Js.Array2.mapi((factorNode, index) => {
+            if index === 0 {
+                // first factor
+                _factorNodeToTex(factorNode)
+            } else {
+                MultiplicationSymbol.lookupTex(product.factors[index - 1], factorNode) ++
+                _factorNodeToTex(factorNode)
+            }
+        })
+        ->Js.Array2.joinWith("")
 }
 
 // Format a numerator/denominator
