@@ -22,14 +22,20 @@ type varPrimitive = {
     subscript: option<string>
 }
 
-type constPrimitive = {
+type intPrimitive = {
+    sign: sign,
+    primitive: int
+}
+
+type floatPrimitive = {
     sign: sign,
     primitive: float
 }
 
 type primitive =
     | VarPrimitive(varPrimitive)
-    | ConstPrimitive(constPrimitive)
+    | IntPrimitive(intPrimitive)
+    | FloatPrimitive(floatPrimitive)
 
 /** ****************************************************************************
  * Expression and its components
@@ -52,9 +58,9 @@ and varFraction = {
 
 and constFraction = {
     sign: sign,
-    integer: constPrimitive, // TODO int?
-    numerator: constPrimitive, // TODO int?
-    denominator: constPrimitive // TODO int?
+    integer: intPrimitive,
+    numerator: intPrimitive,
+    denominator: intPrimitive
 }
 
 and fraction =
@@ -110,7 +116,8 @@ type formula =
  */
 
 let varPrimitiveExpression = (n: varPrimitive) => n->VarPrimitive->PrimitiveExpression
-let constPrimitiveExpression = (n: constPrimitive) => n->ConstPrimitive->PrimitiveExpression
+let intPrimitiveExpression = (n: intPrimitive) => n->IntPrimitive->PrimitiveExpression
+let floatPrimitiveExpression = (n: floatPrimitive) => n->FloatPrimitive->PrimitiveExpression
 
 let varFractionExpression = (n: varFraction) => n->VarFraction->FractionExpression
 let constFractionExpression = (n: constFraction) => n->ConstFraction->FractionExpression

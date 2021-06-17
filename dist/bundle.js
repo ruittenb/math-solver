@@ -347,11 +347,9 @@ function map(f, source) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.examples = exports.formulaNodeToTex = exports._logicalOrNodeToTex = exports._equationNodeToTex = exports._rootNodeToTex = exports._squarerootNodeToTex = exports._powerNodeToTex = exports._fractionNodeToTex = exports._fractionToTex = exports._sumNodeToTex = exports._termNodeToTex = exports._productNodeToTex = exports._factorNodeToTex = exports._expressionNodeToTex = exports._primitiveNodeToTex = exports._variablePrimitiveToTex = exports._subscriptAttrToTex = exports._signAttrToTex = exports._textToTex = exports.delimiter = void 0;
+exports.examples = void 0;
 
 var Types$MathSolver = _interopRequireWildcard(require("./Types.bs.js"));
-
-var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -538,7 +536,7 @@ var examples = [{
               0,
               primitive: "x",
               subscript: undefined
-            }), Types$MathSolver.constPrimitiveExpression({
+            }), Types$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -547,7 +545,7 @@ var examples = [{
           }
         }]
       }
-    }, Types$MathSolver.constPrimitiveExpression({
+    }, Types$MathSolver.floatPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -572,7 +570,7 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            factors: [Types$MathSolver.constPrimitiveExpression({
+            factors: [Types$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -592,7 +590,7 @@ var examples = [{
                   primitive: "x",
                   subscript: undefined
                 }),
-                exponent: Types$MathSolver.constPrimitiveExpression({
+                exponent: Types$MathSolver.intPrimitiveExpression({
                   sign:
                   /* Plus */
                   0,
@@ -609,7 +607,7 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            factors: [Types$MathSolver.constPrimitiveExpression({
+            factors: [Types$MathSolver.intPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -622,14 +620,14 @@ var examples = [{
               subscript: undefined
             })]
           }
-        }, Types$MathSolver.constPrimitiveExpression({
+        }, Types$MathSolver.intPrimitiveExpression({
           sign:
           /* Minus */
           1,
           primitive: 1
         })]
       }
-    }, Types$MathSolver.constPrimitiveExpression({
+    }, Types$MathSolver.intPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -648,7 +646,7 @@ var examples = [{
         0,
         primitive: "x",
         subscript: undefined
-      }), Types$MathSolver.constPrimitiveExpression({
+      }), Types$MathSolver.floatPrimitiveExpression({
         sign:
         /* Plus */
         0,
@@ -661,7 +659,7 @@ var examples = [{
         0,
         primitive: "x",
         subscript: undefined
-      }), Types$MathSolver.constPrimitiveExpression({
+      }), Types$MathSolver.floatPrimitiveExpression({
         sign:
         /* Minus */
         1,
@@ -694,7 +692,7 @@ var examples = [{
         sign:
         /* PlusMinus */
         2,
-        factors: [Types$MathSolver.constPrimitiveExpression({
+        factors: [Types$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -707,7 +705,7 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            radicand: Types$MathSolver.constPrimitiveExpression({
+            radicand: Types$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -794,7 +792,7 @@ var examples = [{
                 sign:
                 /* Plus */
                 0,
-                radicand: Types$MathSolver.constPrimitiveExpression({
+                radicand: Types$MathSolver.floatPrimitiveExpression({
                   sign:
                   /* Plus */
                   0,
@@ -869,7 +867,7 @@ var examples = [{
               primitive: "r",
               subscript: undefined
             }),
-            exponent: Types$MathSolver.constPrimitiveExpression({
+            exponent: Types$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -899,13 +897,13 @@ var examples = [{
         sign:
         /* Plus */
         0,
-        index: Types$MathSolver.constPrimitiveExpression({
+        index: Types$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
           primitive: 3
         }),
-        radicand: Types$MathSolver.constPrimitiveExpression({
+        radicand: Types$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -941,7 +939,7 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            factors: [Types$MathSolver.constPrimitiveExpression({
+            factors: [Types$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -955,7 +953,7 @@ var examples = [{
             })]
           }
         },
-        exponent: Types$MathSolver.constPrimitiveExpression({
+        exponent: Types$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -994,7 +992,7 @@ var examples = [{
               0,
               primitive: "x",
               subscript: undefined
-            }), Types$MathSolver.constPrimitiveExpression({
+            }), Types$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -1002,7 +1000,7 @@ var examples = [{
             })]
           }
         },
-        radicand: Types$MathSolver.constPrimitiveExpression({
+        radicand: Types$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -1065,7 +1063,7 @@ var examples = [{
                         primitive: "b",
                         subscript: undefined
                       }),
-                      exponent: Types$MathSolver.constPrimitiveExpression({
+                      exponent: Types$MathSolver.floatPrimitiveExpression({
                         sign:
                         /* Plus */
                         0,
@@ -1080,7 +1078,7 @@ var examples = [{
                       sign:
                       /* Minus */
                       1,
-                      factors: [Types$MathSolver.constPrimitiveExpression({
+                      factors: [Types$MathSolver.floatPrimitiveExpression({
                         sign:
                         /* Plus */
                         0,
@@ -1114,7 +1112,7 @@ var examples = [{
           sign:
           /* Plus */
           0,
-          factors: [Types$MathSolver.constPrimitiveExpression({
+          factors: [Types$MathSolver.floatPrimitiveExpression({
             sign:
             /* Plus */
             0,
@@ -1131,49 +1129,11 @@ var examples = [{
     })]
   }
 }];
-exports.examples = examples;
-var delimiter = Formula$MathSolver.delimiter;
-exports.delimiter = delimiter;
-var _textToTex = Formula$MathSolver._textToTex;
-exports._textToTex = _textToTex;
-var _signAttrToTex = Formula$MathSolver._signAttrToTex;
-exports._signAttrToTex = _signAttrToTex;
-var _subscriptAttrToTex = Formula$MathSolver._subscriptAttrToTex;
-exports._subscriptAttrToTex = _subscriptAttrToTex;
-var _variablePrimitiveToTex = Formula$MathSolver._variablePrimitiveToTex;
-exports._variablePrimitiveToTex = _variablePrimitiveToTex;
-var _primitiveNodeToTex = Formula$MathSolver._primitiveNodeToTex;
-exports._primitiveNodeToTex = _primitiveNodeToTex;
-var _expressionNodeToTex = Formula$MathSolver._expressionNodeToTex;
-exports._expressionNodeToTex = _expressionNodeToTex;
-var _factorNodeToTex = Formula$MathSolver._factorNodeToTex;
-exports._factorNodeToTex = _factorNodeToTex;
-var _productNodeToTex = Formula$MathSolver._productNodeToTex;
-exports._productNodeToTex = _productNodeToTex;
-var _termNodeToTex = Formula$MathSolver._termNodeToTex;
-exports._termNodeToTex = _termNodeToTex;
-var _sumNodeToTex = Formula$MathSolver._sumNodeToTex;
-exports._sumNodeToTex = _sumNodeToTex;
-var _fractionToTex = Formula$MathSolver._fractionToTex;
-exports._fractionToTex = _fractionToTex;
-var _fractionNodeToTex = Formula$MathSolver._fractionNodeToTex;
-exports._fractionNodeToTex = _fractionNodeToTex;
-var _powerNodeToTex = Formula$MathSolver._powerNodeToTex;
-exports._powerNodeToTex = _powerNodeToTex;
-var _squarerootNodeToTex = Formula$MathSolver._squarerootNodeToTex;
-exports._squarerootNodeToTex = _squarerootNodeToTex;
-var _rootNodeToTex = Formula$MathSolver._rootNodeToTex;
-exports._rootNodeToTex = _rootNodeToTex;
-var _equationNodeToTex = Formula$MathSolver._equationNodeToTex;
-exports._equationNodeToTex = _equationNodeToTex;
-var _logicalOrNodeToTex = Formula$MathSolver._logicalOrNodeToTex;
-exports._logicalOrNodeToTex = _logicalOrNodeToTex;
-var formulaNodeToTex = Formula$MathSolver.formulaNodeToTex;
 /* examples Not a pure module */
 
-exports.formulaNodeToTex = formulaNodeToTex;
+exports.examples = examples;
 
-},{"./Formula.bs.js":6,"./Types.bs.js":9}],6:[function(require,module,exports){
+},{"./Types.bs.js":9}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1276,15 +1236,24 @@ function _variablePrimitiveToTex(variable) {
 }
 
 function _primitiveNodeToTex(primitive, signMode) {
-  if (primitive.TAG ===
-  /* VarPrimitive */
-  0) {
-    var $$var = primitive._0;
-    return _signAttrToTex($$var.sign, signMode) + _variablePrimitiveToTex($$var.primitive) + _subscriptAttrToTex($$var.subscript);
+  switch (primitive.TAG | 0) {
+    case
+    /* VarPrimitive */
+    0:
+      var prim = primitive._0;
+      return _signAttrToTex(prim.sign, signMode) + _variablePrimitiveToTex(prim.primitive) + _subscriptAttrToTex(prim.subscript);
+
+    case
+    /* IntPrimitive */
+    1:
+    case
+    /* FloatPrimitive */
+    2:
+      break;
   }
 
-  var $$const = primitive._0;
-  return _signAttrToTex($$const.sign, signMode) + String($$const.primitive);
+  var prim$1 = primitive._0;
+  return _signAttrToTex(prim$1.sign, signMode) + String(prim$1.primitive);
 }
 
 function _expressionNodeToTex(expression) {
@@ -1449,13 +1418,13 @@ function _fractionNodeToTex(fractionNode, signMode) {
   var fraction$1 = fractionNode._0;
   var fractionInteger = fraction$1.integer.primitive !== 0 ? _primitiveNodeToTex({
     TAG:
-    /* ConstPrimitive */
+    /* IntPrimitive */
     1,
     _0: fraction$1.integer
   },
   /* NoSign */
   0) : "";
-  return _signAttrToTex(fraction$1.sign, signMode) + " " + fractionInteger + _fractionToTex(Types$MathSolver.constPrimitiveExpression(fraction$1.numerator), Types$MathSolver.constPrimitiveExpression(fraction$1.denominator));
+  return _signAttrToTex(fraction$1.sign, signMode) + " " + fractionInteger + _fractionToTex(Types$MathSolver.intPrimitiveExpression(fraction$1.numerator), Types$MathSolver.intPrimitiveExpression(fraction$1.denominator));
 }
 
 function _powerNodeToTex(power, signMode) {
@@ -1567,7 +1536,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.varPrimitiveExpression = varPrimitiveExpression;
-exports.constPrimitiveExpression = constPrimitiveExpression;
+exports.intPrimitiveExpression = intPrimitiveExpression;
+exports.floatPrimitiveExpression = floatPrimitiveExpression;
 exports.varFractionExpression = varFractionExpression;
 exports.constFractionExpression = constFractionExpression;
 
@@ -1586,15 +1556,29 @@ function varPrimitiveExpression(n) {
   };
 }
 
-function constPrimitiveExpression(n) {
+function intPrimitiveExpression(n) {
   return {
     TAG:
     /* PrimitiveExpression */
     1,
     _0: {
       TAG:
-      /* ConstPrimitive */
+      /* IntPrimitive */
       1,
+      _0: n
+    }
+  };
+}
+
+function floatPrimitiveExpression(n) {
+  return {
+    TAG:
+    /* PrimitiveExpression */
+    1,
+    _0: {
+      TAG:
+      /* FloatPrimitive */
+      2,
       _0: n
     }
   };

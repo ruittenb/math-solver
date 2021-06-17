@@ -55,13 +55,16 @@ let _variablePrimitiveToTex = (variable: string) => {
 // Format a primitive
 let _primitiveNodeToTex = (primitive: primitive, signMode: signMode): string => {
     switch primitive {
-        | ConstPrimitive(const) =>
-            _signAttrToTex(const.sign, signMode) ++
-            Belt.Float.toString(const.primitive)
-        | VarPrimitive(var) =>
-            _signAttrToTex(var.sign, signMode) ++
-            _variablePrimitiveToTex(var.primitive) ++
-            _subscriptAttrToTex(var.subscript)
+        | VarPrimitive(prim) =>
+            _signAttrToTex(prim.sign, signMode) ++
+            _variablePrimitiveToTex(prim.primitive) ++
+            _subscriptAttrToTex(prim.subscript)
+        | IntPrimitive(prim) =>
+            _signAttrToTex(prim.sign, signMode) ++
+            Belt.Int.toString(prim.primitive)
+        | FloatPrimitive(prim) =>
+            _signAttrToTex(prim.sign, signMode) ++
+            Belt.Float.toString(prim.primitive)
     }
 }
 
@@ -142,16 +145,16 @@ and _fractionToTex = (numerator: expression, denominator: expression): string =>
 and _fractionNodeToTex = (fractionNode: fraction, signMode: signMode): string => {
     switch (fractionNode) {
         | ConstFraction(fraction) => {
-            let fractionInteger = fraction.integer.primitive !== 0.
-                ? _primitiveNodeToTex(fraction.integer->ConstPrimitive, NoSign)
+            let fractionInteger = fraction.integer.primitive !== 0
+                ? _primitiveNodeToTex(fraction.integer->IntPrimitive, NoSign)
                 : ""
             _signAttrToTex(fraction.sign, signMode) ++ " " ++
             fractionInteger ++
-            _fractionToTex(fraction.numerator->constPrimitiveExpression, fraction.denominator->constPrimitiveExpression)
+            _fractionToTex(fraction.numerator->intPrimitiveExpression, fraction.denominator->intPrimitiveExpression)
         }
         | VarFraction(fraction) =>
             _signAttrToTex(fraction.sign, signMode) ++ " " ++
-            _fractionToTex(fraction.numerator, fraction.denominator) // note that numerator and denominator are expressions
+            _fractionToTex(fraction.numerator, fraction.denominator) // numerator and denominator are expressions
     }
 }
 
