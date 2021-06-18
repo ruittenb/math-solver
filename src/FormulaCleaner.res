@@ -27,3 +27,6 @@
 
 // reverse some orders like [ FractionExpression, constPrimitive ]
 
+// multiply by zero or one
+
+// add zero

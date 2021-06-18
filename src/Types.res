@@ -114,6 +114,18 @@ type formula =
     | Text(string)
 
 /** ****************************************************************************
+ * Constructors
+ */
+
+let createIntPrimitive = (n: int): primitive => {
+    if n < 0 {
+        IntPrimitive({ sign: Minus, primitive: -n })
+    } else {
+        IntPrimitive({ sign: Plus, primitive: n })
+    }
+}
+
+/** ****************************************************************************
  * Shortcuts for conversions
  */
 
