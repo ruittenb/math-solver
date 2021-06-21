@@ -1,6 +1,7 @@
 
 import * as FormulaRenderer from './Formula/FormulaRenderer.bs';
 import * as Examples from './Examples.bs';
+import * as QuadraticEquation from './QuadraticEquation.bs';
 
 class MathSolver {
 
@@ -17,7 +18,7 @@ class MathSolver {
     }
 
     generate() {
-        const formula = {}; // Quadratic.generate()
+        const formula = QuadraticEquation.generate()
         this.render(formula);
     }
 

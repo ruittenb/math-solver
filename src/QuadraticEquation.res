@@ -26,153 +26,125 @@ open Random
  * generator functions
  */
 
-/*
-
-generate() {
-    const shape = Math.floor(Math.random() * 11)
-    const rightMember = this._randomNumber()
-    let value;
-    switch (shape) {
-        case 0:
-            value = this._generateShapeFactorSimple(0);
-            break;
-        case 1:
-            value = this._generateShapeFactorSimple(rightMember);
-            break;
-        case 2:
-            value = this._generateShapeFactorHard(0);
-            break;
-        case 3:
-            value = this._generateShapeFactorHard(rightMember);
-            break;
-        case 4:
-            value = this._generateShapeSquare(rightMember);
-            break;
-        case 5:
-            value = this._generateShapeSquareConst(0);
-            break;
-        case 6:
-            value = this._generateShapeSquareConst(rightMember);
-            break;
-        case 7:
-            value = this._generateShapeSquareLinear(0);
-            break;
-        case 8:
-            value = this._generateShapeSquareLinear(rightMember);
-            break;
-        case 9:
-            value = this._generateShapeFullQuadratic(0);
-            break;
-        case 10:
-            value = this._generateShapeFullQuadratic(rightMember);
-            break;
-    }
-    this.setValue(value);
-};
-
 /* 0, 1 */
-_generateShapeFactorSimple(rightMember) {
-    return this._equation(
-        this._product(
-            this._primitive('x'),
-            this._sum(
-                this._primitive('x'),
-                this._randomNumberPrimitive()
-            )
-        ),
-        this._primitive(rightMember)
-    )
+let _generateShapeFactorSimple = (rightMember: int): formula => {
+    createEquation([
+        createProductExpression([
+            createVarPrimitive("x", None)->PrimitiveExpression,
+            createSumExpression([
+                createVarPrimitive("x", None)->PrimitiveExpression,
+                randomNumberPrimitive()->PrimitiveExpression
+            ])
+        ]),
+        createIntPrimitive(rightMember)->PrimitiveExpression
+    ])
 }
 
 /* 2, 3 */
-_generateShapeFactorHard(rightMember) {
-    return this._equation(
-        this._product(
-            this._sum(
-                this._primitive('x'),
-                this._randomNumberPrimitive()
-            ),
-            this._sum(
-                this._primitive('x'),
-                this._randomNumberPrimitive()
-            )
-        ),
-        this._primitive(rightMember)
-    )
+let _generateShapeFactorHard = (rightMember: int): formula => {
+    createEquation([
+        createProductExpression([
+            createSumExpression([
+                createVarPrimitive("x", None)->PrimitiveExpression,
+                randomNumberPrimitive()->PrimitiveExpression
+            ]),
+            createSumExpression([
+                createVarPrimitive("x", None)->PrimitiveExpression,
+                randomNumberPrimitive()->PrimitiveExpression
+            ])
+        ]),
+        createIntPrimitive(rightMember)->PrimitiveExpression
+    ])
 }
 
 /* 4 */
-_generateShapeSquare(rightMember) {
-    return this._equation(
-        this._product(
-            this._randomNumberPrimitive(),
-            this._power(
-                this._primitive('x'),
-                this._primitive('2')
+let _generateShapeSquare = (rightMember: int): formula => {
+    createEquation([
+        createProductExpression([
+            randomNumberPrimitive()->PrimitiveExpression,
+            createPowerExpression(
+                createVarPrimitive("x", None)->PrimitiveExpression,
+                createIntPrimitive(2)->PrimitiveExpression
             )
-        ),
-        this._primitive(rightMember)
-    )
+        ]),
+        createIntPrimitive(rightMember)->PrimitiveExpression
+    ])
 }
 
 /* 5, 6 */
-_generateShapeSquareConst(rightMember) {
-    return this._equation(
-        this._sum(
-            this._product(
-                this._randomNumberPrimitive(),
-                this._power(
-                    this._primitive('x'),
-                    this._primitive('2')
+let _generateShapeSquareConst = (rightMember: int): formula => {
+    createEquation([
+        createSumExpression([
+            createProductExpression([
+                randomNumberPrimitive()->PrimitiveExpression,
+                createPowerExpression(
+                    createVarPrimitive("x", None)->PrimitiveExpression,
+                    createIntPrimitive(2)->PrimitiveExpression
                 )
-            ),
-            this._randomNumberPrimitive()
-        ),
-        this._primitive(rightMember)
-    )
+            ]),
+            randomNumberPrimitive()->PrimitiveExpression,
+        ]),
+        createIntPrimitive(rightMember)->PrimitiveExpression
+    ])
 }
 
 /* 7, 8 */
-_generateShapeSquareLinear(rightMember) {
-    return this._equation(
-        this._sum(
-            this._product(
-                this._randomNumberPrimitive(),
-                this._power(
-                    this._primitive('x'),
-                    this._primitive('2')
+let _generateShapeSquareLinear = (rightMember: int): formula => {
+    createEquation([
+        createSumExpression([
+            createProductExpression([
+                randomNumberPrimitive()->PrimitiveExpression,
+                createPowerExpression(
+                    createVarPrimitive("x", None)->PrimitiveExpression,
+                    createIntPrimitive(2)->PrimitiveExpression
                 )
-            ),
-            this._product(
-                this._randomNumberPrimitive(),
-                this._primitive('x'),
-            )
-        ),
-        this._primitive(rightMember)
-    )
+            ]),
+            createProductExpression([
+                randomNumberPrimitive()->PrimitiveExpression,
+                createVarPrimitive("x", None)->PrimitiveExpression,
+            ])
+        ]),
+        createIntPrimitive(rightMember)->PrimitiveExpression
+    ])
 }
 
 /* 9, 10 */
-_generateShapeFullQuadratic(rightMember) {
-    return this._equation(
-        this._sum(
-            this._product(
-                this._randomNumberPrimitive(),
-                this._power(
-                    this._primitive('x'),
-                    this._primitive('2')
+let _generateShapeFullQuadratic = (rightMember: int): formula => {
+    createEquation([
+        createSumExpression([
+            createProductExpression([
+                randomNumberPrimitive()->PrimitiveExpression,
+                createPowerExpression(
+                    createVarPrimitive("x", None)->PrimitiveExpression,
+                    createIntPrimitive(2)->PrimitiveExpression
                 )
-            ),
-            this._product(
-                this._randomNumberPrimitive(),
-                this._primitive('x')
-            ),
-            this._randomNumberPrimitive(),
-        ),
-        this._primitive(rightMember)
-    )
+            ]),
+            createProductExpression([
+                randomNumberPrimitive()->PrimitiveExpression,
+                createVarPrimitive("x", None)->PrimitiveExpression,
+            ]),
+            randomNumberPrimitive()->PrimitiveExpression,
+        ]),
+        createIntPrimitive(rightMember)->PrimitiveExpression
+    ])
 }
 
-*/
-
+let generate = (): formula => {
+    let shape = randomPos(11)
+    let rightMember = randomNumber()
+    switch shape {
+        | 0 => _generateShapeFactorSimple(0)
+        | 1 => _generateShapeFactorSimple(rightMember)
+        | 2 => _generateShapeFactorHard(0)
+        | 3 => _generateShapeFactorHard(rightMember)
+        | 4 => _generateShapeSquare(rightMember)
+        | 5 => _generateShapeSquareConst(0)
+        | 6 => _generateShapeSquareConst(rightMember)
+        | 7 => _generateShapeSquareLinear(0)
+        | 8 => _generateShapeSquareLinear(rightMember)
+        | 9 => _generateShapeFullQuadratic(0)
+        | 10 => _generateShapeFullQuadratic(rightMember)
+        | _ => Text("")
+    }
+}
 

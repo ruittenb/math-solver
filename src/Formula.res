@@ -51,15 +51,16 @@ let createFloatPrimitive = (n: float): primitive => {
     }
 }
 
-/**
- * The lowercase *int* is on purpose: this does not return a primitive, but an intPrimitive
- */
 let createintPrimitive = (n: int): intPrimitive => {
     if n < 0 {
         { sign: Minus, primitive: -n }
     } else {
         { sign: Plus, primitive: n }
     }
+}
+
+let createIntPrimitive = (n: int): primitive => {
+    createintPrimitive(n)->IntPrimitive
 }
 
 let createSumExpression = (terms: array<expression>) => {
@@ -83,26 +84,29 @@ let createConstFraction = (~sign: sign, integer: int, numerator: int, denominato
     })
 }
 
-let power = (~sign: sign = Plus, base: float, exponent: float) => {
+let createPowerExpression = (~sign: sign = Plus, base: expression, exponent: expression) => {
     PowerExpression({
         sign    : sign,
-        base    : base    ->createFloatPrimitive->PrimitiveExpression,
-        exponent: exponent->createFloatPrimitive->PrimitiveExpression,
+        base    : base,
+        exponent: exponent,
     })
 }
 
-let squareroot = (~sign: sign = Plus, radicand: float) => {
+let createSquarerootExpression = (~sign: sign = Plus, radicand: expression) => {
     SquarerootExpression({
         sign    : sign,
-        radicand: radicand->createFloatPrimitive->PrimitiveExpression
+        radicand: radicand,
     })
 }
 
-let root = (~sign: sign = Plus, index: float, radicand: float) => {
+let createRootExpression = (~sign: sign = Plus, index: expression, radicand: expression) => {
     RootExpression({
         sign    : sign,
-        index   : index   ->createFloatPrimitive->PrimitiveExpression,
-        radicand: radicand->createFloatPrimitive->PrimitiveExpression
+        index   : index,
+        radicand: radicand,
     })
 }
 
+let createEquation = (members: array<expression>) => {
+    Equation({ members: members })
+}
