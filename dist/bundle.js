@@ -423,7 +423,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.examples = void 0;
 
-var Types$MathSolver = _interopRequireWildcard(require("./Types.bs.js"));
+var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -435,7 +435,7 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -446,7 +446,7 @@ var examples = [{
       /* SumExpression */
       2,
       _0: {
-        terms: [Types$MathSolver.constFractionExpression({
+        terms: [Formula$MathSolver.constFractionExpression({
           sign:
           /* Plus */
           0,
@@ -468,7 +468,7 @@ var examples = [{
             0,
             primitive: 2
           }
-        }), Types$MathSolver.constFractionExpression({
+        }), Formula$MathSolver.constFractionExpression({
           sign:
           /* Plus */
           0,
@@ -499,7 +499,7 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -510,7 +510,7 @@ var examples = [{
       /* SumExpression */
       2,
       _0: {
-        terms: [Types$MathSolver.constFractionExpression({
+        terms: [Formula$MathSolver.constFractionExpression({
           sign:
           /* Plus */
           0,
@@ -532,7 +532,7 @@ var examples = [{
             0,
             primitive: 9
           }
-        }), Types$MathSolver.constFractionExpression({
+        }), Formula$MathSolver.constFractionExpression({
           sign:
           /* Minus */
           1,
@@ -554,7 +554,7 @@ var examples = [{
             0,
             primitive: 12
           }
-        }), Types$MathSolver.constFractionExpression({
+        }), Formula$MathSolver.constFractionExpression({
           sign:
           /* Plus */
           0,
@@ -593,7 +593,7 @@ var examples = [{
         sign:
         /* Plus */
         0,
-        factors: [Types$MathSolver.varPrimitiveExpression({
+        factors: [Formula$MathSolver.varPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -604,13 +604,13 @@ var examples = [{
           /* SumExpression */
           2,
           _0: {
-            terms: [Types$MathSolver.varPrimitiveExpression({
+            terms: [Formula$MathSolver.varPrimitiveExpression({
               sign:
               /* Plus */
               0,
               primitive: "x",
               subscript: undefined
-            }), Types$MathSolver.floatPrimitiveExpression({
+            }), Formula$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -619,7 +619,7 @@ var examples = [{
           }
         }]
       }
-    }, Types$MathSolver.floatPrimitiveExpression({
+    }, Formula$MathSolver.floatPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -644,7 +644,7 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            factors: [Types$MathSolver.floatPrimitiveExpression({
+            factors: [Formula$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -657,14 +657,14 @@ var examples = [{
                 sign:
                 /* Plus */
                 0,
-                base: Types$MathSolver.varPrimitiveExpression({
+                base: Formula$MathSolver.varPrimitiveExpression({
                   sign:
                   /* Plus */
                   0,
                   primitive: "x",
                   subscript: undefined
                 }),
-                exponent: Types$MathSolver.intPrimitiveExpression({
+                exponent: Formula$MathSolver.intPrimitiveExpression({
                   sign:
                   /* Plus */
                   0,
@@ -681,12 +681,12 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            factors: [Types$MathSolver.intPrimitiveExpression({
+            factors: [Formula$MathSolver.intPrimitiveExpression({
               sign:
               /* Plus */
               0,
               primitive: 3
-            }), Types$MathSolver.varPrimitiveExpression({
+            }), Formula$MathSolver.varPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -694,14 +694,14 @@ var examples = [{
               subscript: undefined
             })]
           }
-        }, Types$MathSolver.intPrimitiveExpression({
+        }, Formula$MathSolver.intPrimitiveExpression({
           sign:
           /* Minus */
           1,
           primitive: 1
         })]
       }
-    }, Types$MathSolver.intPrimitiveExpression({
+    }, Formula$MathSolver.intPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -714,26 +714,26 @@ var examples = [{
   0,
   _0: {
     atoms: [{
-      members: [Types$MathSolver.varPrimitiveExpression({
+      members: [Formula$MathSolver.varPrimitiveExpression({
         sign:
         /* Plus */
         0,
         primitive: "x",
         subscript: undefined
-      }), Types$MathSolver.floatPrimitiveExpression({
+      }), Formula$MathSolver.floatPrimitiveExpression({
         sign:
         /* Plus */
         0,
         primitive: 1
       })]
     }, {
-      members: [Types$MathSolver.varPrimitiveExpression({
+      members: [Formula$MathSolver.varPrimitiveExpression({
         sign:
         /* Plus */
         0,
         primitive: "x",
         subscript: undefined
-      }), Types$MathSolver.floatPrimitiveExpression({
+      }), Formula$MathSolver.floatPrimitiveExpression({
         sign:
         /* Minus */
         1,
@@ -746,13 +746,13 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
       primitive: "x",
       subscript: undefined
-    }), Types$MathSolver.varPrimitiveExpression({
+    }), Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -766,7 +766,7 @@ var examples = [{
         sign:
         /* PlusMinus */
         2,
-        factors: [Types$MathSolver.floatPrimitiveExpression({
+        factors: [Formula$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -779,7 +779,7 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            radicand: Types$MathSolver.floatPrimitiveExpression({
+            radicand: Formula$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -795,7 +795,7 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -806,7 +806,7 @@ var examples = [{
       /* SumExpression */
       2,
       _0: {
-        terms: [Types$MathSolver.constFractionExpression({
+        terms: [Formula$MathSolver.constFractionExpression({
           sign:
           /* Plus */
           0,
@@ -836,7 +836,7 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            factors: [Types$MathSolver.constFractionExpression({
+            factors: [Formula$MathSolver.constFractionExpression({
               sign:
               /* Plus */
               0,
@@ -866,7 +866,7 @@ var examples = [{
                 sign:
                 /* Plus */
                 0,
-                radicand: Types$MathSolver.floatPrimitiveExpression({
+                radicand: Formula$MathSolver.floatPrimitiveExpression({
                   sign:
                   /* Plus */
                   0,
@@ -884,7 +884,7 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -898,7 +898,7 @@ var examples = [{
         sign:
         /* Plus */
         0,
-        factors: [Types$MathSolver.constFractionExpression({
+        factors: [Formula$MathSolver.constFractionExpression({
           sign:
           /* Plus */
           0,
@@ -920,7 +920,7 @@ var examples = [{
             0,
             primitive: 3
           }
-        }), Types$MathSolver.varPrimitiveExpression({
+        }), Formula$MathSolver.varPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -934,14 +934,14 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            base: Types$MathSolver.varPrimitiveExpression({
+            base: Formula$MathSolver.varPrimitiveExpression({
               sign:
               /* Plus */
               0,
               primitive: "r",
               subscript: undefined
             }),
-            exponent: Types$MathSolver.floatPrimitiveExpression({
+            exponent: Formula$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -957,7 +957,7 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -971,13 +971,13 @@ var examples = [{
         sign:
         /* Plus */
         0,
-        index: Types$MathSolver.floatPrimitiveExpression({
+        index: Formula$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
           primitive: 3
         }),
-        radicand: Types$MathSolver.floatPrimitiveExpression({
+        radicand: Formula$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -991,7 +991,7 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -1013,12 +1013,12 @@ var examples = [{
             sign:
             /* Plus */
             0,
-            factors: [Types$MathSolver.floatPrimitiveExpression({
+            factors: [Formula$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
               primitive: 3
-            }), Types$MathSolver.varPrimitiveExpression({
+            }), Formula$MathSolver.varPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -1027,7 +1027,7 @@ var examples = [{
             })]
           }
         },
-        exponent: Types$MathSolver.floatPrimitiveExpression({
+        exponent: Formula$MathSolver.floatPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -1041,7 +1041,7 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
@@ -1060,13 +1060,13 @@ var examples = [{
           /* SumExpression */
           2,
           _0: {
-            terms: [Types$MathSolver.varPrimitiveExpression({
+            terms: [Formula$MathSolver.varPrimitiveExpression({
               sign:
               /* Plus */
               0,
               primitive: "x",
               subscript: undefined
-            }), Types$MathSolver.floatPrimitiveExpression({
+            }), Formula$MathSolver.floatPrimitiveExpression({
               sign:
               /* Plus */
               0,
@@ -1074,7 +1074,7 @@ var examples = [{
             })]
           }
         },
-        radicand: Types$MathSolver.intPrimitiveExpression({
+        radicand: Formula$MathSolver.intPrimitiveExpression({
           sign:
           /* Plus */
           0,
@@ -1088,13 +1088,13 @@ var examples = [{
   /* Equation */
   1,
   _0: {
-    members: [Types$MathSolver.varPrimitiveExpression({
+    members: [Formula$MathSolver.varPrimitiveExpression({
       sign:
       /* Plus */
       0,
       primitive: "x",
       subscript: "1,2"
-    }), Types$MathSolver.varFractionExpression({
+    }), Formula$MathSolver.varFractionExpression({
       sign:
       /* Plus */
       0,
@@ -1103,7 +1103,7 @@ var examples = [{
         /* SumExpression */
         2,
         _0: {
-          terms: [Types$MathSolver.varPrimitiveExpression({
+          terms: [Formula$MathSolver.varPrimitiveExpression({
             sign:
             /* Minus */
             1,
@@ -1130,14 +1130,14 @@ var examples = [{
                       sign:
                       /* Plus */
                       0,
-                      base: Types$MathSolver.varPrimitiveExpression({
+                      base: Formula$MathSolver.varPrimitiveExpression({
                         sign:
                         /* Plus */
                         0,
                         primitive: "b",
                         subscript: undefined
                       }),
-                      exponent: Types$MathSolver.floatPrimitiveExpression({
+                      exponent: Formula$MathSolver.floatPrimitiveExpression({
                         sign:
                         /* Plus */
                         0,
@@ -1152,18 +1152,18 @@ var examples = [{
                       sign:
                       /* Minus */
                       1,
-                      factors: [Types$MathSolver.floatPrimitiveExpression({
+                      factors: [Formula$MathSolver.floatPrimitiveExpression({
                         sign:
                         /* Plus */
                         0,
                         primitive: 4
-                      }), Types$MathSolver.varPrimitiveExpression({
+                      }), Formula$MathSolver.varPrimitiveExpression({
                         sign:
                         /* Plus */
                         0,
                         primitive: "a",
                         subscript: undefined
-                      }), Types$MathSolver.varPrimitiveExpression({
+                      }), Formula$MathSolver.varPrimitiveExpression({
                         sign:
                         /* Plus */
                         0,
@@ -1186,12 +1186,12 @@ var examples = [{
           sign:
           /* Plus */
           0,
-          factors: [Types$MathSolver.floatPrimitiveExpression({
+          factors: [Formula$MathSolver.floatPrimitiveExpression({
             sign:
             /* Plus */
             0,
             primitive: 2
-          }), Types$MathSolver.varPrimitiveExpression({
+          }), Formula$MathSolver.varPrimitiveExpression({
             sign:
             /* Plus */
             0,
@@ -1207,7 +1207,353 @@ var examples = [{
 
 exports.examples = examples;
 
-},{"./Types.bs.js":14}],7:[function(require,module,exports){
+},{"./Formula.bs.js":7}],7:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.toggleSign = toggleSign;
+exports.varPrimitiveExpression = varPrimitiveExpression;
+exports.intPrimitiveExpression = intPrimitiveExpression;
+exports.floatPrimitiveExpression = floatPrimitiveExpression;
+exports.varFractionExpression = varFractionExpression;
+exports.constFractionExpression = constFractionExpression;
+exports.createTextExpression = createTextExpression;
+exports.createVarPrimitive = createVarPrimitive;
+exports.createFloatPrimitive = createFloatPrimitive;
+exports.createintPrimitive = createintPrimitive;
+exports.createSumExpression = createSumExpression;
+exports.createProductExpression = createProductExpression;
+exports.createVarFraction = createVarFraction;
+exports.createConstFraction = createConstFraction;
+exports.power = power;
+exports.squareroot = squareroot;
+exports.root = root;
+
+// Generated by ReScript, PLEASE EDIT WITH CARE
+function toggleSign(sign) {
+  switch (sign) {
+    case
+    /* Plus */
+    0:
+      return (
+        /* Minus */
+        1
+      );
+
+    case
+    /* Minus */
+    1:
+      return (
+        /* Plus */
+        0
+      );
+
+    case
+    /* PlusMinus */
+    2:
+      return (
+        /* MinusPlus */
+        3
+      );
+
+    case
+    /* MinusPlus */
+    3:
+      return (
+        /* PlusMinus */
+        2
+      );
+  }
+}
+
+function varPrimitiveExpression(n) {
+  return {
+    TAG:
+    /* PrimitiveExpression */
+    1,
+    _0: {
+      TAG:
+      /* VarPrimitive */
+      0,
+      _0: n
+    }
+  };
+}
+
+function intPrimitiveExpression(n) {
+  return {
+    TAG:
+    /* PrimitiveExpression */
+    1,
+    _0: {
+      TAG:
+      /* IntPrimitive */
+      1,
+      _0: n
+    }
+  };
+}
+
+function floatPrimitiveExpression(n) {
+  return {
+    TAG:
+    /* PrimitiveExpression */
+    1,
+    _0: {
+      TAG:
+      /* FloatPrimitive */
+      2,
+      _0: n
+    }
+  };
+}
+
+function varFractionExpression(n) {
+  return {
+    TAG:
+    /* FractionExpression */
+    4,
+    _0: {
+      TAG:
+      /* VarFraction */
+      0,
+      _0: n
+    }
+  };
+}
+
+function constFractionExpression(n) {
+  return {
+    TAG:
+    /* FractionExpression */
+    4,
+    _0: {
+      TAG:
+      /* ConstFraction */
+      1,
+      _0: n
+    }
+  };
+}
+
+function createTextExpression(text) {
+  return {
+    TAG:
+    /* TextExpression */
+    0,
+    _0: text
+  };
+}
+
+function createVarPrimitive(variable, subscript) {
+  if (variable.substring(0, 0) !== "-") {
+    return {
+      TAG:
+      /* VarPrimitive */
+      0,
+      _0: {
+        sign:
+        /* Plus */
+        0,
+        primitive: variable,
+        subscript: subscript
+      }
+    };
+  }
+
+  var posVariable = variable.slice(1);
+  return {
+    TAG:
+    /* VarPrimitive */
+    0,
+    _0: {
+      sign:
+      /* Minus */
+      1,
+      primitive: posVariable,
+      subscript: subscript
+    }
+  };
+}
+
+function createFloatPrimitive(n) {
+  if (n < 0) {
+    return {
+      TAG:
+      /* FloatPrimitive */
+      2,
+      _0: {
+        sign:
+        /* Minus */
+        1,
+        primitive: -n
+      }
+    };
+  } else {
+    return {
+      TAG:
+      /* FloatPrimitive */
+      2,
+      _0: {
+        sign:
+        /* Plus */
+        0,
+        primitive: n
+      }
+    };
+  }
+}
+
+function createintPrimitive(n) {
+  if (n < 0) {
+    return {
+      sign:
+      /* Minus */
+      1,
+      primitive: -n | 0
+    };
+  } else {
+    return {
+      sign:
+      /* Plus */
+      0,
+      primitive: n
+    };
+  }
+}
+
+function createSumExpression(terms) {
+  return {
+    TAG:
+    /* SumExpression */
+    2,
+    _0: {
+      terms: terms
+    }
+  };
+}
+
+function createProductExpression(signOpt, factors) {
+  var sign = signOpt !== undefined ? signOpt :
+  /* Plus */
+  0;
+  return {
+    TAG:
+    /* ProductExpression */
+    3,
+    _0: {
+      sign: sign,
+      factors: factors
+    }
+  };
+}
+
+function createVarFraction(signOpt, numerator, denominator) {
+  var sign = signOpt !== undefined ? signOpt :
+  /* Plus */
+  0;
+  return {
+    TAG:
+    /* VarFraction */
+    0,
+    _0: {
+      sign: sign,
+      numerator: numerator,
+      denominator: denominator
+    }
+  };
+}
+
+function createConstFraction(sign, integer, numerator, denominator) {
+  return {
+    TAG:
+    /* ConstFraction */
+    1,
+    _0: {
+      sign: sign,
+      integer: createintPrimitive(integer),
+      numerator: createintPrimitive(numerator),
+      denominator: createintPrimitive(denominator)
+    }
+  };
+}
+
+function power(signOpt, base, exponent) {
+  var sign = signOpt !== undefined ? signOpt :
+  /* Plus */
+  0;
+  return {
+    TAG:
+    /* PowerExpression */
+    5,
+    _0: {
+      sign: sign,
+      base: {
+        TAG:
+        /* PrimitiveExpression */
+        1,
+        _0: createFloatPrimitive(base)
+      },
+      exponent: {
+        TAG:
+        /* PrimitiveExpression */
+        1,
+        _0: createFloatPrimitive(exponent)
+      }
+    }
+  };
+}
+
+function squareroot(signOpt, radicand) {
+  var sign = signOpt !== undefined ? signOpt :
+  /* Plus */
+  0;
+  return {
+    TAG:
+    /* SquarerootExpression */
+    7,
+    _0: {
+      sign: sign,
+      radicand: {
+        TAG:
+        /* PrimitiveExpression */
+        1,
+        _0: createFloatPrimitive(radicand)
+      }
+    }
+  };
+}
+
+function root(signOpt, index, radicand) {
+  var sign = signOpt !== undefined ? signOpt :
+  /* Plus */
+  0;
+  return {
+    TAG:
+    /* RootExpression */
+    6,
+    _0: {
+      sign: sign,
+      index: {
+        TAG:
+        /* PrimitiveExpression */
+        1,
+        _0: createFloatPrimitive(index)
+      },
+      radicand: {
+        TAG:
+        /* PrimitiveExpression */
+        1,
+        _0: createFloatPrimitive(radicand)
+      }
+    }
+  };
+}
+/* No side effect */
+
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1231,17 +1577,17 @@ exports._rootNodeToTex = _rootNodeToTex;
 exports._equationNodeToTex = _equationNodeToTex;
 exports._logicalOrNodeToTex = _logicalOrNodeToTex;
 exports.formulaNodeToTex = formulaNodeToTex;
-exports.delimiter = exports.lookupTex = exports._andThenGet = exports._multiplicationSymbolLookupIndex = exports._table = exports._tableRowOther = exports._tableRowPower = exports._tableRowSum = exports._tableRowText = void 0;
+exports.delimiter = exports.lookupTex = exports._andThenGet = exports._multiplicationSymbolLookupIndex = exports._table = exports._tableRowOther = exports._tableRowPower = exports._tableRowSum = exports._tableRowText = exports.unicodeToTex = void 0;
 
 var Js_dict = _interopRequireWildcard(require("rescript/lib/es6/js_dict.js"));
 
 var Caml_array = _interopRequireWildcard(require("rescript/lib/es6/caml_array.js"));
 
-var Greek$MathSolver = _interopRequireWildcard(require("./Greek.bs.js"));
+var Greek$MathSolver = _interopRequireWildcard(require("../Greek.bs.js"));
 
-var Types$MathSolver = _interopRequireWildcard(require("./Types.bs.js"));
+var Formula$MathSolver = _interopRequireWildcard(require("../Formula.bs.js"));
 
-var MultiplicationSymbol$MathSolver = _interopRequireWildcard(require("./MultiplicationSymbol.bs.js"));
+var MultiplicationSymbol$MathSolver = _interopRequireWildcard(require("../MultiplicationSymbol.bs.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -1286,6 +1632,17 @@ function _signAttrToTex(sign, signMode) {
       /* NoSign */
       0) {
         return " \\pm ";
+      } else {
+        return "";
+      }
+
+    case
+    /* MinusPlus */
+    3:
+      if (signMode !==
+      /* NoSign */
+      0) {
+        return " \\mp ";
       } else {
         return "";
       }
@@ -1506,7 +1863,7 @@ function _fractionNodeToTex(fractionNode, signMode) {
   },
   /* NoSign */
   0) : "";
-  return _signAttrToTex(fraction$1.sign, signMode) + " " + fractionInteger + _fractionToTex(Types$MathSolver.intPrimitiveExpression(fraction$1.numerator), Types$MathSolver.intPrimitiveExpression(fraction$1.denominator));
+  return _signAttrToTex(fraction$1.sign, signMode) + " " + fractionInteger + _fractionToTex(Formula$MathSolver.intPrimitiveExpression(fraction$1.numerator), Formula$MathSolver.intPrimitiveExpression(fraction$1.denominator));
 }
 
 function _powerNodeToTex(power, signMode) {
@@ -1520,6 +1877,30 @@ function _powerNodeToTex(power, signMode) {
   var texParenBase;
 
   switch (match.TAG | 0) {
+    case
+    /* PrimitiveExpression */
+    1:
+      var match$1 = match._0;
+
+      switch (match$1.TAG | 0) {
+        case
+        /* VarPrimitive */
+        0:
+          texParenBase = texBase;
+          break;
+
+        case
+        /* IntPrimitive */
+        1:
+        case
+        /* FloatPrimitive */
+        2:
+          texParenBase = match$1._0.sign !== 1 ? texBase : " ( " + texBase + " ) ";
+          break;
+      }
+
+      break;
+
     case
     /* SumExpression */
     2:
@@ -1588,6 +1969,8 @@ function formulaNodeToTex(formula) {
   return delimiter + texFormula + delimiter;
 }
 
+var unicodeToTex = Greek$MathSolver.unicodeToTex;
+exports.unicodeToTex = unicodeToTex;
 var _tableRowText = MultiplicationSymbol$MathSolver._tableRowText;
 exports._tableRowText = _tableRowText;
 var _tableRowSum = MultiplicationSymbol$MathSolver._tableRowSum;
@@ -1607,13 +1990,7 @@ var lookupTex = MultiplicationSymbol$MathSolver.lookupTex;
 
 exports.lookupTex = lookupTex;
 
-},{"./Greek.bs.js":10,"./MultiplicationSymbol.bs.js":11,"./Types.bs.js":14,"rescript/lib/es6/caml_array.js":1,"rescript/lib/es6/js_dict.js":3}],8:[function(require,module,exports){
-// Generated by ReScript, PLEASE EDIT WITH CARE
-/* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
-
-},{}],9:[function(require,module,exports){
-arguments[4][8][0].apply(exports,arguments)
-},{"dup":8}],10:[function(require,module,exports){
+},{"../Formula.bs.js":7,"../Greek.bs.js":9,"../MultiplicationSymbol.bs.js":10,"rescript/lib/es6/caml_array.js":1,"rescript/lib/es6/js_dict.js":3}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1633,7 +2010,7 @@ var unicodeToTex = Js_dict.fromArray([["\xce\x91", "\\Alpha"], ["\xce\xb1", "\\a
 
 exports.unicodeToTex = unicodeToTex;
 
-},{"rescript/lib/es6/js_dict.js":3}],11:[function(require,module,exports){
+},{"rescript/lib/es6/js_dict.js":3}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1848,9 +2225,11 @@ function lookupTex(factorLeft, factorRight) {
 }
 /* _tableRowText Not a pure module */
 
-},{"rescript/lib/es6/caml_option.js":2,"rescript/lib/es6/js_dict.js":3}],12:[function(require,module,exports){
-arguments[4][8][0].apply(exports,arguments)
-},{"dup":8}],13:[function(require,module,exports){
+},{"rescript/lib/es6/caml_option.js":2,"rescript/lib/es6/js_dict.js":3}],11:[function(require,module,exports){
+// Generated by ReScript, PLEASE EDIT WITH CARE
+/* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
+
+},{}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1861,11 +2240,11 @@ exports.randomPosNeg = randomPosNeg;
 exports.randomNoZero = randomNoZero;
 exports.randomNumber = randomNumber;
 exports.randomNumberPrimitive = randomNumberPrimitive;
-exports.limit = exports.constFractionExpression = exports.varFractionExpression = exports.floatPrimitiveExpression = exports.intPrimitiveExpression = exports.varPrimitiveExpression = exports.createIntPrimitive = void 0;
+exports.limit = exports.root = exports.squareroot = exports.power = exports.createConstFraction = exports.createVarFraction = exports.createProductExpression = exports.createSumExpression = exports.createintPrimitive = exports.createFloatPrimitive = exports.createVarPrimitive = exports.createTextExpression = exports.constFractionExpression = exports.varFractionExpression = exports.floatPrimitiveExpression = exports.intPrimitiveExpression = exports.varPrimitiveExpression = exports.toggleSign = void 0;
 
 var Js_math = _interopRequireWildcard(require("rescript/lib/es6/js_math.js"));
 
-var Types$MathSolver = _interopRequireWildcard(require("./Types.bs.js"));
+var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -1895,143 +2274,59 @@ function randomNumber(param) {
 }
 
 function randomNumberPrimitive(param) {
-  return Types$MathSolver.createIntPrimitive(randomNoZero(12));
+  return {
+    TAG:
+    /* IntPrimitive */
+    1,
+    _0: Formula$MathSolver.createintPrimitive(randomNoZero(12))
+  };
 }
 
-var createIntPrimitive = Types$MathSolver.createIntPrimitive;
-exports.createIntPrimitive = createIntPrimitive;
-var varPrimitiveExpression = Types$MathSolver.varPrimitiveExpression;
+var toggleSign = Formula$MathSolver.toggleSign;
+exports.toggleSign = toggleSign;
+var varPrimitiveExpression = Formula$MathSolver.varPrimitiveExpression;
 exports.varPrimitiveExpression = varPrimitiveExpression;
-var intPrimitiveExpression = Types$MathSolver.intPrimitiveExpression;
+var intPrimitiveExpression = Formula$MathSolver.intPrimitiveExpression;
 exports.intPrimitiveExpression = intPrimitiveExpression;
-var floatPrimitiveExpression = Types$MathSolver.floatPrimitiveExpression;
+var floatPrimitiveExpression = Formula$MathSolver.floatPrimitiveExpression;
 exports.floatPrimitiveExpression = floatPrimitiveExpression;
-var varFractionExpression = Types$MathSolver.varFractionExpression;
+var varFractionExpression = Formula$MathSolver.varFractionExpression;
 exports.varFractionExpression = varFractionExpression;
-var constFractionExpression = Types$MathSolver.constFractionExpression;
+var constFractionExpression = Formula$MathSolver.constFractionExpression;
 exports.constFractionExpression = constFractionExpression;
+var createTextExpression = Formula$MathSolver.createTextExpression;
+exports.createTextExpression = createTextExpression;
+var createVarPrimitive = Formula$MathSolver.createVarPrimitive;
+exports.createVarPrimitive = createVarPrimitive;
+var createFloatPrimitive = Formula$MathSolver.createFloatPrimitive;
+exports.createFloatPrimitive = createFloatPrimitive;
+var createintPrimitive = Formula$MathSolver.createintPrimitive;
+exports.createintPrimitive = createintPrimitive;
+var createSumExpression = Formula$MathSolver.createSumExpression;
+exports.createSumExpression = createSumExpression;
+var createProductExpression = Formula$MathSolver.createProductExpression;
+exports.createProductExpression = createProductExpression;
+var createVarFraction = Formula$MathSolver.createVarFraction;
+exports.createVarFraction = createVarFraction;
+var createConstFraction = Formula$MathSolver.createConstFraction;
+exports.createConstFraction = createConstFraction;
+var power = Formula$MathSolver.power;
+exports.power = power;
+var squareroot = Formula$MathSolver.squareroot;
+exports.squareroot = squareroot;
+var root = Formula$MathSolver.root;
+exports.root = root;
 var limit = 12;
 /* No side effect */
 
 exports.limit = limit;
 
-},{"./Types.bs.js":14,"rescript/lib/es6/js_math.js":5}],14:[function(require,module,exports){
+},{"./Formula.bs.js":7,"rescript/lib/es6/js_math.js":5}],13:[function(require,module,exports){
+arguments[4][11][0].apply(exports,arguments)
+},{"dup":11}],14:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createIntPrimitive = createIntPrimitive;
-exports.varPrimitiveExpression = varPrimitiveExpression;
-exports.intPrimitiveExpression = intPrimitiveExpression;
-exports.floatPrimitiveExpression = floatPrimitiveExpression;
-exports.varFractionExpression = varFractionExpression;
-exports.constFractionExpression = constFractionExpression;
-
-// Generated by ReScript, PLEASE EDIT WITH CARE
-function createIntPrimitive(n) {
-  if (n < 0) {
-    return {
-      TAG:
-      /* IntPrimitive */
-      1,
-      _0: {
-        sign:
-        /* Minus */
-        1,
-        primitive: -n | 0
-      }
-    };
-  } else {
-    return {
-      TAG:
-      /* IntPrimitive */
-      1,
-      _0: {
-        sign:
-        /* Plus */
-        0,
-        primitive: n
-      }
-    };
-  }
-}
-
-function varPrimitiveExpression(n) {
-  return {
-    TAG:
-    /* PrimitiveExpression */
-    1,
-    _0: {
-      TAG:
-      /* VarPrimitive */
-      0,
-      _0: n
-    }
-  };
-}
-
-function intPrimitiveExpression(n) {
-  return {
-    TAG:
-    /* PrimitiveExpression */
-    1,
-    _0: {
-      TAG:
-      /* IntPrimitive */
-      1,
-      _0: n
-    }
-  };
-}
-
-function floatPrimitiveExpression(n) {
-  return {
-    TAG:
-    /* PrimitiveExpression */
-    1,
-    _0: {
-      TAG:
-      /* FloatPrimitive */
-      2,
-      _0: n
-    }
-  };
-}
-
-function varFractionExpression(n) {
-  return {
-    TAG:
-    /* FractionExpression */
-    4,
-    _0: {
-      TAG:
-      /* VarFraction */
-      0,
-      _0: n
-    }
-  };
-}
-
-function constFractionExpression(n) {
-  return {
-    TAG:
-    /* FractionExpression */
-    4,
-    _0: {
-      TAG:
-      /* ConstFraction */
-      1,
-      _0: n
-    }
-  };
-}
-/* No side effect */
-
-},{}],15:[function(require,module,exports){
-"use strict";
-
-var Formula = _interopRequireWildcard(require("./Formula.bs"));
+var FormulaRenderer = _interopRequireWildcard(require("./Formula/FormulaRenderer.bs"));
 
 var Examples = _interopRequireWildcard(require("./Examples.bs"));
 
@@ -2041,7 +2336,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 class MathSolver {
   constructor(displayNodeId) {
-    this.formulaNodeToTex = Formula.formulaNodeToTex;
+    this.formulaNodeToTex = FormulaRenderer.formulaNodeToTex;
     this.examples = Examples.examples;
     this.displayNode = document.getElementById(displayNodeId);
     this.currentExampleIndex = 0;
@@ -2068,4 +2363,4 @@ class MathSolver {
 
 window.MathSolver = MathSolver;
 
-},{"./Examples.bs":6,"./Formula.bs":7}]},{},[6,7,8,9,10,11,12,13,14,15]);
+},{"./Examples.bs":6,"./Formula/FormulaRenderer.bs":8}]},{},[6,7,9,10,11,12,13,14]);

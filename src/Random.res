@@ -1,11 +1,10 @@
 
 /** **********************************************************************
  * Random: generate random numbers
- *
- * Requires: Types
  */
 
 include Types
+include Formula
 
 // limit of random numbers
 let limit: int = 12
@@ -40,5 +39,6 @@ let randomNumber = (): int => {
 
 // return random number as primitive node
 let randomNumberPrimitive = (): primitive => {
-    randomNumber()->createIntPrimitive
+    randomNumber()->Formula.createintPrimitive->Types.IntPrimitive
 }
+

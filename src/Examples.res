@@ -1,11 +1,10 @@
 
 /** ****************************************************************************
  * Examples: Example formulas
- *
- * Requires: Types
  */
 
 open Types
+open Formula
 
 let examples: array<formula> = [
     // x = 1/2 + 1/3

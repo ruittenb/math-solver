@@ -1,8 +1,6 @@
 
 /** ****************************************************************************
  * QuadraticEquation: generate a random shape of quadratic equation
- *
- * Requires: Types, Random
  */
 
 open Types

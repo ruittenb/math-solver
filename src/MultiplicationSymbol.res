@@ -1,8 +1,6 @@
 
 /** ****************************************************************************
  * MultiplicationSymbol: Determine the correct symbol to display for multiplication
- *
- * Requires: Types
  */
 
 open Types

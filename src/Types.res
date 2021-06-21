@@ -15,6 +15,7 @@ type sign =
     | Plus
     | Minus
     | PlusMinus
+    | MinusPlus
 
 type varPrimitive = {
     sign: sign,
@@ -112,28 +113,5 @@ type formula =
     | LogicalOr(logicalOr)
     | Equation(equation)
     | Text(string)
-
-/** ****************************************************************************
- * Constructors
- */
-
-let createIntPrimitive = (n: int): primitive => {
-    if n < 0 {
-        IntPrimitive({ sign: Minus, primitive: -n })
-    } else {
-        IntPrimitive({ sign: Plus, primitive: n })
-    }
-}
-
-/** ****************************************************************************
- * Shortcuts for conversions
- */
-
-let varPrimitiveExpression = (n: varPrimitive) => n->VarPrimitive->PrimitiveExpression
-let intPrimitiveExpression = (n: intPrimitive) => n->IntPrimitive->PrimitiveExpression
-let floatPrimitiveExpression = (n: floatPrimitive) => n->FloatPrimitive->PrimitiveExpression
-
-let varFractionExpression = (n: varFraction) => n->VarFraction->FractionExpression
-let constFractionExpression = (n: constFraction) => n->ConstFraction->FractionExpression
 
 // vim: set ts=4 sw=4 et list nu fdm=marker:

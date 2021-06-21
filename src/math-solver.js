@@ -1,11 +1,11 @@
 
-import * as Formula from './Formula.bs';
+import * as FormulaRenderer from './Formula/FormulaRenderer.bs';
 import * as Examples from './Examples.bs';
 
 class MathSolver {
 
     constructor(displayNodeId) {
-        this.formulaNodeToTex = Formula.formulaNodeToTex;
+        this.formulaNodeToTex = FormulaRenderer.formulaNodeToTex;
         this.examples = Examples.examples;
         this.displayNode = document.getElementById(displayNodeId);
         this.currentExampleIndex = 0;
