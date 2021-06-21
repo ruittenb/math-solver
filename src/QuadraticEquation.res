@@ -29,104 +29,104 @@ open Random
 
 /* 0, 1 */
 let _generateShapeFactorSimple = (rightMember: int): formula => {
-    createEquation([
+    createEquationFormula([
         createProductExpression([
-            createVarPrimitive("x", None)->PrimitiveExpression,
+            createVarPrimitiveExpression("x"),
             createSumExpression([
-                createVarPrimitive("x", None)->PrimitiveExpression,
-                randomNumberPrimitive()->PrimitiveExpression
+                createVarPrimitiveExpression("x"),
+                randomNumberPrimitiveExpression()
             ])
         ]),
-        createIntPrimitive(rightMember)->PrimitiveExpression
+        createIntPrimitiveExpression(rightMember)
     ])
 }
 
 /* 2, 3 */
 let _generateShapeFactorHard = (rightMember: int): formula => {
-    createEquation([
+    createEquationFormula([
         createProductExpression([
             createSumExpression([
-                createVarPrimitive("x", None)->PrimitiveExpression,
-                randomNumberPrimitive()->PrimitiveExpression
+                createVarPrimitiveExpression("x"),
+                randomNumberPrimitiveExpression()
             ]),
             createSumExpression([
-                createVarPrimitive("x", None)->PrimitiveExpression,
-                randomNumberPrimitive()->PrimitiveExpression
+                createVarPrimitiveExpression("x"),
+                randomNumberPrimitiveExpression()
             ])
         ]),
-        createIntPrimitive(rightMember)->PrimitiveExpression
+        createIntPrimitiveExpression(rightMember)
     ])
 }
 
 /* 4 */
 let _generateShapeSquare = (rightMember: int): formula => {
-    createEquation([
+    createEquationFormula([
         createProductExpression([
-            randomNumberPrimitive()->PrimitiveExpression,
+            randomNumberPrimitiveExpression(),
             createPowerExpression(
-                createVarPrimitive("x", None)->PrimitiveExpression,
-                createIntPrimitive(2)->PrimitiveExpression
+                createVarPrimitiveExpression("x"),
+                createIntPrimitiveExpression(2)
             )
         ]),
-        createIntPrimitive(rightMember)->PrimitiveExpression
+        createIntPrimitiveExpression(rightMember)
     ])
 }
 
 /* 5, 6 */
 let _generateShapeSquareConst = (rightMember: int): formula => {
-    createEquation([
+    createEquationFormula([
         createSumExpression([
             createProductExpression([
-                randomNumberPrimitive()->PrimitiveExpression,
+                randomNumberPrimitiveExpression(),
                 createPowerExpression(
-                    createVarPrimitive("x", None)->PrimitiveExpression,
-                    createIntPrimitive(2)->PrimitiveExpression
+                    createVarPrimitiveExpression("x"),
+                    createIntPrimitiveExpression(2)
                 )
             ]),
-            randomNumberPrimitive()->PrimitiveExpression,
+            randomNumberPrimitiveExpression(),
         ]),
-        createIntPrimitive(rightMember)->PrimitiveExpression
+        createIntPrimitiveExpression(rightMember)
     ])
 }
 
 /* 7, 8 */
 let _generateShapeSquareLinear = (rightMember: int): formula => {
-    createEquation([
+    createEquationFormula([
         createSumExpression([
             createProductExpression([
-                randomNumberPrimitive()->PrimitiveExpression,
+                randomNumberPrimitiveExpression(),
                 createPowerExpression(
-                    createVarPrimitive("x", None)->PrimitiveExpression,
-                    createIntPrimitive(2)->PrimitiveExpression
+                    createVarPrimitiveExpression("x"),
+                    createIntPrimitiveExpression(2)
                 )
             ]),
             createProductExpression([
-                randomNumberPrimitive()->PrimitiveExpression,
-                createVarPrimitive("x", None)->PrimitiveExpression,
+                randomNumberPrimitiveExpression(),
+                createVarPrimitiveExpression("x"),
             ])
         ]),
-        createIntPrimitive(rightMember)->PrimitiveExpression
+        createIntPrimitiveExpression(rightMember)
     ])
 }
 
 /* 9, 10 */
 let _generateShapeFullQuadratic = (rightMember: int): formula => {
-    createEquation([
+    createEquationFormula([
         createSumExpression([
             createProductExpression([
-                randomNumberPrimitive()->PrimitiveExpression,
+                randomNumberPrimitiveExpression(),
                 createPowerExpression(
-                    createVarPrimitive("x", None)->PrimitiveExpression,
-                    createIntPrimitive(2)->PrimitiveExpression
+                    createVarPrimitiveExpression("x"),
+                    createIntPrimitiveExpression(2)
                 )
             ]),
             createProductExpression([
-                randomNumberPrimitive()->PrimitiveExpression,
-                createVarPrimitive("x", None)->PrimitiveExpression,
+                randomNumberPrimitiveExpression(),
+                createVarPrimitiveExpression("x"),
             ]),
-            randomNumberPrimitive()->PrimitiveExpression,
+            randomNumberPrimitiveExpression(),
         ]),
-        createIntPrimitive(rightMember)->PrimitiveExpression
+        createIntPrimitiveExpression(rightMember)
     ])
 }
 

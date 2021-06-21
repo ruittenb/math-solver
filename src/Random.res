@@ -35,7 +35,7 @@ let randomNumber = (): int => {
 }
 
 // return random number as primitive node
-let randomNumberPrimitive = (): Types.primitive => {
-    randomNumber()->Formula.createIntPrimitive
+let randomNumberPrimitiveExpression = (): Types.expression => {
+    randomNumber()->Formula.createIntPrimitiveExpression
 }
 

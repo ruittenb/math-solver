@@ -4,9 +4,6 @@
  */
 
 open Types
-open Formula
-include Greek
-include MultiplicationSymbol
 
 type signMode =
     | NoSign
@@ -24,7 +21,7 @@ let _textToTex = (text: string): string => {
     ` \\\\text{ ${text} } `
 }
 
-// Return the correct sign for a node, but suppress 
+// Return the correct sign for a node, but suppress
 // pluses if they are not necessary
 let _signAttrToTex = (sign: sign, signMode: signMode): string => {
     switch sign {
@@ -47,27 +44,42 @@ let _subscriptAttrToTex = (subscript: option<string>): string => {
     }
 }
 
-let _variablePrimitiveToTex = (variable: string) => {
+// Format Greek letters in variables
+let _variableToTex = (variable: string) => {
     switch Js.Dict.get(Greek.unicodeToTex, variable) {
         | Some(texString) => texString
         | None            => variable
     }
 }
 
-// Format a primitive
-let _primitiveNodeToTex = (primitive: primitive, signMode: signMode): string => {
-    switch primitive {
-        | VarPrimitive(prim) =>
-            _signAttrToTex(prim.sign, signMode) ++
-            _variablePrimitiveToTex(prim.primitive) ++
-            _subscriptAttrToTex(prim.subscript)
-        | IntPrimitive(prim) =>
-            _signAttrToTex(prim.sign, signMode) ++
-            Belt.Int.toString(prim.primitive)
-        | FloatPrimitive(prim) =>
-            _signAttrToTex(prim.sign, signMode) ++
-            Belt.Float.toString(prim.primitive)
-    }
+// Format a variable primitive
+let _varPrimitiveNodeToTex = (varPrimitive: varPrimitive, signMode: signMode): string => {
+    _signAttrToTex(varPrimitive.sign, signMode) ++
+    _variableToTex(varPrimitive.primitive) ++
+    _subscriptAttrToTex(varPrimitive.subscript)
+}
+
+// Format an integer primitive
+let _intPrimitiveNodeToTex = (intPrimitive: intPrimitive, signMode: signMode): string => {
+    _signAttrToTex(intPrimitive.sign, signMode) ++
+    Belt.Int.toString(intPrimitive.primitive)
+}
+
+// Format a fraction primitive
+let _fractionPrimitiveNodeToTex = (fractionPrimitive: fractionPrimitive, signMode: signMode): string => {
+    let fractionInteger = fractionPrimitive.integer !== 0
+        ? Belt.Int.toString(fractionPrimitive.integer)
+        : ""
+    let fractionNumerator = Belt.Int.toString(fractionPrimitive.numerator)
+    let fractionDenominator = Belt.Int.toString(fractionPrimitive.denominator)
+    _signAttrToTex(fractionPrimitive.sign, signMode) ++
+    ` ${fractionInteger} \\\\frac{ ${fractionNumerator} } { ${fractionDenominator} } `
+}
+
+// Format a float primitive
+let _floatPrimitiveNodeToTex = (floatPrimitive: floatPrimitive, signMode: signMode): string => {
+    _signAttrToTex(floatPrimitive.sign, signMode) ++
+    Belt.Float.toString(floatPrimitive.primitive)
 }
 
 /** **********************************************************************
@@ -77,14 +89,17 @@ let _primitiveNodeToTex = (primitive: primitive, signMode: signMode): string => 
 // Format any expression
 let rec _expressionNodeToTex = (expression: expression): string => {
     switch expression {
-        | TextExpression(text)             => _textToTex(text)
-        | PrimitiveExpression(primitive)   => _primitiveNodeToTex(primitive, NoPlus)
-        | SumExpression(sum)               => _sumNodeToTex(sum)
-        | ProductExpression(product)       => _productNodeToTex(product, NoPlus)
-        | FractionExpression(fraction)     => _fractionNodeToTex(fraction, NoPlus)
-        | PowerExpression(power)           => _powerNodeToTex(power, NoPlus)
-        | SquarerootExpression(squareroot) => _squarerootNodeToTex(squareroot, NoPlus)
-        | RootExpression(root)             => _rootNodeToTex(root, NoPlus)
+        | TextExpression(text)                   => _textToTex(text)
+        | VarPrimitiveExpression(primitive)      => _varPrimitiveNodeToTex(primitive, NoPlus)
+        | IntPrimitiveExpression(primitive)      => _intPrimitiveNodeToTex(primitive, NoPlus)
+        | FractionPrimitiveExpression(primitive) => _fractionPrimitiveNodeToTex(primitive, NoPlus)
+        | FloatPrimitiveExpression(primitive)    => _floatPrimitiveNodeToTex(primitive, NoPlus)
+        | SumExpression(sum)                     => _sumNodeToTex(sum)
+        | ProductExpression(product)             => _productNodeToTex(product, NoPlus)
+        | FractionExpression(fraction)           => _fractionNodeToTex(fraction, NoPlus)
+        | PowerExpression(power)                 => _powerNodeToTex(power, NoPlus)
+        | SquarerootExpression(squareroot)       => _squarerootNodeToTex(squareroot, NoPlus)
+        | RootExpression(root)                   => _rootNodeToTex(root, NoPlus)
     }
 }
 
@@ -92,14 +107,17 @@ let rec _expressionNodeToTex = (expression: expression): string => {
 // as sign between the terms; e.g. sum(prim(4), prim(-5)) is rendered as "4 - 5"
 and _termNodeToTex = (expression: expression, signMode: signMode): string => {
     switch expression {
-        | TextExpression(text)             => _textToTex(text)                          // has no sign property
-        | SumExpression(sum)               => _sumNodeToTex(sum)                        // has no sign property
-        | PrimitiveExpression(primitive)   => _primitiveNodeToTex(primitive,  signMode) // has no immediate sign property
-        | FractionExpression(fraction)     => _fractionNodeToTex(fraction,    signMode) // has no immediate sign property
-        | ProductExpression(product)       => _signAttrToTex(product.sign,    signMode) ++ " " ++ _productNodeToTex(product, NoSign)
-        | PowerExpression(power)           => _signAttrToTex(power.sign,      signMode) ++ " " ++ _powerNodeToTex(power, NoSign)
-        | SquarerootExpression(squareroot) => _signAttrToTex(squareroot.sign, signMode) ++ " " ++ _squarerootNodeToTex(squareroot, NoSign)
-        | RootExpression(root)             => _signAttrToTex(root.sign,       signMode) ++ " " ++ _rootNodeToTex(root, NoSign)
+        | TextExpression(text)                   => _textToTex(text)                          // has no sign property
+        | SumExpression(sum)                     => _sumNodeToTex(sum)                        // has no sign property
+        | VarPrimitiveExpression(primitive)      => _signAttrToTex(primitive.sign,  signMode) ++ " " ++ _varPrimitiveNodeToTex(primitive, NoSign)
+        | IntPrimitiveExpression(primitive)      => _signAttrToTex(primitive.sign,  signMode) ++ " " ++ _intPrimitiveNodeToTex(primitive, NoSign)
+        | FractionPrimitiveExpression(primitive) => _signAttrToTex(primitive.sign,  signMode) ++ " " ++ _fractionPrimitiveNodeToTex(primitive, NoSign)
+        | FloatPrimitiveExpression(primitive)    => _signAttrToTex(primitive.sign,  signMode) ++ " " ++ _floatPrimitiveNodeToTex(primitive, NoSign)
+        | ProductExpression(product)             => _signAttrToTex(product.sign,    signMode) ++ " " ++ _productNodeToTex(product, NoSign)
+        | FractionExpression(fraction)           => _signAttrToTex(fraction.sign,   signMode) ++ " " ++ _fractionNodeToTex(fraction, NoSign)
+        | PowerExpression(power)                 => _signAttrToTex(power.sign,      signMode) ++ " " ++ _powerNodeToTex(power, NoSign)
+        | SquarerootExpression(squareroot)       => _signAttrToTex(squareroot.sign, signMode) ++ " " ++ _squarerootNodeToTex(squareroot, NoSign)
+        | RootExpression(root)                   => _signAttrToTex(root.sign,       signMode) ++ " " ++ _rootNodeToTex(root, NoSign)
     }
 }
 
@@ -143,28 +161,12 @@ and _productNodeToTex = (product: product, signMode: signMode): string => {
         ->Js.Array2.joinWith("")
 }
 
-// Format a numerator/denominator
-and _fractionToTex = (numerator: expression, denominator: expression): string => {
-    let texNumerator   = _expressionNodeToTex(numerator)
-    let texDenominator = _expressionNodeToTex(denominator)
-    ` \\\\frac{ ${texNumerator} } { ${texDenominator} } `
-}
-
 // Format a fraction node
-and _fractionNodeToTex = (fractionNode: fraction, signMode: signMode): string => {
-    switch (fractionNode) {
-        | ConstFraction(fraction) => {
-            let fractionInteger = fraction.integer.primitive !== 0
-                ? _primitiveNodeToTex(fraction.integer->IntPrimitive, NoSign)
-                : ""
-            _signAttrToTex(fraction.sign, signMode) ++ " " ++
-            fractionInteger ++
-            _fractionToTex(fraction.numerator->intPrimitiveExpression, fraction.denominator->intPrimitiveExpression)
-        }
-        | VarFraction(fraction) =>
-            _signAttrToTex(fraction.sign, signMode) ++ " " ++
-            _fractionToTex(fraction.numerator, fraction.denominator) // numerator and denominator are expressions
-    }
+and _fractionNodeToTex = (fraction: fraction, signMode: signMode): string => {
+    let texNumerator   = _expressionNodeToTex(fraction.numerator)
+    let texDenominator = _expressionNodeToTex(fraction.denominator)
+    _signAttrToTex(fraction.sign, signMode) ++
+    ` \\\\frac{ ${texNumerator} } { ${texDenominator} } `
 }
 
 // Format a power node
@@ -173,11 +175,12 @@ and _powerNodeToTex = (power: power, signMode: signMode): string => {
     let texBase      = _expressionNodeToTex(power.base)
     let texExponent  = _expressionNodeToTex(power.exponent)
     let texParenBase = switch power.base {
-        | PrimitiveExpression(IntPrimitive({ sign: Minus }))   => ` ( ${ texBase } ) `
-        | PrimitiveExpression(FloatPrimitive({ sign: Minus })) => ` ( ${ texBase } ) `
-        | SumExpression(_)     => ` ( ${texBase} ) `
-        | ProductExpression(_) => ` ( ${texBase} ) `
-        | _ => texBase
+        | IntPrimitiveExpression({ sign: Minus })      => ` ( ${texBase} ) `
+        | FractionPrimitiveExpression({ sign: Minus }) => ` ( ${texBase} ) `
+        | FloatPrimitiveExpression({ sign: Minus })    => ` ( ${texBase} ) `
+        | SumExpression(_)                             => ` ( ${texBase} ) `
+        | ProductExpression(_)                         => ` ( ${texBase} ) `
+        | _                                            => texBase
     }
     ` ${texSign}${texParenBase}^{ ${texExponent} } `
 }

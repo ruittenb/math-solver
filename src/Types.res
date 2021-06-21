@@ -28,15 +28,17 @@ type intPrimitive = {
     primitive: int
 }
 
+and fractionPrimitive = {
+    sign: sign,
+    integer: int,
+    numerator: int,
+    denominator: int
+}
+
 type floatPrimitive = {
     sign: sign,
     primitive: float
 }
-
-type primitive =
-    | VarPrimitive(varPrimitive)
-    | IntPrimitive(intPrimitive)
-    | FloatPrimitive(floatPrimitive)
 
 /** ****************************************************************************
  * Expression and its components
@@ -51,22 +53,11 @@ and product = {
     factors: array<expression>
 }
 
-and varFraction = {
+and fraction = {
     sign: sign,
     numerator: expression,
     denominator: expression
 }
-
-and constFraction = {
-    sign: sign,
-    integer: intPrimitive,
-    numerator: intPrimitive,
-    denominator: intPrimitive
-}
-
-and fraction =
-    | VarFraction(varFraction)
-    | ConstFraction(constFraction)
 
 and power = {
     sign: sign,
@@ -89,7 +80,10 @@ and root = {
 
 and expression =
     | TextExpression(string)
-    | PrimitiveExpression(primitive)
+    | VarPrimitiveExpression(varPrimitive)
+    | IntPrimitiveExpression(intPrimitive)
+    | FractionPrimitiveExpression(fractionPrimitive)
+    | FloatPrimitiveExpression(floatPrimitive)
     | SumExpression(sum)
     | ProductExpression(product)
     | FractionExpression(fraction)
@@ -109,6 +103,8 @@ type logicalOr = {
     atoms: array<equation>
 }
 
+// TODO maybe add numbering and annotation?
+// 3.   x^2 - 3 = 6              | +3
 type formula =
     | LogicalOr(logicalOr)
     | Equation(equation)

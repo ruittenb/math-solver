@@ -5,7 +5,7 @@
 
 open Types
 
-let toggleSign = (sign: sign): sign => {
+let _toggleSign = (sign: sign): sign => {
     switch sign {
         | Plus      => Minus
         | Minus     => Plus
@@ -14,16 +14,12 @@ let toggleSign = (sign: sign): sign => {
     }
 }
 
-/** ****************************************************************************
- * Shortcuts for conversions
- */
-
-let varPrimitiveExpression = (n: varPrimitive) => n->VarPrimitive->PrimitiveExpression
-let intPrimitiveExpression = (n: intPrimitive) => n->IntPrimitive->PrimitiveExpression
-let floatPrimitiveExpression = (n: floatPrimitive) => n->FloatPrimitive->PrimitiveExpression
-
-let varFractionExpression = (n: varFraction) => n->VarFraction->FractionExpression
-let constFractionExpression = (n: constFraction) => n->ConstFraction->FractionExpression
+let _withDefault = (opt: option<'t>, default: 't) => {
+    switch opt {
+        | Some(value) => value
+        | None        => default
+    }
+}
 
 /** ****************************************************************************
  * Constructors
@@ -34,57 +30,62 @@ let createTextExpression = (text: string): expression => {
     text->TextExpression
 }
 
-let createVarPrimitive = (variable: string, subscript: option<string>): primitive => {
+let createVarPrimitiveExpression = (~subscript: option<string> = ?, variable: string): expression => {
     if Js.String2.substring(variable, ~from=0, ~to_=0) === "-" {
         let posVariable = variable->Js.String2.sliceToEnd(~from=1)
-        VarPrimitive({ sign: Minus, primitive: posVariable, subscript })
+        VarPrimitiveExpression({ sign: Minus, primitive: posVariable, subscript })
     } else {
-        VarPrimitive({ sign: Plus, primitive: variable, subscript })
+        VarPrimitiveExpression({ sign: Plus, primitive: variable, subscript })
     }
 }
 
-let createFloatPrimitive = (n: float): primitive => {
-    if n < 0. {
-        FloatPrimitive({ sign: Minus, primitive: -.n })
-    } else {
-        FloatPrimitive({ sign: Plus, primitive: n })
-    }
-}
-
-let createintPrimitive = (n: int): intPrimitive => {
+let createIntPrimitiveExpression = (n: int): expression => {
     if n < 0 {
-        { sign: Minus, primitive: -n }
+        IntPrimitiveExpression({ sign: Minus, primitive: -n })
     } else {
-        { sign: Plus, primitive: n }
+        IntPrimitiveExpression({ sign: Plus, primitive: n })
     }
 }
 
-let createIntPrimitive = (n: int): primitive => {
-    createintPrimitive(n)->IntPrimitive
+let createFractionPrimitiveExpression = (integer: int, numerator: int, denominator: int): expression => {
+    if integer < 0 {
+        FractionPrimitiveExpression({
+            sign       : Minus,
+            integer    : -integer,
+            numerator  : numerator,
+            denominator: denominator,
+        })
+    } else {
+        FractionPrimitiveExpression({
+            sign       : Plus,
+            integer    : integer,
+            numerator  : numerator,
+            denominator: denominator,
+        })
+    }
 }
 
-let createSumExpression = (terms: array<expression>) => {
+let createFloatPrimitiveExpression = (n: float): expression => {
+    if n < 0. {
+        FloatPrimitiveExpression({ sign: Minus, primitive: -.n })
+    } else {
+        FloatPrimitiveExpression({ sign: Plus, primitive: n })
+    }
+}
+
+let createSumExpression = (terms: array<expression>): expression => {
     SumExpression({ terms: terms })
 }
 
-let createProductExpression = (~sign: sign = Plus, factors: array<expression>) => {
-    ProductExpression({ sign: sign, factors: factors })
+let createProductExpression = (~sign: sign = Plus, factors: array<expression>): expression => {
+    ProductExpression({ sign, factors })
 }
 
-let createVarFraction = (~sign: sign = Plus, numerator: expression, denominator: expression) => {
-    VarFraction({ sign, numerator, denominator })
+let createFractionExpression = (~sign: sign = Plus, numerator: expression, denominator: expression): expression => {
+    FractionExpression({ sign, numerator, denominator })
 }
 
-let createConstFraction = (~sign: sign, integer: int, numerator: int, denominator: int) => {
-    ConstFraction({
-        sign       : sign,
-        integer    : integer->createintPrimitive,
-        numerator  : numerator->createintPrimitive,
-        denominator: denominator->createintPrimitive
-    })
-}
-
-let createPowerExpression = (~sign: sign = Plus, base: expression, exponent: expression) => {
+let createPowerExpression = (~sign: sign = Plus, base: expression, exponent: expression): expression => {
     PowerExpression({
         sign    : sign,
         base    : base,
@@ -92,14 +93,14 @@ let createPowerExpression = (~sign: sign = Plus, base: expression, exponent: exp
     })
 }
 
-let createSquarerootExpression = (~sign: sign = Plus, radicand: expression) => {
+let createSquarerootExpression = (~sign: sign = Plus, radicand: expression): expression => {
     SquarerootExpression({
         sign    : sign,
         radicand: radicand,
     })
 }
 
-let createRootExpression = (~sign: sign = Plus, index: expression, radicand: expression) => {
+let createRootExpression = (~sign: sign = Plus, index: expression, radicand: expression): expression => {
     RootExpression({
         sign    : sign,
         index   : index,
@@ -107,6 +108,14 @@ let createRootExpression = (~sign: sign = Plus, index: expression, radicand: exp
     })
 }
 
-let createEquation = (members: array<expression>) => {
-    Equation({ members: members })
+let createEquation = (members: array<expression>): equation => {
+    { members: members }
+}
+
+let createEquationFormula = (members: array<expression>): formula => {
+    Equation(createEquation(members))
+}
+
+let createLogicalOrFormula = (atoms: array<equation>): formula => {
+    LogicalOr({ atoms: atoms })
 }
