@@ -4,6 +4,7 @@
  */
 
 open Types
+open Formula
 open Random
 
 /**

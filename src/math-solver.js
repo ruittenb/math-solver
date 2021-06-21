@@ -1,4 +1,10 @@
 
+/**
+ * LaTeX:    https://www.latex-project.org/help/documentation/
+ * MathJax:  http://docs.mathjax.org/en/latest/
+ * ReScript: https://rescript-lang.org/docs/manual/latest/overview
+ */
+
 import * as FormulaRenderer from './Formula/FormulaRenderer.bs';
 import * as Examples from './Examples.bs';
 import * as QuadraticEquation from './QuadraticEquation.bs';

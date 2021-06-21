@@ -3,9 +3,6 @@
  * Random: generate random numbers
  */
 
-include Types
-include Formula
-
 // limit of random numbers
 let limit: int = 12
 
@@ -38,7 +35,7 @@ let randomNumber = (): int => {
 }
 
 // return random number as primitive node
-let randomNumberPrimitive = (): primitive => {
+let randomNumberPrimitive = (): Types.primitive => {
     randomNumber()->Formula.createIntPrimitive
 }
 

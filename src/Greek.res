@@ -1,4 +1,8 @@
 
+/**
+ * http://oeis.org/wiki/List_of_LaTeX_mathematical_symbols
+ */
+
 let unicodeToTex = Js.Dict.fromArray([
     ("Α", "\\Alpha"),
     ("α", "\\alpha"),
