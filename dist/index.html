@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Kwadratische vergelijkingen</title>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+        <script src="bundle.js"></script>
+        <style>
+            button {
+                margin-right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <button onClick="mathSolver.generate()">
+            Generate
+        </button>
+        <button onClick="mathSolver.example()">
+            Example
+        </button>
+        <div id="displayFrame">
+        </div>
+        <script>
+            const mathSolver = new MathSolver('displayFrame');
+        </script>
+    </body>
+</html>
+<!-- vim: set ts=4 sw=4 et: -->
