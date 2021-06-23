@@ -38,8 +38,8 @@ let _removeAddZero = (terms: array<expression>): array<expression> => {
     terms->Js.Array2.filter(
         (term: expression): bool => {
             switch term {
-                | IntPrimitiveExpression(primitive)   if primitive.primitive === 0  => false
-                | FloatPrimitiveExpression(primitive) if primitive.primitive === 0. => false
+                | IntPrimitiveExpression(primitive)   if primitive.value === 0  => false
+                | FloatPrimitiveExpression(primitive) if primitive.value === 0. => false
                 | _ => true
             }
         }
@@ -57,8 +57,8 @@ let _removeMultiplyOne = (factors: array<expression>): array<expression> => {
     factors->Js.Array2.filter(
         (factor: expression): bool => {
             switch factor {
-                | IntPrimitiveExpression(primitive)   if primitive.primitive === 1  => false
-                | FloatPrimitiveExpression(primitive) if primitive.primitive === 1. => false
+                | IntPrimitiveExpression(primitive)   if primitive.value === 1  => false
+                | FloatPrimitiveExpression(primitive) if primitive.value === 1. => false
                 | _ => true
             }
         }

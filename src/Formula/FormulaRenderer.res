@@ -62,14 +62,14 @@ let _subscriptAttrToTex = (subscript: option<string>, subscriptFontStyle: fontSt
 // Format a variable primitive
 let _varPrimitiveNodeToTex = (varPrimitive: varPrimitive, signMode: signMode): string => {
     _signAttrToTex(varPrimitive.sign, signMode) ++
-    _unicodeToTex(varPrimitive.primitive) ++
+    _unicodeToTex(varPrimitive.value) ++
     _subscriptAttrToTex(varPrimitive.subscript, varPrimitive.subscriptFontStyle)
 }
 
 // Format an integer primitive
 let _intPrimitiveNodeToTex = (intPrimitive: intPrimitive, signMode: signMode): string => {
     _signAttrToTex(intPrimitive.sign, signMode) ++
-    Belt.Int.toString(intPrimitive.primitive)
+    Belt.Int.toString(intPrimitive.value)
 }
 
 // Format a fraction primitive
@@ -86,7 +86,7 @@ let _fractionPrimitiveNodeToTex = (fractionPrimitive: fractionPrimitive, signMod
 // Format a float primitive
 let _floatPrimitiveNodeToTex = (floatPrimitive: floatPrimitive, signMode: signMode): string => {
     _signAttrToTex(floatPrimitive.sign, signMode) ++
-    Belt.Float.toString(floatPrimitive.primitive)
+    Belt.Float.toString(floatPrimitive.value)
 }
 
 /** **********************************************************************

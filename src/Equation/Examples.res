@@ -151,7 +151,7 @@ let examples: array<formula> = [
     ]),
     // Quadratic equation
     createEquationFormula([
-        createVarPrimitiveExpression("x", ~subscript="1,2"),
+        createVarPrimitiveExpression("x", ~subscript="1,2", ~subscriptFontStyle=Upright),
         createFractionExpression(
             createSumExpression([
                 createVarPrimitiveExpression("-b"),

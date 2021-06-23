@@ -23,14 +23,14 @@ type sign =
 
 type varPrimitive = {
     sign: sign,
-    primitive: string,
+    value: string,
     subscript: option<string>,
     subscriptFontStyle: fontStyle
 }
 
 type intPrimitive = {
     sign: sign,
-    primitive: int
+    value: int
 }
 
 and fractionPrimitive = {
@@ -42,7 +42,7 @@ and fractionPrimitive = {
 
 type floatPrimitive = {
     sign: sign,
-    primitive: float
+    value: float
 }
 
 /** ****************************************************************************

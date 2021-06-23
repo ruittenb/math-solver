@@ -37,21 +37,30 @@ let createTextExpression = (text: string): expression => {
 let createVarPrimitiveExpression = (
     ~subscript: option<string> = ?,
     ~subscriptFontStyle: fontStyle = Italic,
-    variable: string
+    value: string
 ): expression => {
-    if Js.String2.substring(variable, ~from=0, ~to_=0) === "-" {
-        let posVariable = variable->Js.String2.sliceToEnd(~from=1)
-        VarPrimitiveExpression({ sign: Minus, primitive: posVariable, subscript, subscriptFontStyle })
+    if Js.String2.substring(value, ~from=0, ~to_=0) === "-" {
+        VarPrimitiveExpression({
+            sign: Minus,
+            value: value->Js.String2.sliceToEnd(~from=1),
+            subscript,
+            subscriptFontStyle
+        })
     } else {
-        VarPrimitiveExpression({ sign: Plus, primitive: variable, subscript, subscriptFontStyle })
+        VarPrimitiveExpression({
+            sign: Plus,
+            value,
+            subscript,
+            subscriptFontStyle
+        })
     }
 }
 
-let createIntPrimitiveExpression = (n: int): expression => {
-    if n < 0 {
-        IntPrimitiveExpression({ sign: Minus, primitive: -n })
+let createIntPrimitiveExpression = (value: int): expression => {
+    if value < 0 {
+        IntPrimitiveExpression({ sign: Minus, value: -value })
     } else {
-        IntPrimitiveExpression({ sign: Plus, primitive: n })
+        IntPrimitiveExpression({ sign: Plus, value: value })
     }
 }
 
@@ -73,11 +82,11 @@ let createFractionPrimitiveExpression = (integer: int, numerator: int, denominat
     }
 }
 
-let createFloatPrimitiveExpression = (n: float): expression => {
-    if n < 0. {
-        FloatPrimitiveExpression({ sign: Minus, primitive: -.n })
+let createFloatPrimitiveExpression = (value: float): expression => {
+    if value < 0. {
+        FloatPrimitiveExpression({ sign: Minus, value: -.value })
     } else {
-        FloatPrimitiveExpression({ sign: Plus, primitive: n })
+        FloatPrimitiveExpression({ sign: Plus, value })
     }
 }
 

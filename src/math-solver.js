@@ -30,13 +30,19 @@ class MathSolver {
         this.render(formula);
     }
 
-    example() {
-        let formula = this.examples[this.currentExampleIndex++];
-        this.currentExampleIndex %= this.examples.length;
+    example(delta) {
+        let index = this.currentExampleIndex + delta;
+        if (index < 0) {
+            index += this.examples.length;
+        } else {
+            index %= this.examples.length;
+        }
+        let formula = this.examples[index];
         console.log('Formula:', formula);
         formula = this.cleanupFormula(formula);
         console.log('Cleaned formula:', formula);
         this.render(formula);
+        this.currentExampleIndex = index;
     }
 }
 
