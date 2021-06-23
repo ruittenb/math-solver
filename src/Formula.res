@@ -108,6 +108,8 @@ let createRootExpression = (~sign: sign = Plus, index: expression, radicand: exp
     })
 }
 
+// LaTeX: \lfloor \rfloor \lceil \rceil
+
 let createEquation = (members: array<expression>): equation => {
     { members: members }
 }

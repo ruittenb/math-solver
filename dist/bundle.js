@@ -423,7 +423,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.examples = void 0;
 
-var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
+var Formula$MathSolver = _interopRequireWildcard(require("../Formula.bs.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -434,12 +434,108 @@ var examples = [Formula$MathSolver.createEquationFormula([Formula$MathSolver.cre
 /* PlusMinus */
 2, [Formula$MathSolver.createIntPrimitiveExpression(3), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(2))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, "\xcf\x86"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createFractionPrimitiveExpression(0, 1, 2), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionPrimitiveExpression(0, 1, 2), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(5))])])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, "V"), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionPrimitiveExpression(0, 4, 3), Formula$MathSolver.createVarPrimitiveExpression(undefined, "\xcf\x80"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "r"), Formula$MathSolver.createIntPrimitiveExpression(3))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createRootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(3), Formula$MathSolver.createIntPrimitiveExpression(27))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, "y"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(3), Formula$MathSolver.createVarPrimitiveExpression(undefined, "x")]), Formula$MathSolver.createIntPrimitiveExpression(5))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, "y"), Formula$MathSolver.createRootExpression(undefined, Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(5)]), Formula$MathSolver.createIntPrimitiveExpression(3125))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression("1,2", "x"), Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "-b"), Formula$MathSolver.createSquarerootExpression(
 /* PlusMinus */
-2, Formula$MathSolver.createSumExpression([Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "b"), Formula$MathSolver.createIntPrimitiveExpression(2)), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(-4), Formula$MathSolver.createVarPrimitiveExpression(undefined, "a"), Formula$MathSolver.createVarPrimitiveExpression(undefined, "c")])]))]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(2), Formula$MathSolver.createVarPrimitiveExpression(undefined, "a")]))])];
+2, Formula$MathSolver.createSumExpression([Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "b"), Formula$MathSolver.createIntPrimitiveExpression(2)), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(-4), Formula$MathSolver.createVarPrimitiveExpression(undefined, "a"), Formula$MathSolver.createVarPrimitiveExpression(undefined, "c")])]))]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(2), Formula$MathSolver.createVarPrimitiveExpression(undefined, "a")]))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, "h"), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFloatPrimitiveExpression(13.1), Formula$MathSolver.createVarPrimitiveExpression(undefined, "Q"), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression("0", "\xce\xbc"), Formula$MathSolver.createVarPrimitiveExpression("0", "\xcf\xb5"))), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "\xce\xb6"), Formula$MathSolver.createIntPrimitiveExpression(2))])])];
 /* examples Not a pure module */
 
 exports.examples = examples;
 
-},{"./Formula.bs.js":7}],7:[function(require,module,exports){
+},{"../Formula.bs.js":8}],7:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports._generateShapeFactorSimple = _generateShapeFactorSimple;
+exports._generateShapeFactorHard = _generateShapeFactorHard;
+exports._generateShapeSquare = _generateShapeSquare;
+exports._generateShapeSquareConst = _generateShapeSquareConst;
+exports._generateShapeSquareLinear = _generateShapeSquareLinear;
+exports._generateShapeFullQuadratic = _generateShapeFullQuadratic;
+exports.generate = generate;
+
+var Random$MathSolver = _interopRequireWildcard(require("../Random.bs.js"));
+
+var Formula$MathSolver = _interopRequireWildcard(require("../Formula.bs.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Generated by ReScript, PLEASE EDIT WITH CARE
+function _generateShapeFactorSimple(rightMember) {
+  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Random$MathSolver.randomNumberPrimitiveExpression(undefined)])]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
+}
+
+function _generateShapeFactorHard(rightMember) {
+  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Random$MathSolver.randomNumberPrimitiveExpression(undefined)]), Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Random$MathSolver.randomNumberPrimitiveExpression(undefined)])]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
+}
+
+function _generateShapeSquare(rightMember) {
+  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
+}
+
+function _generateShapeSquareConst(rightMember) {
+  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Random$MathSolver.randomNumberPrimitiveExpression(undefined)]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
+}
+
+function _generateShapeSquareLinear(rightMember) {
+  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createVarPrimitiveExpression(undefined, "x")])]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
+}
+
+function _generateShapeFullQuadratic(rightMember) {
+  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createVarPrimitiveExpression(undefined, "x")]), Random$MathSolver.randomNumberPrimitiveExpression(undefined)]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
+}
+
+function generate(param) {
+  var shape = Random$MathSolver.randomPos(11);
+  var rightMember = Random$MathSolver.randomNumber(undefined);
+
+  switch (shape) {
+    case 0:
+      return _generateShapeFactorSimple(0);
+
+    case 1:
+      return _generateShapeFactorSimple(rightMember);
+
+    case 2:
+      return _generateShapeFactorHard(0);
+
+    case 3:
+      return _generateShapeFactorHard(rightMember);
+
+    case 4:
+      return _generateShapeSquare(rightMember);
+
+    case 5:
+      return _generateShapeSquareConst(0);
+
+    case 6:
+      return _generateShapeSquareConst(rightMember);
+
+    case 7:
+      return _generateShapeSquareLinear(0);
+
+    case 8:
+      return _generateShapeSquareLinear(rightMember);
+
+    case 9:
+      return _generateShapeFullQuadratic(0);
+
+    case 10:
+      return _generateShapeFullQuadratic(rightMember);
+
+    default:
+      return {
+        TAG:
+        /* Text */
+        2,
+        _0: ""
+      };
+  }
+}
+/* No side effect */
+
+},{"../Formula.bs.js":8,"../Random.bs.js":12}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -759,7 +855,7 @@ function createLogicalOrFormula(atoms) {
 }
 /* No side effect */
 
-},{"rescript/lib/es6/caml_option.js":2}],8:[function(require,module,exports){
+},{"rescript/lib/es6/caml_option.js":2}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1193,7 +1289,7 @@ function formulaNodeToTex(formula) {
 }
 /* Greek-MathSolver Not a pure module */
 
-},{"../Greek.bs.js":9,"../MultiplicationSymbol.bs.js":10,"rescript/lib/es6/caml_array.js":1,"rescript/lib/es6/js_dict.js":3}],9:[function(require,module,exports){
+},{"../Greek.bs.js":10,"../MultiplicationSymbol.bs.js":11,"rescript/lib/es6/caml_array.js":1,"rescript/lib/es6/js_dict.js":3}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1213,7 +1309,7 @@ var unicodeToTex = Js_dict.fromArray([["\xce\x91", "\\Alpha"], ["\xce\xb1", "\\a
 
 exports.unicodeToTex = unicodeToTex;
 
-},{"rescript/lib/es6/js_dict.js":3}],10:[function(require,module,exports){
+},{"rescript/lib/es6/js_dict.js":3}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1234,35 +1330,35 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 // Generated by ReScript, PLEASE EDIT WITH CARE
 var _tableRowText = Js_dict.fromArray([["TextExpression",
-/* None */
+/* NoSymbol */
 2], ["VarPrimitiveExpression",
-/* None */
+/* NoSymbol */
 2], ["IntPrimitiveExpression",
-/* None */
+/* NoSymbol */
 2], ["FractionPrimitiveExpression",
-/* None */
+/* NoSymbol */
 2], ["FloatPrimitiveExpression",
-/* None */
+/* NoSymbol */
 2], ["SumExpression",
-/* None */
+/* NoSymbol */
 2], ["ProductExpression",
-/* None */
+/* NoSymbol */
 2], ["FractionExpression",
-/* None */
+/* NoSymbol */
 2], ["PowerExpression",
-/* None */
+/* NoSymbol */
 2], ["SquareRootExpression",
-/* None */
+/* NoSymbol */
 2], ["RootExpression",
-/* None */
+/* NoSymbol */
 2]]);
 
 exports._tableRowText = _tableRowText;
 
 var _tableRowSum = Js_dict.fromArray([["TextExpression",
-/* None */
+/* NoSymbol */
 2], ["VarPrimitiveExpression",
-/* None */
+/* NoSymbol */
 2], ["IntPrimitiveExpression",
 /* Dot */
 1], ["FractionPrimitiveExpression",
@@ -1270,25 +1366,25 @@ var _tableRowSum = Js_dict.fromArray([["TextExpression",
 1], ["FloatPrimitiveExpression",
 /* Dot */
 1], ["SumExpression",
-/* None */
+/* NoSymbol */
 2], ["ProductExpression",
-/* None */
+/* NoSymbol */
 2], ["FractionExpression",
-/* None */
+/* NoSymbol */
 2], ["PowerExpression",
-/* None */
+/* NoSymbol */
 2], ["SquareRootExpression",
-/* None */
+/* NoSymbol */
 2], ["RootExpression",
-/* None */
+/* NoSymbol */
 2]]);
 
 exports._tableRowSum = _tableRowSum;
 
 var _tableRowPower = Js_dict.fromArray([["TextExpression",
-/* None */
+/* NoSymbol */
 2], ["VarPrimitiveExpression",
-/* None */
+/* NoSymbol */
 2], ["IntPrimitiveExpression",
 /* Dot */
 1], ["FractionPrimitiveExpression",
@@ -1296,25 +1392,25 @@ var _tableRowPower = Js_dict.fromArray([["TextExpression",
 1], ["FloatPrimitiveExpression",
 /* Dot */
 1], ["SumExpression",
-/* None */
+/* NoSymbol */
 2], ["ProductExpression",
 /* Dot */
 1], ["FractionExpression",
 /* Dot */
 1], ["PowerExpression",
-/* None */
+/* NoSymbol */
 2], ["SquareRootExpression",
-/* None */
+/* NoSymbol */
 2], ["RootExpression",
-/* None */
+/* NoSymbol */
 2]]);
 
 exports._tableRowPower = _tableRowPower;
 
 var _tableRowOther = Js_dict.fromArray([["TextExpression",
-/* None */
+/* NoSymbol */
 2], ["VarPrimitiveExpression",
-/* None */
+/* NoSymbol */
 2], ["IntPrimitiveExpression",
 /* Dot */
 1], ["FractionPrimitiveExpression",
@@ -1322,7 +1418,7 @@ var _tableRowOther = Js_dict.fromArray([["TextExpression",
 1], ["FloatPrimitiveExpression",
 /* Dot */
 1], ["SumExpression",
-/* None */
+/* NoSymbol */
 2], ["ProductExpression",
 /* Dot */
 1], ["FractionExpression",
@@ -1330,9 +1426,9 @@ var _tableRowOther = Js_dict.fromArray([["TextExpression",
 1], ["PowerExpression",
 /* Dot */
 1], ["SquareRootExpression",
-/* None */
+/* NoSymbol */
 2], ["RootExpression",
-/* None */
+/* NoSymbol */
 2]]);
 
 exports._tableRowOther = _tableRowOther;
@@ -1429,110 +1525,14 @@ function lookupTex(factorLeft, factorRight) {
       return " \\cdot ";
 
     case
-    /* None */
+    /* NoSymbol */
     2:
       return "";
   }
 }
 /* _tableRowText Not a pure module */
 
-},{"rescript/lib/es6/caml_option.js":2,"rescript/lib/es6/js_dict.js":3}],11:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports._generateShapeFactorSimple = _generateShapeFactorSimple;
-exports._generateShapeFactorHard = _generateShapeFactorHard;
-exports._generateShapeSquare = _generateShapeSquare;
-exports._generateShapeSquareConst = _generateShapeSquareConst;
-exports._generateShapeSquareLinear = _generateShapeSquareLinear;
-exports._generateShapeFullQuadratic = _generateShapeFullQuadratic;
-exports.generate = generate;
-
-var Random$MathSolver = _interopRequireWildcard(require("./Random.bs.js"));
-
-var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Generated by ReScript, PLEASE EDIT WITH CARE
-function _generateShapeFactorSimple(rightMember) {
-  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Random$MathSolver.randomNumberPrimitiveExpression(undefined)])]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
-}
-
-function _generateShapeFactorHard(rightMember) {
-  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Random$MathSolver.randomNumberPrimitiveExpression(undefined)]), Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Random$MathSolver.randomNumberPrimitiveExpression(undefined)])]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
-}
-
-function _generateShapeSquare(rightMember) {
-  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
-}
-
-function _generateShapeSquareConst(rightMember) {
-  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Random$MathSolver.randomNumberPrimitiveExpression(undefined)]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
-}
-
-function _generateShapeSquareLinear(rightMember) {
-  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createVarPrimitiveExpression(undefined, "x")])]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
-}
-
-function _generateShapeFullQuadratic(rightMember) {
-  return Formula$MathSolver.createEquationFormula([Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(2))]), Formula$MathSolver.createProductExpression(undefined, [Random$MathSolver.randomNumberPrimitiveExpression(undefined), Formula$MathSolver.createVarPrimitiveExpression(undefined, "x")]), Random$MathSolver.randomNumberPrimitiveExpression(undefined)]), Formula$MathSolver.createIntPrimitiveExpression(rightMember)]);
-}
-
-function generate(param) {
-  var shape = Random$MathSolver.randomPos(11);
-  var rightMember = Random$MathSolver.randomNumber(undefined);
-
-  switch (shape) {
-    case 0:
-      return _generateShapeFactorSimple(0);
-
-    case 1:
-      return _generateShapeFactorSimple(rightMember);
-
-    case 2:
-      return _generateShapeFactorHard(0);
-
-    case 3:
-      return _generateShapeFactorHard(rightMember);
-
-    case 4:
-      return _generateShapeSquare(rightMember);
-
-    case 5:
-      return _generateShapeSquareConst(0);
-
-    case 6:
-      return _generateShapeSquareConst(rightMember);
-
-    case 7:
-      return _generateShapeSquareLinear(0);
-
-    case 8:
-      return _generateShapeSquareLinear(rightMember);
-
-    case 9:
-      return _generateShapeFullQuadratic(0);
-
-    case 10:
-      return _generateShapeFullQuadratic(rightMember);
-
-    default:
-      return {
-        TAG:
-        /* Text */
-        2,
-        _0: ""
-      };
-  }
-}
-/* No side effect */
-
-},{"./Formula.bs.js":7,"./Random.bs.js":12}],12:[function(require,module,exports){
+},{"rescript/lib/es6/caml_option.js":2,"rescript/lib/es6/js_dict.js":3}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1585,7 +1585,7 @@ var limit = 12;
 
 exports.limit = limit;
 
-},{"./Formula.bs.js":7,"rescript/lib/es6/js_math.js":5}],13:[function(require,module,exports){
+},{"./Formula.bs.js":8,"rescript/lib/es6/js_math.js":5}],13:[function(require,module,exports){
 // Generated by ReScript, PLEASE EDIT WITH CARE
 /* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
 
@@ -1594,9 +1594,9 @@ exports.limit = limit;
 
 var FormulaRenderer = _interopRequireWildcard(require("./Formula/FormulaRenderer.bs"));
 
-var Examples = _interopRequireWildcard(require("./Examples.bs"));
+var Examples = _interopRequireWildcard(require("./Equation/Examples.bs"));
 
-var QuadraticEquation = _interopRequireWildcard(require("./QuadraticEquation.bs"));
+var QuadraticEquation = _interopRequireWildcard(require("./Equation/QuadraticEquation.bs"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -1635,4 +1635,4 @@ class MathSolver {
 
 window.MathSolver = MathSolver;
 
-},{"./Examples.bs":6,"./Formula/FormulaRenderer.bs":8,"./QuadraticEquation.bs":11}]},{},[6,7,9,10,11,12,13,14]);
+},{"./Equation/Examples.bs":6,"./Equation/QuadraticEquation.bs":7,"./Formula/FormulaRenderer.bs":9}]},{},[8,10,11,12,13,14]);

@@ -6,8 +6,8 @@
  */
 
 import * as FormulaRenderer from './Formula/FormulaRenderer.bs';
-import * as Examples from './Examples.bs';
-import * as QuadraticEquation from './QuadraticEquation.bs';
+import * as Examples from './Equation/Examples.bs';
+import * as QuadraticEquation from './Equation/QuadraticEquation.bs';
 
 class MathSolver {
 

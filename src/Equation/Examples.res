@@ -167,6 +167,24 @@ let examples: array<formula> = [
                 createVarPrimitiveExpression("a"),
             ])
         )
+    ]),
+    // Planck constant h = 13.1 Q √(μ0/ε0)ζ^2
+    createEquationFormula([
+        createVarPrimitiveExpression("h"),
+        createProductExpression([
+            createFloatPrimitiveExpression(13.1),
+            createVarPrimitiveExpression("Q"),
+            createSquarerootExpression(
+                createFractionExpression(
+                    createVarPrimitiveExpression("μ", ~subscript="0"),
+                    createVarPrimitiveExpression("ϵ", ~subscript="0"),
+                )
+            ),
+            createPowerExpression(
+                createVarPrimitiveExpression("ζ"),
+                createIntPrimitiveExpression(2)
+            )
+        ])
     ])
 ]
 

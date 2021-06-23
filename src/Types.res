@@ -8,7 +8,7 @@
 @@warning("-30")
 
 /** ****************************************************************************
- * Simples
+ * Primitives
  */
 
 type sign =
@@ -41,7 +41,7 @@ type floatPrimitive = {
 }
 
 /** ****************************************************************************
- * Expression and its components
+ * Expressions and their components
  */
 
 type rec sum = {
@@ -109,5 +109,19 @@ type formula =
     | LogicalOr(logicalOr)
     | Equation(equation)
     | Text(string)
+
+/** ****************************************************************************
+ * Steps to solve
+ */
+
+type step =
+    | AddConstant(float)      // +n both sides
+    | MultiplyConstant(float) // *n both sides
+    | Power(float)            // ^n both sides
+    | TakeRoot(float)         // n√ both sides
+    | Factor                  // x^2 + x => x (x + 1)
+    | Distribute              // x (x + 2) => x^2 + 2x
+    | Gather                  // X^2 + 4 + x - 3 + 5x => x^2 + 6x + 1
+    | Switch                  // a = b => b = a
 
 // vim: set ts=4 sw=4 et list nu fdm=marker:

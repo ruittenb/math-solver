@@ -6,63 +6,63 @@
 open Types
 
 type multiplicationSymbol =
-    | Cross // ×  \times
-    | Dot   // ·  \cdot
-    | None
+    | Cross    // ×  \times
+    | Dot      // ·  \cdot
+    | NoSymbol
 
 let _tableRowText = Js.Dict.fromArray([
-    ("TextExpression",              None),
-    ("VarPrimitiveExpression",      None),
-    ("IntPrimitiveExpression",      None),
-    ("FractionPrimitiveExpression", None),
-    ("FloatPrimitiveExpression",    None),
-    ("SumExpression",               None),
-    ("ProductExpression",           None),
-    ("FractionExpression",          None),
-    ("PowerExpression",             None),
-    ("SquareRootExpression",        None),
-    ("RootExpression",              None),
+    ("TextExpression",              NoSymbol),
+    ("VarPrimitiveExpression",      NoSymbol),
+    ("IntPrimitiveExpression",      NoSymbol),
+    ("FractionPrimitiveExpression", NoSymbol),
+    ("FloatPrimitiveExpression",    NoSymbol),
+    ("SumExpression",               NoSymbol),
+    ("ProductExpression",           NoSymbol),
+    ("FractionExpression",          NoSymbol),
+    ("PowerExpression",             NoSymbol),
+    ("SquareRootExpression",        NoSymbol),
+    ("RootExpression",              NoSymbol),
 ])
 let _tableRowSum = Js.Dict.fromArray([
-    ("TextExpression",              None),
-    ("VarPrimitiveExpression",      None),
+    ("TextExpression",              NoSymbol),
+    ("VarPrimitiveExpression",      NoSymbol),
     ("IntPrimitiveExpression",      Dot),
     ("FractionPrimitiveExpression", Dot),
     ("FloatPrimitiveExpression",    Dot),
-    ("SumExpression",               None),
-    ("ProductExpression",           None),
-    ("FractionExpression",          None),
-    ("PowerExpression",             None),
-    ("SquareRootExpression",        None),
-    ("RootExpression",              None),
+    ("SumExpression",               NoSymbol),
+    ("ProductExpression",           NoSymbol),
+    ("FractionExpression",          NoSymbol),
+    ("PowerExpression",             NoSymbol),
+    ("SquareRootExpression",        NoSymbol),
+    ("RootExpression",              NoSymbol),
 ])
 
 let _tableRowPower = Js.Dict.fromArray([
-    ("TextExpression",              None),
-    ("VarPrimitiveExpression",      None),
+    ("TextExpression",              NoSymbol),
+    ("VarPrimitiveExpression",      NoSymbol),
     ("IntPrimitiveExpression",      Dot),
     ("FractionPrimitiveExpression", Dot),
     ("FloatPrimitiveExpression",    Dot),
-    ("SumExpression",               None),
+    ("SumExpression",               NoSymbol),
     ("ProductExpression",           Dot),
     ("FractionExpression",          Dot),
-    ("PowerExpression",             None),
-    ("SquareRootExpression",        None),
-    ("RootExpression",              None),
+    ("PowerExpression",             NoSymbol),
+    ("SquareRootExpression",        NoSymbol),
+    ("RootExpression",              NoSymbol),
 ])
 
 let _tableRowOther = Js.Dict.fromArray([
-    ("TextExpression",              None),
-    ("VarPrimitiveExpression",      None),
+    ("TextExpression",              NoSymbol),
+    ("VarPrimitiveExpression",      NoSymbol),
     ("IntPrimitiveExpression",      Dot),
     ("FractionPrimitiveExpression", Dot),
     ("FloatPrimitiveExpression",    Dot),
-    ("SumExpression",               None),
+    ("SumExpression",               NoSymbol),
     ("ProductExpression",           Dot),
     ("FractionExpression",          Dot),
     ("PowerExpression",             Dot),
-    ("SquareRootExpression",        None),
-    ("RootExpression",              None),
+    ("SquareRootExpression",        NoSymbol),
+    ("RootExpression",              NoSymbol),
 ])
 
 let _table = Js.Dict.fromArray([
@@ -103,7 +103,7 @@ let _andThenGet = (maybeDict: option<Js.Dict.t<'m>>, index: string): option<'m> 
 }
 
 let lookupTex = (factorLeft: expression, factorRight: expression): string => {
-    let leftIndex = _multiplicationSymbolLookupIndex(factorLeft)
+    let leftIndex  = _multiplicationSymbolLookupIndex(factorLeft)
     let rightIndex = _multiplicationSymbolLookupIndex(factorRight)
 
     let maybeSymbol = Some(_table)
@@ -111,10 +111,10 @@ let lookupTex = (factorLeft: expression, factorRight: expression): string => {
         ->_andThenGet(rightIndex)
 
     switch maybeSymbol {
-        | Some(Cross) => " \\times "
-        | Some(Dot)   => " \\cdot "
-        | Some(None)  => ""
-        | None        => ""
+        | Some(Cross)    => " \\times "
+        | Some(Dot)      => " \\cdot "
+        | Some(NoSymbol) => ""
+        | None           => ""
     }
 }
 
