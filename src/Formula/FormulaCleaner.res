@@ -1,7 +1,10 @@
 
 /** **********************************************************************
- * formula management
+ * Formula management
  */
+
+open Types
+open Formula
 
 //    simplify() {
 //        console.log('TODO not yet implemented');
@@ -15,6 +18,8 @@
 //    }
 
 
+// sum constants
+
 // add like terms
 
 // simplify fractions
@@ -23,10 +28,44 @@
 
 // multiply constants
 
-// sum constants
-
 // reverse some orders like [ FractionExpression, constPrimitive ]
 
 // multiply by zero or one
 
 // add zero
+
+// replace (expr)^ -1 with 1 / expr
+
+let _cleanupExpression = (expression: expression): expression => {
+    expression
+}
+
+let _cleanupEquation = (equation: equation): equation => {
+    equation.members->Js.Array2.reduce(
+        (acc: array<expression>, expression: expression): array<expression> => {
+            // Note that Array2.push() is not pure
+            let _ = acc->Js.Array2.push(expression->_cleanupExpression)
+            acc
+        },
+        []
+    )->createEquation
+}
+
+let _cleanupEquations = (equations: array<equation>): array<equation> => {
+    equations->Js.Array2.reduce(
+        (acc: array<equation>, equation: equation): array<equation> => {
+            // Note that Array2.push() is not pure
+            let _ = acc->Js.Array2.push(equation->_cleanupEquation)
+            acc
+        },
+        []
+    )
+}
+
+let cleanup = (formula: formula): formula => {
+    switch formula {
+        | LogicalOr(logicalOr) => createLogicalOrFormula(_cleanupEquations(logicalOr.atoms))
+        | Equation(equation)   => createEquationFormula(_cleanupEquation(equation).members)
+        | Text(_)              => formula
+    }
+}

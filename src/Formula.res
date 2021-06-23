@@ -5,6 +5,7 @@
 
 open Types
 
+/*
 let _toggleSign = (sign: sign): sign => {
     switch sign {
         | Plus      => Minus
@@ -13,13 +14,16 @@ let _toggleSign = (sign: sign): sign => {
         | MinusPlus => PlusMinus
     }
 }
+*/
 
+/*
 let _withDefault = (opt: option<'t>, default: 't) => {
     switch opt {
         | Some(value) => value
         | None        => default
     }
 }
+*/
 
 /** ****************************************************************************
  * Constructors
@@ -30,12 +34,16 @@ let createTextExpression = (text: string): expression => {
     text->TextExpression
 }
 
-let createVarPrimitiveExpression = (~subscript: option<string> = ?, variable: string): expression => {
+let createVarPrimitiveExpression = (
+    ~subscript: option<string> = ?,
+    ~subscriptFontStyle: fontStyle = Italic,
+    variable: string
+): expression => {
     if Js.String2.substring(variable, ~from=0, ~to_=0) === "-" {
         let posVariable = variable->Js.String2.sliceToEnd(~from=1)
-        VarPrimitiveExpression({ sign: Minus, primitive: posVariable, subscript })
+        VarPrimitiveExpression({ sign: Minus, primitive: posVariable, subscript, subscriptFontStyle })
     } else {
-        VarPrimitiveExpression({ sign: Plus, primitive: variable, subscript })
+        VarPrimitiveExpression({ sign: Plus, primitive: variable, subscript, subscriptFontStyle })
     }
 }
 

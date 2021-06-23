@@ -10,7 +10,7 @@ type signMode =
     | NoPlus
     | AllSign
 
-let delimiter: string = "$$"
+let texDelimiter: string = "$$"
 
 /** **********************************************************************
  * Conversions of attributes and leaf nodes to Tex
@@ -36,10 +36,17 @@ let _signAttrToTex = (sign: sign, signMode: signMode): string => {
     }
 }
 
+let _applyFontStyle = (str: string, fontStyle: fontStyle) => {
+    switch fontStyle {
+        | Normal => ` \\\\mathrm{ ${str} } `
+        | Italic => ` \\\\mathit{ ${str} } `
+    }
+}
+
 // Format the subscript for a primitive node
-let _subscriptAttrToTex = (subscript: option<string>): string => {
+let _subscriptAttrToTex = (subscript: option<string>, subscriptFontStyle: fontStyle): string => {
     switch subscript {
-        | Some(str) => ` _{ ${str} } `
+        | Some(str) => " _{ " ++ str->_applyFontStyle(subscriptFontStyle) ++ " } "
         | None      => ""
     }
 }
@@ -56,7 +63,7 @@ let _variableToTex = (variable: string) => {
 let _varPrimitiveNodeToTex = (varPrimitive: varPrimitive, signMode: signMode): string => {
     _signAttrToTex(varPrimitive.sign, signMode) ++
     _variableToTex(varPrimitive.primitive) ++
-    _subscriptAttrToTex(varPrimitive.subscript)
+    _subscriptAttrToTex(varPrimitive.subscript, varPrimitive.subscriptFontStyle)
 }
 
 // Format an integer primitive
@@ -225,7 +232,7 @@ let formulaNodeToTex = (formula: formula): string => {
         | Equation(eq)         => _equationNodeToTex(eq)
         | Text(text)           => _textToTex(text)
     }
-    delimiter ++ texFormula ++ delimiter
+    texDelimiter ++ texFormula ++ texDelimiter
 }
 
 // vim: set ts=4 sw=4 et list nu fdm=marker:
