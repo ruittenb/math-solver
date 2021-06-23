@@ -1,6 +1,6 @@
 {
   "name": "math-solver",
-  "version": "0.50",
+  "version": "0.52",
   "description": "Math and Quadratic equation renderer and solver",
   "author": "René Uittenbogaard <ruittenb@gmail.com>",
   "license": "CC-BY-NC-2.0",

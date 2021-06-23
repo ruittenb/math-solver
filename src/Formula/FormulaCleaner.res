@@ -46,11 +46,11 @@ let _removeAddZero = (terms: array<expression>): array<expression> => {
     )
 }
 
-let _cleanupSum = (sum: sum): sum => {
-    let _ = sum.terms
+let _cleanupSumToExpression = (sum: sum): expression => {
+    sum.terms
         ->_removeAddZero
         // -> recurse
-    sum
+        ->createSumExpression
 }
 
 let _removeMultiplyOne = (factors: array<expression>): array<expression> => {
@@ -65,11 +65,11 @@ let _removeMultiplyOne = (factors: array<expression>): array<expression> => {
     )
 }
 
-let _cleanupProduct = (product: product): product => {
-    let _ = product.factors
+let _cleanupProductToExpression = (product: product): expression => {
+    product.factors
         ->_removeMultiplyOne
         // -> recurse
-    product
+        ->createProductExpression(~sign=product.sign)
 }
 
 let _cleanupExpression = (expression: expression): expression => {
@@ -79,8 +79,8 @@ let _cleanupExpression = (expression: expression): expression => {
         | IntPrimitiveExpression(_)              => expression
         | FractionPrimitiveExpression(primitive) => expression // _fractionPrimitiveNodeToTex(primitive, NoPlus)
         | FloatPrimitiveExpression(_)            => expression
-        | SumExpression(sum)                     => sum->_cleanupSum->SumExpression
-        | ProductExpression(product)             => product->_cleanupProduct->ProductExpression
+        | SumExpression(sum)                     => sum->_cleanupSumToExpression
+        | ProductExpression(product)             => product->_cleanupProductToExpression
         | FractionExpression(fraction)           => expression // _fractionNodeToTex(fraction, NoPlus)
         | PowerExpression(power)                 => expression // _powerNodeToTex(power, NoPlus)
         | SquarerootExpression(squareroot)       => expression // _squarerootNodeToTex(squareroot, NoPlus)
@@ -94,10 +94,10 @@ let _cleanupMembers = (expressions: array<expression>): array<expression> => {
 }
 
 let _cleanupEquation = (equation: equation): equation => {
-    let _ = equation.members
+    equation.members
         ->_cleanupMembers
+        ->createEquation
     // also, perform actions on "both" sides (i.e. all members)
-    equation
 }
 
 let _cleanupEquations = (equations: array<equation>): array<equation> => {
@@ -107,8 +107,8 @@ let _cleanupEquations = (equations: array<equation>): array<equation> => {
 
 let cleanup = (formula: formula): formula => {
     switch formula {
-        | LogicalOr(logicalOr) => createLogicalOrFormula(_cleanupEquations(logicalOr.atoms))
-        | Equation(equation)   => Equation(_cleanupEquation(equation))
+        | LogicalOr(logicalOr) => logicalOr.atoms->_cleanupEquations->createLogicalOrFormula
+        | Equation(equation)   => equation.members->_cleanupMembers->createEquationFormula
         | Text(_)              => formula
     }
 }

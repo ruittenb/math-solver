@@ -44,10 +44,14 @@ let _unicodeToTex = (variable: string): string => {
     }
 }
 
+// Format font as "Roman" or "Italic"
 let _applyFontStyle = (str: string, fontStyle: fontStyle) => {
+    let isDigit = Js.Re.fromString("^[0-9]")->Js.Re.test_(str)
     switch fontStyle {
-        | Upright => ` \\\\mathrm{ ${str} } `
-        | Italic  => ` \\\\mathit{ ${str} } `
+        | Upright            => ` \\\\mathrm{ ${str} } `
+        | Italic             => ` \\\\mathit{ ${str} } `
+        | Default if isDigit => ` \\\\mathrm{ ${str} } `
+        | Default            => ` \\\\mathit{ ${str} } `
     }
 }
 

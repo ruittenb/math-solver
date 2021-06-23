@@ -14,6 +14,7 @@
 type fontStyle =
     | Upright
     | Italic
+    | Default // Upright for digits, Italic for letters
 
 type sign =
     | Plus

@@ -20,6 +20,12 @@ class MathSolver {
         this.currentExampleIndex = 0;
     }
 
+    debug(formula) {
+        console.log('Formula:', this.formulaNodeToTex(formula));
+        const cleanFormula = this.cleanupFormula(formula);
+        console.log('Cleaned formula:', this.formulaNodeToTex(cleanFormula));
+    }
+
     render(formula) {
         this.displayNode.innerHTML = this.formulaNodeToTex(formula);
         MathJax.typeset();
@@ -37,12 +43,9 @@ class MathSolver {
         } else {
             index %= this.examples.length;
         }
-        let formula = this.examples[index];
-        console.log('Formula:', formula);
-        formula = this.cleanupFormula(formula);
-        console.log('Cleaned formula:', formula);
-        this.render(formula);
         this.currentExampleIndex = index;
+        let formula = this.examples[index];
+        this.render(formula);
     }
 }
 

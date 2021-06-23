@@ -151,7 +151,7 @@ let examples: array<formula> = [
     ]),
     // Quadratic equation
     createEquationFormula([
-        createVarPrimitiveExpression("x", ~subscript="1,2", ~subscriptFontStyle=Upright),
+        createVarPrimitiveExpression("x", ~subscript="1,2"),
         createFractionExpression(
             createSumExpression([
                 createVarPrimitiveExpression("-b"),
@@ -197,7 +197,10 @@ let examples: array<formula> = [
     // Spectral radiance
     // https://en.wikipedia.org/wiki/Planck_constant#Origin_of_the_constant
     createEquationFormula([
-        createVarPrimitiveExpression("B", ~subscript="λ"),
+        createProductExpression([
+            createVarPrimitiveExpression("B", ~subscript="λ"),
+            createTextExpression("(λ,T)"),
+        ]),
         createProductExpression([
             createFractionExpression(
                 createProductExpression([

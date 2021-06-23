@@ -36,7 +36,7 @@ let createTextExpression = (text: string): expression => {
 
 let createVarPrimitiveExpression = (
     ~subscript: option<string> = ?,
-    ~subscriptFontStyle: fontStyle = Italic,
+    ~subscriptFontStyle: fontStyle = Default,
     value: string
 ): expression => {
     if Js.String2.substring(value, ~from=0, ~to_=0) === "-" {
