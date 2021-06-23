@@ -32,40 +32,83 @@ open Formula
 
 // multiply by zero or one
 
-// add zero
-
 // replace (expr)^ -1 with 1 / expr
 
+let _removeAddZero = (terms: array<expression>): array<expression> => {
+    terms->Js.Array2.filter(
+        (term: expression): bool => {
+            switch term {
+                | IntPrimitiveExpression(primitive)   if primitive.primitive === 0  => false
+                | FloatPrimitiveExpression(primitive) if primitive.primitive === 0. => false
+                | _ => true
+            }
+        }
+    )
+}
+
+let _cleanupSum = (sum: sum): sum => {
+    let _ = sum.terms
+        ->_removeAddZero
+        // -> recurse
+    sum
+}
+
+let _removeMultiplyOne = (factors: array<expression>): array<expression> => {
+    factors->Js.Array2.filter(
+        (factor: expression): bool => {
+            switch factor {
+                | IntPrimitiveExpression(primitive)   if primitive.primitive === 1  => false
+                | FloatPrimitiveExpression(primitive) if primitive.primitive === 1. => false
+                | _ => true
+            }
+        }
+    )
+}
+
+let _cleanupProduct = (product: product): product => {
+    let _ = product.factors
+        ->_removeMultiplyOne
+        // -> recurse
+    product
+}
+
 let _cleanupExpression = (expression: expression): expression => {
-    expression
+    switch expression {
+        | TextExpression(_)                      => expression
+        | VarPrimitiveExpression(_)              => expression
+        | IntPrimitiveExpression(_)              => expression
+        | FractionPrimitiveExpression(primitive) => expression // _fractionPrimitiveNodeToTex(primitive, NoPlus)
+        | FloatPrimitiveExpression(_)            => expression
+        | SumExpression(sum)                     => sum->_cleanupSum->SumExpression
+        | ProductExpression(product)             => product->_cleanupProduct->ProductExpression
+        | FractionExpression(fraction)           => expression // _fractionNodeToTex(fraction, NoPlus)
+        | PowerExpression(power)                 => expression // _powerNodeToTex(power, NoPlus)
+        | SquarerootExpression(squareroot)       => expression // _squarerootNodeToTex(squareroot, NoPlus)
+        | RootExpression(root)                   => expression // _rootNodeToTex(root, NoPlus)
+    }
+}
+
+let _cleanupMembers = (expressions: array<expression>): array<expression> => {
+    expressions
+        ->Js.Array2.map(_cleanupExpression)
 }
 
 let _cleanupEquation = (equation: equation): equation => {
-    equation.members->Js.Array2.reduce(
-        (acc: array<expression>, expression: expression): array<expression> => {
-            // Note that Array2.push() is not pure
-            let _ = acc->Js.Array2.push(expression->_cleanupExpression)
-            acc
-        },
-        []
-    )->createEquation
+    let _ = equation.members
+        ->_cleanupMembers
+    // also, perform actions on "both" sides (i.e. all members)
+    equation
 }
 
 let _cleanupEquations = (equations: array<equation>): array<equation> => {
-    equations->Js.Array2.reduce(
-        (acc: array<equation>, equation: equation): array<equation> => {
-            // Note that Array2.push() is not pure
-            let _ = acc->Js.Array2.push(equation->_cleanupEquation)
-            acc
-        },
-        []
-    )
+    equations
+        ->Js.Array2.map(_cleanupEquation)
 }
 
 let cleanup = (formula: formula): formula => {
     switch formula {
         | LogicalOr(logicalOr) => createLogicalOrFormula(_cleanupEquations(logicalOr.atoms))
-        | Equation(equation)   => createEquationFormula(_cleanupEquation(equation).members)
+        | Equation(equation)   => Equation(_cleanupEquation(equation))
         | Text(_)              => formula
     }
 }

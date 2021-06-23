@@ -7,6 +7,14 @@ open Types
 open Formula
 
 let examples: array<formula> = [
+    // y = x + 0
+    createEquationFormula([
+        createVarPrimitiveExpression("y"),
+        createSumExpression([
+            createVarPrimitiveExpression("x"),
+            createIntPrimitiveExpression(0)
+        ])
+    ]),
     // x = 1/2 + 1/3
     createEquationFormula([
         createVarPrimitiveExpression("x"),
@@ -183,6 +191,47 @@ let examples: array<formula> = [
             createPowerExpression(
                 createVarPrimitiveExpression("ζ"),
                 createIntPrimitiveExpression(2)
+            )
+        ])
+    ]),
+    // Spectral radiance
+    // https://en.wikipedia.org/wiki/Planck_constant#Origin_of_the_constant
+    createEquationFormula([
+        createVarPrimitiveExpression("B", ~subscript="λ"),
+        createProductExpression([
+            createFractionExpression(
+                createProductExpression([
+                    createIntPrimitiveExpression(2),
+                    createVarPrimitiveExpression("h"),
+                    createPowerExpression(
+                        createVarPrimitiveExpression("c"),
+                        createIntPrimitiveExpression(2)
+                    )
+                ]),
+                createPowerExpression(
+                    createVarPrimitiveExpression("λ"),
+                    createIntPrimitiveExpression(5)
+                )
+            ),
+            createFractionExpression(
+                createIntPrimitiveExpression(1),
+                createSumExpression([
+                    createPowerExpression(
+                        createVarPrimitiveExpression("e"),
+                        createFractionExpression(
+                            createProductExpression([
+                                createVarPrimitiveExpression("h"),
+                                createVarPrimitiveExpression("c"),
+                            ]),
+                            createProductExpression([
+                                createVarPrimitiveExpression("λ"),
+                                createVarPrimitiveExpression("k", ~subscript="B", ~subscriptFontStyle=Upright),
+                                createVarPrimitiveExpression("T"),
+                            ]),
+                        )
+                    ),
+                    createIntPrimitiveExpression(-1)
+                ])
             )
         ])
     ])

@@ -12,7 +12,7 @@
  */
 
 type fontStyle =
-    | Normal
+    | Upright
     | Italic
 
 type sign =
@@ -82,7 +82,7 @@ and root = {
 }
 
 // possible extensions: absolute values, floor, ceiling
-// vectors
+// vectors: \overrightarrow \vec
 // x element of R etc.
 
 and expression =

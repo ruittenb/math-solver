@@ -36,33 +36,33 @@ let _signAttrToTex = (sign: sign, signMode: signMode): string => {
     }
 }
 
+// Format Greek letters in variables
+let _unicodeToTex = (variable: string): string => {
+    switch Js.Dict.get(Greek.unicodeToTex, variable) {
+        | Some(texString) => " " ++ texString ++ " "
+        | None            => variable
+    }
+}
+
 let _applyFontStyle = (str: string, fontStyle: fontStyle) => {
     switch fontStyle {
-        | Normal => ` \\\\mathrm{ ${str} } `
-        | Italic => ` \\\\mathit{ ${str} } `
+        | Upright => ` \\\\mathrm{ ${str} } `
+        | Italic  => ` \\\\mathit{ ${str} } `
     }
 }
 
 // Format the subscript for a primitive node
 let _subscriptAttrToTex = (subscript: option<string>, subscriptFontStyle: fontStyle): string => {
     switch subscript {
-        | Some(str) => " _{ " ++ str->_applyFontStyle(subscriptFontStyle) ++ " } "
+        | Some(str) => " _{ " ++ str->_unicodeToTex->_applyFontStyle(subscriptFontStyle) ++ " } "
         | None      => ""
-    }
-}
-
-// Format Greek letters in variables
-let _variableToTex = (variable: string) => {
-    switch Js.Dict.get(Greek.unicodeToTex, variable) {
-        | Some(texString) => texString
-        | None            => variable
     }
 }
 
 // Format a variable primitive
 let _varPrimitiveNodeToTex = (varPrimitive: varPrimitive, signMode: signMode): string => {
     _signAttrToTex(varPrimitive.sign, signMode) ++
-    _variableToTex(varPrimitive.primitive) ++
+    _unicodeToTex(varPrimitive.primitive) ++
     _subscriptAttrToTex(varPrimitive.subscript, varPrimitive.subscriptFontStyle)
 }
 
