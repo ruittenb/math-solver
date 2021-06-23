@@ -3,7 +3,7 @@
  * http://oeis.org/wiki/List_of_LaTeX_mathematical_symbols
  */
 
-let unicodeToTex = Js.Dict.fromArray([
+let table = Js.Dict.fromArray([
     ("Α", "\\Alpha"),
     ("α", "\\alpha"),
     ("Β", "\\Beta"),
@@ -60,5 +60,12 @@ let unicodeToTex = Js.Dict.fromArray([
     ("Ω", "\\Omega"),
     ("ω", "\\omega"),
 ])
+
+let lookupTex = (str: string): string => {
+    switch Js.Dict.get(table, str) {
+        | Some(texString) => " " ++ texString ++ " "
+        | None            => str
+    }
+}
 
 // vim: set ts=4 sw=4 et list nu fdm=marker:

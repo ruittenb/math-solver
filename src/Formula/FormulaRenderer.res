@@ -38,10 +38,7 @@ let _signAttrToTex = (sign: sign, signMode: signMode): string => {
 
 // Format Greek letters in variables
 let _unicodeToTex = (variable: string): string => {
-    switch Js.Dict.get(Greek.unicodeToTex, variable) {
-        | Some(texString) => " " ++ texString ++ " "
-        | None            => variable
-    }
+    Greek.lookupTex(variable)
 }
 
 // Format font as "Roman" or "Italic"

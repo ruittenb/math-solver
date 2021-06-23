@@ -537,7 +537,7 @@ function generate(param) {
 }
 /* No side effect */
 
-},{"../Formula.bs.js":8,"../Random.bs.js":13}],8:[function(require,module,exports){
+},{"../Formula.bs.js":8,"../Random.bs.js":11}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -936,7 +936,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports._textToTex = _textToTex;
 exports._signAttrToTex = _signAttrToTex;
-exports._unicodeToTex = _unicodeToTex;
 exports._applyFontStyle = _applyFontStyle;
 exports._subscriptAttrToTex = _subscriptAttrToTex;
 exports._varPrimitiveNodeToTex = _varPrimitiveNodeToTex;
@@ -955,15 +954,13 @@ exports._rootNodeToTex = _rootNodeToTex;
 exports._equationNodeToTex = _equationNodeToTex;
 exports._logicalOrNodeToTex = _logicalOrNodeToTex;
 exports.formulaNodeToTex = formulaNodeToTex;
-exports.texDelimiter = void 0;
-
-var Js_dict = _interopRequireWildcard(require("rescript/lib/es6/js_dict.js"));
+exports._unicodeToTex = exports.texDelimiter = void 0;
 
 var Caml_array = _interopRequireWildcard(require("rescript/lib/es6/caml_array.js"));
 
-var Greek$MathSolver = _interopRequireWildcard(require("../Greek.bs.js"));
+var Greek$MathSolver = _interopRequireWildcard(require("../Tables/Greek.bs.js"));
 
-var MultiplicationSymbol$MathSolver = _interopRequireWildcard(require("../MultiplicationSymbol.bs.js"));
+var MultiplicationSymbol$MathSolver = _interopRequireWildcard(require("../Tables/MultiplicationSymbol.bs.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -1026,15 +1023,8 @@ function _signAttrToTex(sign, signMode) {
   }
 }
 
-function _unicodeToTex(variable) {
-  var texString = Js_dict.get(Greek$MathSolver.unicodeToTex, variable);
-
-  if (texString !== undefined) {
-    return " " + texString + " ";
-  } else {
-    return variable;
-  }
-}
+var _unicodeToTex = Greek$MathSolver.lookupTex;
+exports._unicodeToTex = _unicodeToTex;
 
 function _applyFontStyle(str, fontStyle) {
   var isDigit = new RegExp("^[0-9]").test(str);
@@ -1064,14 +1054,14 @@ function _applyFontStyle(str, fontStyle) {
 
 function _subscriptAttrToTex(subscript, subscriptFontStyle) {
   if (subscript !== undefined) {
-    return " _{ " + _applyFontStyle(_unicodeToTex(subscript), subscriptFontStyle) + " } ";
+    return " _{ " + _applyFontStyle(Greek$MathSolver.lookupTex(subscript), subscriptFontStyle) + " } ";
   } else {
     return "";
   }
 }
 
 function _varPrimitiveNodeToTex(varPrimitive, signMode) {
-  return _signAttrToTex(varPrimitive.sign, signMode) + _unicodeToTex(varPrimitive.value) + _subscriptAttrToTex(varPrimitive.subscript, varPrimitive.subscriptFontStyle);
+  return _signAttrToTex(varPrimitive.sign, signMode) + Greek$MathSolver.lookupTex(varPrimitive.value) + _subscriptAttrToTex(varPrimitive.subscript, varPrimitive.subscriptFontStyle);
 }
 
 function _intPrimitiveNodeToTex(intPrimitive, signMode) {
@@ -1389,13 +1379,67 @@ function formulaNodeToTex(formula) {
 }
 /* Greek-MathSolver Not a pure module */
 
-},{"../Greek.bs.js":11,"../MultiplicationSymbol.bs.js":12,"rescript/lib/es6/caml_array.js":1,"rescript/lib/es6/js_dict.js":3}],11:[function(require,module,exports){
+},{"../Tables/Greek.bs.js":12,"../Tables/MultiplicationSymbol.bs.js":13,"rescript/lib/es6/caml_array.js":1}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.unicodeToTex = void 0;
+exports.randomPos = randomPos;
+exports.randomPosNeg = randomPosNeg;
+exports.randomNoZero = randomNoZero;
+exports.randomNumber = randomNumber;
+exports.randomNumberPrimitiveExpression = randomNumberPrimitiveExpression;
+exports.limit = void 0;
+
+var Js_math = _interopRequireWildcard(require("rescript/lib/es6/js_math.js"));
+
+var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Generated by ReScript, PLEASE EDIT WITH CARE
+function randomPos(n) {
+  return Js_math.random_int(0, n);
+}
+
+function randomPosNeg(n) {
+  return Js_math.random_int(-n | 0, n);
+}
+
+function randomNoZero(n) {
+  var result = Js_math.random_int(-n | 0, n);
+
+  if (result !== 0) {
+    return result;
+  } else {
+    return n;
+  }
+}
+
+function randomNumber(param) {
+  return randomNoZero(12);
+}
+
+function randomNumberPrimitiveExpression(param) {
+  return Formula$MathSolver.createIntPrimitiveExpression(randomNoZero(12));
+}
+
+var limit = 12;
+/* No side effect */
+
+exports.limit = limit;
+
+},{"./Formula.bs.js":8,"rescript/lib/es6/js_math.js":5}],12:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.lookupTex = lookupTex;
+exports.table = void 0;
 
 var Js_dict = _interopRequireWildcard(require("rescript/lib/es6/js_dict.js"));
 
@@ -1404,12 +1448,21 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Generated by ReScript, PLEASE EDIT WITH CARE
-var unicodeToTex = Js_dict.fromArray([["\xce\x91", "\\Alpha"], ["\xce\xb1", "\\alpha"], ["\xce\x92", "\\Beta"], ["\xce\xb2", "\\beta"], ["\xce\x93", "\\Gamma"], ["\xce\xb3", "\\gamma"], ["\xce\x94", "\\Delta"], ["\xce\xb4", "\\delta"], ["\xce\x95", "\\Epsilon"], ["\xcf\xb5", "\\epsilon"], ["\xce\xb5", "\\varepsilon"], ["\xce\x96", "\\Zeta"], ["\xce\xb6", "\\zeta"], ["\xce\x97", "\\Eta"], ["\xce\xb7", "\\eta"], ["\xce\x98", "\\Theta"], ["\xce\xb8", "\\theta"], ["\xcf\x91", "\\vartheta"], ["\xce\x99", "\\Iota"], ["\xce\xb9", "\\iota"], ["\xce\x9a", "\\Kappa"], ["\xce\xba", "\\kappa"], ["\xcf\xb0", "\\varkappa"], ["\xce\x9b", "\\Lambda"], ["\xce\xbb", "\\lambda"], ["\xce\x9c", "\\Mu"], ["\xce\xbc", "\\mu"], ["\xce\x9d", "\\Nu"], ["\xce\xbd", "\\nu"], ["\xce\x9e", "\\Xi"], ["\xce\xbe", "\\xi"], ["\xce\x9f", "\\Omicron"], ["\xce\xbf", "\\omicron"], ["\xce\xa0", "\\Pi"], ["\xcf\x80", "\\pi"], ["\xcf\x96", "\\varpi"], ["\xce\xa1", "\\Rho"], ["\xcf\x81", "\\rho"], ["\xcf\xb1", "\\varrho"], ["\xce\xa3", "\\Sigma"], ["\xcf\x83", "\\sigma"], ["\xcf\x82", "\\varsigma"], ["\xce\xa4", "\\Tau"], ["\xcf\x84", "\\tau"], ["\xce\xa5", "\\Upsilon"], ["\xcf\x85", "\\upsilon"], ["\xce\xa6", "\\Phi"], ["\xcf\x95", "\\phi"], ["\xcf\x86", "\\varphi"], ["\xce\xa7", "\\Chi"], ["\xcf\x87", "\\chi"], ["\xce\xa8", "\\Psi"], ["\xcf\x88", "\\psi"], ["\xce\xa9", "\\Omega"], ["\xcf\x89", "\\omega"]]);
-/* unicodeToTex Not a pure module */
+var table = Js_dict.fromArray([["\xce\x91", "\\Alpha"], ["\xce\xb1", "\\alpha"], ["\xce\x92", "\\Beta"], ["\xce\xb2", "\\beta"], ["\xce\x93", "\\Gamma"], ["\xce\xb3", "\\gamma"], ["\xce\x94", "\\Delta"], ["\xce\xb4", "\\delta"], ["\xce\x95", "\\Epsilon"], ["\xcf\xb5", "\\epsilon"], ["\xce\xb5", "\\varepsilon"], ["\xce\x96", "\\Zeta"], ["\xce\xb6", "\\zeta"], ["\xce\x97", "\\Eta"], ["\xce\xb7", "\\eta"], ["\xce\x98", "\\Theta"], ["\xce\xb8", "\\theta"], ["\xcf\x91", "\\vartheta"], ["\xce\x99", "\\Iota"], ["\xce\xb9", "\\iota"], ["\xce\x9a", "\\Kappa"], ["\xce\xba", "\\kappa"], ["\xcf\xb0", "\\varkappa"], ["\xce\x9b", "\\Lambda"], ["\xce\xbb", "\\lambda"], ["\xce\x9c", "\\Mu"], ["\xce\xbc", "\\mu"], ["\xce\x9d", "\\Nu"], ["\xce\xbd", "\\nu"], ["\xce\x9e", "\\Xi"], ["\xce\xbe", "\\xi"], ["\xce\x9f", "\\Omicron"], ["\xce\xbf", "\\omicron"], ["\xce\xa0", "\\Pi"], ["\xcf\x80", "\\pi"], ["\xcf\x96", "\\varpi"], ["\xce\xa1", "\\Rho"], ["\xcf\x81", "\\rho"], ["\xcf\xb1", "\\varrho"], ["\xce\xa3", "\\Sigma"], ["\xcf\x83", "\\sigma"], ["\xcf\x82", "\\varsigma"], ["\xce\xa4", "\\Tau"], ["\xcf\x84", "\\tau"], ["\xce\xa5", "\\Upsilon"], ["\xcf\x85", "\\upsilon"], ["\xce\xa6", "\\Phi"], ["\xcf\x95", "\\phi"], ["\xcf\x86", "\\varphi"], ["\xce\xa7", "\\Chi"], ["\xcf\x87", "\\chi"], ["\xce\xa8", "\\Psi"], ["\xcf\x88", "\\psi"], ["\xce\xa9", "\\Omega"], ["\xcf\x89", "\\omega"]]);
+exports.table = table;
 
-exports.unicodeToTex = unicodeToTex;
+function lookupTex(str) {
+  var texString = Js_dict.get(table, str);
 
-},{"rescript/lib/es6/js_dict.js":3}],12:[function(require,module,exports){
+  if (texString !== undefined) {
+    return " " + texString + " ";
+  } else {
+    return str;
+  }
+}
+/* table Not a pure module */
+
+},{"rescript/lib/es6/js_dict.js":3}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1632,60 +1685,7 @@ function lookupTex(factorLeft, factorRight) {
 }
 /* _tableRowText Not a pure module */
 
-},{"rescript/lib/es6/caml_option.js":2,"rescript/lib/es6/js_dict.js":3}],13:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.randomPos = randomPos;
-exports.randomPosNeg = randomPosNeg;
-exports.randomNoZero = randomNoZero;
-exports.randomNumber = randomNumber;
-exports.randomNumberPrimitiveExpression = randomNumberPrimitiveExpression;
-exports.limit = void 0;
-
-var Js_math = _interopRequireWildcard(require("rescript/lib/es6/js_math.js"));
-
-var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// Generated by ReScript, PLEASE EDIT WITH CARE
-function randomPos(n) {
-  return Js_math.random_int(0, n);
-}
-
-function randomPosNeg(n) {
-  return Js_math.random_int(-n | 0, n);
-}
-
-function randomNoZero(n) {
-  var result = Js_math.random_int(-n | 0, n);
-
-  if (result !== 0) {
-    return result;
-  } else {
-    return n;
-  }
-}
-
-function randomNumber(param) {
-  return randomNoZero(12);
-}
-
-function randomNumberPrimitiveExpression(param) {
-  return Formula$MathSolver.createIntPrimitiveExpression(randomNoZero(12));
-}
-
-var limit = 12;
-/* No side effect */
-
-exports.limit = limit;
-
-},{"./Formula.bs.js":8,"rescript/lib/es6/js_math.js":5}],14:[function(require,module,exports){
+},{"rescript/lib/es6/caml_option.js":2,"rescript/lib/es6/js_dict.js":3}],14:[function(require,module,exports){
 // Generated by ReScript, PLEASE EDIT WITH CARE
 /* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
 
@@ -1743,9 +1743,8 @@ class MathSolver {
       index %= this.examples.length;
     }
 
-    let formula = this.examples[index];
     this.currentExampleIndex = index;
-    this.debug(formula);
+    let formula = this.examples[index];
     this.render(formula);
   }
 
@@ -1753,4 +1752,4 @@ class MathSolver {
 
 window.MathSolver = MathSolver;
 
-},{"./Equation/Examples.bs":6,"./Equation/QuadraticEquation.bs":7,"./Formula/FormulaCleaner.bs":9,"./Formula/FormulaRenderer.bs":10}]},{},[8,11,12,13,14,15]);
+},{"./Equation/Examples.bs":6,"./Equation/QuadraticEquation.bs":7,"./Formula/FormulaCleaner.bs":9,"./Formula/FormulaRenderer.bs":10}]},{},[8,11,14,15]);
