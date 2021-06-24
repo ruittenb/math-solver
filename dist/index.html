@@ -3,30 +3,46 @@
     <head>
         <meta charset="utf-8">
         <title>Kwadratische vergelijkingen</title>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
         <script src="bundle.js"></script>
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                margin: 5px;
+            }
+            #buttonBox {
+                position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 10;
+                padding: 5px;
+            }
             button {
+                width: 80px;
+                padding: 2px 4px;
                 margin: 5px;
             }
         </style>
     </head>
     <body>
-        <button onClick="mathSolver.example(-1)">
-            Previous Example
-        </button>
-        <button onClick="mathSolver.example(1)">
-            Next Example
-        </button>
-        <br>
-        <button onClick="mathSolver.generate()">
-            Generate
-        </button>
-        <button onClick="mathSolver.cleanup()">
-            Cleanup
-        </button>
-        <br>
+        <div id="buttonBox">
+            <button onClick="mathSolver.example(-1)">
+                « Example
+            </button>
+            <button onClick="mathSolver.example(1)">
+                Example »
+            </button>
+            <br>
+            <button onClick="mathSolver.generate()">
+                Generate
+            </button>
+            <button onClick="mathSolver.cleanup()">
+                Cleanup
+            </button>
+        </div>
         <div id="displayFrame">
         </div>
         <script>

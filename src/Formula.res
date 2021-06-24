@@ -5,8 +5,7 @@
 
 open Types
 
-/*
-let _toggleSign = (sign: sign): sign => {
+let _flipSign = (sign: sign): sign => {
     switch sign {
         | Plus      => Minus
         | Minus     => Plus
@@ -14,7 +13,6 @@ let _toggleSign = (sign: sign): sign => {
         | MinusPlus => PlusMinus
     }
 }
-*/
 
 /*
 let _withDefault = (opt: option<'t>, default: 't) => {
@@ -56,11 +54,11 @@ let createVarPrimitiveExpression = (
     }
 }
 
-let createIntPrimitiveExpression = (value: int): expression => {
+let createIntPrimitiveExpression = (~sign: sign = Plus, value: int): expression => {
     if value < 0 {
-        IntPrimitiveExpression({ sign: Minus, value: -value })
+        IntPrimitiveExpression({ sign: _flipSign(sign), value: -value })
     } else {
-        IntPrimitiveExpression({ sign: Plus, value: value })
+        IntPrimitiveExpression({ sign: sign, value: value })
     }
 }
 

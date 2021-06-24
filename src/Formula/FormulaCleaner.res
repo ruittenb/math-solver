@@ -51,7 +51,7 @@ let _removeAddZero = (terms: array<expression>): array<expression> => {
 }
 
 let _removeMultiplyByOne = (factors: array<expression>): array<expression> => {
-    let newFactors = factors->Js.Array2.filter(
+    factors->Js.Array2.filter(
         (factor: expression): bool => {
             switch factor {
                 | IntPrimitiveExpression(primitive)   if primitive.sign === Plus && primitive.value === 1  => false
@@ -60,8 +60,11 @@ let _removeMultiplyByOne = (factors: array<expression>): array<expression> => {
             }
         }
     )
-    newFactors
 }
+
+/** ****************************************************************************
+ * Expressions
+ */
 
 let rec _recurse = (expressions: array<expression>): array<expression> => {
     expressions->Js.Array2.map(_cleanupExpression)
@@ -81,6 +84,27 @@ and _cleanupProductToExpression = (product: product): expression => {
         ->createProductExpression(~sign=product.sign)
 }
 
+and _cleanupFractionToExpression = (fraction: fraction): expression => {
+    createFractionExpression(
+        ~sign=fraction.sign,
+        fraction.numerator,
+        fraction.denominator
+    )
+}
+
+and _cleanupPowerToExpression = (power: power): expression => {
+    let constOne = createIntPrimitiveExpression(~sign=power.sign, 1)
+    switch power.base {
+        | IntPrimitiveExpression({ sign: Plus, value: 1 })    => constOne
+        | FloatPrimitiveExpression({ sign: Plus, value: 1. }) => constOne
+        | _ => createPowerExpression(
+            ~sign=power.sign,
+            _cleanupExpression(power.base),
+            _cleanupExpression(power.exponent)
+        )
+    }
+}
+
 and _cleanupExpression = (expression: expression): expression => {
     switch expression {
         | TextExpression(_)                      => expression
@@ -90,12 +114,16 @@ and _cleanupExpression = (expression: expression): expression => {
         | FloatPrimitiveExpression(_)            => expression
         | SumExpression(sum)                     => sum->_cleanupSumToExpression
         | ProductExpression(product)             => product->_cleanupProductToExpression
-        | FractionExpression(_)                  => expression // _fractionNodeToTex(fraction, NoPlus)
-        | PowerExpression(_)                     => expression // _powerNodeToTex(power, NoPlus)
+        | FractionExpression(fraction)           => fraction->_cleanupFractionToExpression
+        | PowerExpression(power)                 => power->_cleanupPowerToExpression
         | SquarerootExpression(_)                => expression // _squarerootNodeToTex(squareroot, NoPlus)
         | RootExpression(_)                      => expression // _rootNodeToTex(root, NoPlus)
     }
 }
+
+/** ****************************************************************************
+ * Formula, Equation
+ */
 
 let _cleanupMembers = (expressions: array<expression>): array<expression> => {
     expressions
@@ -121,3 +149,4 @@ let cleanup = (formula: formula): formula => {
         | Text(_)              => formula
     }
 }
+

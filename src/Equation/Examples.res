@@ -7,12 +7,43 @@ open Types
 open Formula
 
 let examples: array<formula> = [
-    // y = x + 0
+    // y + (-1)^(a+3) = x + 0
+    createEquationFormula([
+        createSumExpression([
+            createVarPrimitiveExpression("y"),
+            createPowerExpression(
+                createIntPrimitiveExpression(-1),
+                createSumExpression([
+                    createVarPrimitiveExpression("a"),
+                    createIntPrimitiveExpression(3)
+                ])
+            )
+        ]),
+        createSumExpression([
+            createVarPrimitiveExpression("x"),
+            createIntPrimitiveExpression(0)
+        ])
+    ]),
+    // y = x - 1 ^ (x + 3) + 2 ^ (x + 0)
     createEquationFormula([
         createVarPrimitiveExpression("y"),
         createSumExpression([
             createVarPrimitiveExpression("x"),
-            createIntPrimitiveExpression(0)
+            createPowerExpression(
+                ~sign=Minus,
+                createIntPrimitiveExpression(1),
+                createSumExpression([
+                    createVarPrimitiveExpression("x"),
+                    createIntPrimitiveExpression(3)
+                ])
+            ),
+            createPowerExpression(
+                createIntPrimitiveExpression(2),
+                createSumExpression([
+                    createVarPrimitiveExpression("x"),
+                    createIntPrimitiveExpression(0)
+                ])
+            )
         ])
     ]),
     // x = 1/2 + 1/3

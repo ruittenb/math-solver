@@ -18,18 +18,31 @@ class MathSolver {
         this.examples = Examples.examples;
         this.displayNode = document.getElementById(displayNodeId);
         this.currentExampleIndex = 0;
+        this.example(0);
+    }
+
+    scrollToBottom() {
+        window.scrollTo(
+            0,
+            getComputedStyle(document.body).height.replace('px', '')
+        );
     }
 
     cleanup() {
+        if (!this.formula) return;
         this.formula = this.cleanupFormula(this.formula);
         this.render();
     }
 
     render() {
+        if (!MathJax) {
+            return window.setTimeout(this.render.bind(this), 400);
+        }
         const texFormula = this.formulaNodeToTex(this.formula);
         console.log(`Formula: ${texFormula}`);
-        this.displayNode.innerHTML = texFormula;
+        this.displayNode.innerHTML += `<div>${texFormula}</div>`;
         MathJax.typeset();
+        this.scrollToBottom();
     }
 
     generate() {
