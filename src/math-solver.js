@@ -20,20 +20,21 @@ class MathSolver {
         this.currentExampleIndex = 0;
     }
 
-    debug(formula) {
-        console.log('Formula:', this.formulaNodeToTex(formula));
-        const cleanFormula = this.cleanupFormula(formula);
-        console.log('Cleaned formula:', this.formulaNodeToTex(cleanFormula));
+    cleanup() {
+        this.formula = this.cleanupFormula(this.formula);
+        this.render();
     }
 
-    render(formula) {
-        this.displayNode.innerHTML = this.formulaNodeToTex(formula);
+    render() {
+        const texFormula = this.formulaNodeToTex(this.formula);
+        console.log(`Formula: ${texFormula}`);
+        this.displayNode.innerHTML = texFormula;
         MathJax.typeset();
     }
 
     generate() {
-        const formula = QuadraticEquation.generate()
-        this.render(formula);
+        this.formula = QuadraticEquation.generate();
+        this.render();
     }
 
     example(delta) {
@@ -44,8 +45,8 @@ class MathSolver {
             index %= this.examples.length;
         }
         this.currentExampleIndex = index;
-        let formula = this.examples[index];
-        this.render(formula);
+        this.formula = this.examples[index];
+        this.render();
     }
 }
 

@@ -4,7 +4,7 @@
  */
 
 // limit of random numbers
-let limit: int = 12
+let limit: int = 2
 
 //        n => 0 .. n - 1
 // e.g.  10 => 0 .. 9

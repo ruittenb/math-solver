@@ -817,8 +817,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports._removeAddZero = _removeAddZero;
+exports._removeMultiplyByOne = _removeMultiplyByOne;
+exports._recurse = _recurse;
 exports._cleanupSumToExpression = _cleanupSumToExpression;
-exports._removeMultiplyOne = _removeMultiplyOne;
 exports._cleanupProductToExpression = _cleanupProductToExpression;
 exports._cleanupExpression = _cleanupExpression;
 exports._cleanupMembers = _cleanupMembers;
@@ -852,22 +853,24 @@ function _removeAddZero(terms) {
   });
 }
 
-function _cleanupSumToExpression(sum) {
-  return Formula$MathSolver.createSumExpression(_removeAddZero(sum.terms));
-}
-
-function _removeMultiplyOne(factors) {
+function _removeMultiplyByOne(factors) {
   return factors.filter(function (factor) {
     switch (factor.TAG | 0) {
       case
       /* IntPrimitiveExpression */
       2:
-        return factor._0.value !== 1;
+        var primitive = factor._0;
+        return !(primitive.sign ===
+        /* Plus */
+        0 && primitive.value === 1);
 
       case
       /* FloatPrimitiveExpression */
       4:
-        return factor._0.value !== 1;
+        var primitive$1 = factor._0;
+        return !(primitive$1.sign ===
+        /* Plus */
+        0 && primitive$1.value === 1);
 
       default:
         return true;
@@ -875,8 +878,16 @@ function _removeMultiplyOne(factors) {
   });
 }
 
+function _cleanupSumToExpression(sum) {
+  var expressions = _removeAddZero(sum.terms);
+
+  return Formula$MathSolver.createSumExpression(expressions.map(_cleanupExpression));
+}
+
 function _cleanupProductToExpression(product) {
-  return Formula$MathSolver.createProductExpression(product.sign, _removeMultiplyOne(product.factors));
+  var expressions = _removeMultiplyByOne(product.factors);
+
+  return Formula$MathSolver.createProductExpression(product.sign, expressions.map(_cleanupExpression));
 }
 
 function _cleanupExpression(expression) {
@@ -884,7 +895,7 @@ function _cleanupExpression(expression) {
     case
     /* SumExpression */
     5:
-      return Formula$MathSolver.createSumExpression(_removeAddZero(expression._0.terms));
+      return _cleanupSumToExpression(expression._0);
 
     case
     /* ProductExpression */
@@ -894,6 +905,10 @@ function _cleanupExpression(expression) {
     default:
       return expression;
   }
+}
+
+function _recurse(expressions) {
+  return expressions.map(_cleanupExpression);
 }
 
 function _cleanupMembers(expressions) {
@@ -1420,14 +1435,14 @@ function randomNoZero(n) {
 }
 
 function randomNumber(param) {
-  return randomNoZero(12);
+  return randomNoZero(2);
 }
 
 function randomNumberPrimitiveExpression(param) {
-  return Formula$MathSolver.createIntPrimitiveExpression(randomNoZero(12));
+  return Formula$MathSolver.createIntPrimitiveExpression(randomNoZero(2));
 }
 
-var limit = 12;
+var limit = 2;
 /* No side effect */
 
 exports.limit = limit;
@@ -1718,20 +1733,21 @@ class MathSolver {
     this.currentExampleIndex = 0;
   }
 
-  debug(formula) {
-    console.log('Formula:', this.formulaNodeToTex(formula));
-    const cleanFormula = this.cleanupFormula(formula);
-    console.log('Cleaned formula:', this.formulaNodeToTex(cleanFormula));
+  cleanup() {
+    this.formula = this.cleanupFormula(this.formula);
+    this.render();
   }
 
-  render(formula) {
-    this.displayNode.innerHTML = this.formulaNodeToTex(formula);
+  render() {
+    const texFormula = this.formulaNodeToTex(this.formula);
+    console.log(`Formula: ${texFormula}`);
+    this.displayNode.innerHTML = texFormula;
     MathJax.typeset();
   }
 
   generate() {
-    const formula = QuadraticEquation.generate();
-    this.render(formula);
+    this.formula = QuadraticEquation.generate();
+    this.render();
   }
 
   example(delta) {
@@ -1744,8 +1760,8 @@ class MathSolver {
     }
 
     this.currentExampleIndex = index;
-    let formula = this.examples[index];
-    this.render(formula);
+    this.formula = this.examples[index];
+    this.render();
   }
 
 }

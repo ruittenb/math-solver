@@ -8,20 +8,25 @@
         <script src="bundle.js"></script>
         <style>
             button {
-                margin-right: 10px;
+                margin: 5px;
             }
         </style>
     </head>
     <body>
-        <button onClick="mathSolver.generate()">
-            Generate
-        </button>
         <button onClick="mathSolver.example(-1)">
             Previous Example
         </button>
         <button onClick="mathSolver.example(1)">
             Next Example
         </button>
+        <br>
+        <button onClick="mathSolver.generate()">
+            Generate
+        </button>
+        <button onClick="mathSolver.cleanup()">
+            Cleanup
+        </button>
+        <br>
         <div id="displayFrame">
         </div>
         <script>

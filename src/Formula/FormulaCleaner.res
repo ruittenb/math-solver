@@ -30,7 +30,11 @@ open Formula
 
 // reverse some orders like [ FractionExpression, constPrimitive ]
 
-// multiply by zero or one
+// multiply by zero
+
+// replace 1^x by 1
+
+// replace x^0 by 1 unless x == 0
 
 // replace (expr)^ -1 with 1 / expr
 
@@ -46,45 +50,50 @@ let _removeAddZero = (terms: array<expression>): array<expression> => {
     )
 }
 
-let _cleanupSumToExpression = (sum: sum): expression => {
-    sum.terms
-        ->_removeAddZero
-        // -> recurse
-        ->createSumExpression
-}
-
-let _removeMultiplyOne = (factors: array<expression>): array<expression> => {
-    factors->Js.Array2.filter(
+let _removeMultiplyByOne = (factors: array<expression>): array<expression> => {
+    let newFactors = factors->Js.Array2.filter(
         (factor: expression): bool => {
             switch factor {
-                | IntPrimitiveExpression(primitive)   if primitive.value === 1  => false
-                | FloatPrimitiveExpression(primitive) if primitive.value === 1. => false
+                | IntPrimitiveExpression(primitive)   if primitive.sign === Plus && primitive.value === 1  => false
+                | FloatPrimitiveExpression(primitive) if primitive.sign === Plus && primitive.value === 1. => false
                 | _ => true
             }
         }
     )
+    newFactors
 }
 
-let _cleanupProductToExpression = (product: product): expression => {
+let rec _recurse = (expressions: array<expression>): array<expression> => {
+    expressions->Js.Array2.map(_cleanupExpression)
+}
+
+and _cleanupSumToExpression = (sum: sum): expression => {
+    sum.terms
+        ->_removeAddZero
+        ->_recurse
+        ->createSumExpression
+}
+
+and _cleanupProductToExpression = (product: product): expression => {
     product.factors
-        ->_removeMultiplyOne
-        // -> recurse
+        ->_removeMultiplyByOne
+        ->_recurse
         ->createProductExpression(~sign=product.sign)
 }
 
-let _cleanupExpression = (expression: expression): expression => {
+and _cleanupExpression = (expression: expression): expression => {
     switch expression {
         | TextExpression(_)                      => expression
         | VarPrimitiveExpression(_)              => expression
         | IntPrimitiveExpression(_)              => expression
-        | FractionPrimitiveExpression(primitive) => expression // _fractionPrimitiveNodeToTex(primitive, NoPlus)
+        | FractionPrimitiveExpression(_)         => expression // _fractionPrimitiveNodeToTex(primitive, NoPlus)
         | FloatPrimitiveExpression(_)            => expression
         | SumExpression(sum)                     => sum->_cleanupSumToExpression
         | ProductExpression(product)             => product->_cleanupProductToExpression
-        | FractionExpression(fraction)           => expression // _fractionNodeToTex(fraction, NoPlus)
-        | PowerExpression(power)                 => expression // _powerNodeToTex(power, NoPlus)
-        | SquarerootExpression(squareroot)       => expression // _squarerootNodeToTex(squareroot, NoPlus)
-        | RootExpression(root)                   => expression // _rootNodeToTex(root, NoPlus)
+        | FractionExpression(_)                  => expression // _fractionNodeToTex(fraction, NoPlus)
+        | PowerExpression(_)                     => expression // _powerNodeToTex(power, NoPlus)
+        | SquarerootExpression(_)                => expression // _squarerootNodeToTex(squareroot, NoPlus)
+        | RootExpression(_)                      => expression // _rootNodeToTex(root, NoPlus)
     }
 }
 
