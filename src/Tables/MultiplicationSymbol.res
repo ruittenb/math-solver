@@ -4,6 +4,7 @@
  */
 
 open Types
+open FormulaTools
 
 type multiplicationSymbol =
     | Cross    // ×  \times
@@ -19,7 +20,8 @@ let _tableRowText = Js.Dict.fromArray([
     ("SumExpression",               NoSymbol),
     ("ProductExpression",           NoSymbol),
     ("FractionExpression",          NoSymbol),
-    ("PowerExpression",             NoSymbol),
+    ("ConstPowerExpression",        NoSymbol),
+    ("VarPowerExpression",          NoSymbol),
     ("SquareRootExpression",        NoSymbol),
     ("RootExpression",              NoSymbol),
 ])
@@ -32,12 +34,13 @@ let _tableRowSum = Js.Dict.fromArray([
     ("SumExpression",               NoSymbol),
     ("ProductExpression",           NoSymbol),
     ("FractionExpression",          NoSymbol),
-    ("PowerExpression",             NoSymbol),
+    ("ConstPowerExpression",        NoSymbol),
+    ("VarPowerExpression",          NoSymbol),
     ("SquareRootExpression",        NoSymbol),
     ("RootExpression",              NoSymbol),
 ])
 
-let _tableRowPower = Js.Dict.fromArray([
+let _tableRowPowerOrRoot = Js.Dict.fromArray([
     ("TextExpression",              NoSymbol),
     ("VarPrimitiveExpression",      NoSymbol),
     ("IntPrimitiveExpression",      Dot),
@@ -46,7 +49,8 @@ let _tableRowPower = Js.Dict.fromArray([
     ("SumExpression",               NoSymbol),
     ("ProductExpression",           Dot),
     ("FractionExpression",          Dot),
-    ("PowerExpression",             NoSymbol),
+    ("ConstPowerExpression",        NoSymbol),
+    ("VarPowerExpression",          NoSymbol),
     ("SquareRootExpression",        NoSymbol),
     ("RootExpression",              NoSymbol),
 ])
@@ -60,7 +64,8 @@ let _tableRowOther = Js.Dict.fromArray([
     ("SumExpression",               NoSymbol),
     ("ProductExpression",           Dot),
     ("FractionExpression",          Dot),
-    ("PowerExpression",             Dot),
+    ("ConstPowerExpression",        Dot),
+    ("VarPowerExpression",          NoSymbol),
     ("SquareRootExpression",        NoSymbol),
     ("RootExpression",              NoSymbol),
 ])
@@ -74,9 +79,10 @@ let _table = Js.Dict.fromArray([
     ("SumExpression",               _tableRowSum),
     ("ProductExpression",           _tableRowOther),
     ("FractionExpression",          _tableRowOther),
-    ("PowerExpression",             _tableRowPower),
-    ("SquareRootExpression",        _tableRowPower),
-    ("RootExpression",              _tableRowPower),
+    ("ConstPowerExpression",        _tableRowPowerOrRoot),
+    ("VarPowerExpression",          _tableRowPowerOrRoot),
+    ("SquareRootExpression",        _tableRowPowerOrRoot),
+    ("RootExpression",              _tableRowPowerOrRoot),
 ])
 
 let _multiplicationSymbolLookupIndex = (factor: expression): string => {
@@ -89,7 +95,9 @@ let _multiplicationSymbolLookupIndex = (factor: expression): string => {
         | SumExpression(_)               => "SumExpression"
         | ProductExpression(_)           => "ProductExpression"
         | FractionExpression(_)          => "FractionExpression"
-        | PowerExpression({ base })      => "PowerExpression"
+        | PowerExpression(power)
+           if isPowerBaseConstant(power) => "ConstPowerExpression"
+        | PowerExpression(_)             => "VarPowerExpression"
         | SquarerootExpression(_)        => "SquarerootExpression"
         | RootExpression(_)              => "RootExpression"
     }

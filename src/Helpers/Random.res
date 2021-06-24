@@ -4,7 +4,7 @@
  */
 
 // limit of random numbers
-let limit: int = 2
+let limit: int = 2 // TODO change back to 12
 
 //        n => 0 .. n - 1
 // e.g.  10 => 0 .. 9

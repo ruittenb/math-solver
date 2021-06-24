@@ -6,18 +6,6 @@
 open Types
 open Formula
 
-//    simplify() {
-//        console.log('TODO not yet implemented');
-//        // cancel +6-5, +6x -5x, sqrt(x^2) etc.
-//    }
-//
-//    // for presentation purposes, e.g.
-//    // no roots in the denominator; no fractions under a radical sign; simplify fractions
-//    cleanup() {
-//        console.log('TODO not yet implemented');
-//    }
-
-
 // sum constants
 
 // add like terms
@@ -36,7 +24,16 @@ open Formula
 
 // replace x^0 by 1 unless x == 0
 
-// replace (expr)^ -1 with 1 / expr
+// replace (expr)^ -1 with 1 / expr ?
+
+// replace {x}√(y^x) with y
+// replace ({x}√y)^x with y => what about y < 0 ?
+
+// cancel sqrt(x^2) etc.
+
+// no roots in the denominator
+
+// no fractions under a radical sign
 
 let _removeAddZero = (terms: array<expression>): array<expression> => {
     terms->Js.Array2.filter(
@@ -74,6 +71,7 @@ and _cleanupSumToExpression = (sum: sum): expression => {
     sum.terms
         ->_removeAddZero
         ->_recurse
+        // -> dismantle: if only one term is left, promote it
         ->createSumExpression
 }
 
@@ -81,6 +79,7 @@ and _cleanupProductToExpression = (product: product): expression => {
     product.factors
         ->_removeMultiplyByOne
         ->_recurse
+        // -> dismantle: if only one factor is left, promote it
         ->createProductExpression(~sign=product.sign)
 }
 
@@ -122,7 +121,7 @@ and _cleanupExpression = (expression: expression): expression => {
 }
 
 /** ****************************************************************************
- * Formula, Equation
+ * Formulas and Equations
  */
 
 let _cleanupMembers = (expressions: array<expression>): array<expression> => {

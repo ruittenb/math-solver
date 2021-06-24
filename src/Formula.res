@@ -5,24 +5,6 @@
 
 open Types
 
-let _flipSign = (sign: sign): sign => {
-    switch sign {
-        | Plus      => Minus
-        | Minus     => Plus
-        | PlusMinus => MinusPlus
-        | MinusPlus => PlusMinus
-    }
-}
-
-/*
-let _withDefault = (opt: option<'t>, default: 't) => {
-    switch opt {
-        | Some(value) => value
-        | None        => default
-    }
-}
-*/
-
 /** ****************************************************************************
  * Constructors
  */
@@ -56,7 +38,7 @@ let createVarPrimitiveExpression = (
 
 let createIntPrimitiveExpression = (~sign: sign = Plus, value: int): expression => {
     if value < 0 {
-        IntPrimitiveExpression({ sign: _flipSign(sign), value: -value })
+        IntPrimitiveExpression({ sign: FormulaTools.flipSign(sign), value: -value })
     } else {
         IntPrimitiveExpression({ sign: sign, value: value })
     }

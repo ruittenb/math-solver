@@ -22,7 +22,7 @@ browserify: ## Compile res files to js
 
 .PHONY: build
 build: ## Compile res files to js and bundle the js scripts
-	npm run re:build
+	npm run re:build && \
 	$(MAKE) browserify
 
 .PHONY: watch

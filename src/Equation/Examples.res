@@ -63,27 +63,37 @@ let examples: array<formula> = [
             createFractionPrimitiveExpression(0, 1, 6),
         ])
     ]),
-    // x (x + 1) = 0
+    // x = 2 * 3 * 5^2
     createEquationFormula([
+        createVarPrimitiveExpression("x"),
         createProductExpression([
-            createVarPrimitiveExpression("x"),
-            createSumExpression([
-                createVarPrimitiveExpression("x"),
-                createIntPrimitiveExpression(1)
-            ])
-        ]),
-        createIntPrimitiveExpression(0)
+            createIntPrimitiveExpression(2),
+            createIntPrimitiveExpression(3),
+            createPowerExpression(
+                createIntPrimitiveExpression(5),
+                createIntPrimitiveExpression(2)
+            )
+        ])
     ]),
-    // x (1 - x) = 2
+    // x = a * b^2 + a^2 * b
     createEquationFormula([
-        createProductExpression([
-            createVarPrimitiveExpression("x"),
-            createSumExpression([
-                createIntPrimitiveExpression(1),
-                createVarPrimitiveExpression("-x")
+        createVarPrimitiveExpression("x"),
+        createSumExpression([
+            createProductExpression([
+                createVarPrimitiveExpression("a"),
+                createPowerExpression(
+                    createVarPrimitiveExpression("b"),
+                    createIntPrimitiveExpression(2)
+                )
+            ]),
+            createProductExpression([
+                createPowerExpression(
+                    createVarPrimitiveExpression("a"),
+                    createIntPrimitiveExpression(2)
+                ),
+                createVarPrimitiveExpression("b"),
             ])
         ]),
-        createIntPrimitiveExpression(2)
     ]),
     // 2x^2 + 3x - 1 = 0
     createEquationFormula([
