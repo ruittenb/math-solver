@@ -46,9 +46,8 @@ let _applyFontStyle = (str: string, fontStyle: fontStyle) => {
     let isDigit = Js.Re.fromString("^[0-9]")->Js.Re.test_(str)
     switch fontStyle {
         | Upright            => ` \\\\mathrm{ ${str} } `
-        | Italic             => ` \\\\mathit{ ${str} } `
         | Default if isDigit => ` \\\\mathrm{ ${str} } `
-        | Default            => ` \\\\mathit{ ${str} } `
+        | Italic | Default   => ` \\\\mathit{ ${str} } `
     }
 }
 
@@ -183,10 +182,10 @@ and _powerNodeToTex = (power: power, signMode: signMode): string => {
     let texBase      = _expressionNodeToTex(power.base)
     let texExponent  = _expressionNodeToTex(power.exponent)
     let texParenBase = switch power.base {
-        | IntPrimitiveExpression({ sign: Minus })      => ` ( ${texBase} ) `
-        | FractionPrimitiveExpression({ sign: Minus }) => ` ( ${texBase} ) `
-        | FloatPrimitiveExpression({ sign: Minus })    => ` ( ${texBase} ) `
-        | SumExpression(_)                             => ` ( ${texBase} ) `
+        | IntPrimitiveExpression({ sign: Minus })
+        | FractionPrimitiveExpression({ sign: Minus })
+        | FloatPrimitiveExpression({ sign: Minus })
+        | SumExpression(_)
         | ProductExpression(_)                         => ` ( ${texBase} ) `
         | _                                            => texBase
     }

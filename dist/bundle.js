@@ -457,7 +457,7 @@ exports._generateShapeSquareLinear = _generateShapeSquareLinear;
 exports._generateShapeFullQuadratic = _generateShapeFullQuadratic;
 exports.generate = generate;
 
-var Random$MathSolver = _interopRequireWildcard(require("../Random.bs.js"));
+var Random$MathSolver = _interopRequireWildcard(require("../Helpers/Random.bs.js"));
 
 var Formula$MathSolver = _interopRequireWildcard(require("../Formula.bs.js"));
 
@@ -539,7 +539,7 @@ function generate(param) {
 }
 /* No side effect */
 
-},{"../Formula.bs.js":8,"../Random.bs.js":12}],8:[function(require,module,exports){
+},{"../Formula.bs.js":8,"../Helpers/Random.bs.js":12}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1399,6 +1399,8 @@ function _powerNodeToTex(power, signMode) {
 
   var match = power.base;
   var texParenBase;
+  var exit = 0;
+  var exit$1 = 0;
 
   switch (match.TAG | 0) {
     case
@@ -1410,7 +1412,7 @@ function _powerNodeToTex(power, signMode) {
     case
     /* FloatPrimitiveExpression */
     4:
-      texParenBase = match._0.sign !== 1 ? texBase : " ( " + texBase + " ) ";
+      exit$1 = 2;
       break;
 
     case
@@ -1419,11 +1421,23 @@ function _powerNodeToTex(power, signMode) {
     case
     /* ProductExpression */
     6:
-      texParenBase = " ( " + texBase + " ) ";
+      exit = 1;
       break;
 
     default:
       texParenBase = texBase;
+  }
+
+  if (exit$1 === 2) {
+    if (match._0.sign !== 1) {
+      texParenBase = texBase;
+    } else {
+      exit = 1;
+    }
+  }
+
+  if (exit === 1) {
+    texParenBase = " ( " + texBase + " ) ";
   }
 
   return " " + texSign + texParenBase + "^{ " + texExponent + " } ";
@@ -1501,7 +1515,7 @@ exports.limit = void 0;
 
 var Js_math = _interopRequireWildcard(require("rescript/lib/es6/js_math.js"));
 
-var Formula$MathSolver = _interopRequireWildcard(require("./Formula.bs.js"));
+var Formula$MathSolver = _interopRequireWildcard(require("../Formula.bs.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -1539,7 +1553,7 @@ var limit = 2;
 
 exports.limit = limit;
 
-},{"./Formula.bs.js":8,"rescript/lib/es6/js_math.js":5}],13:[function(require,module,exports){
+},{"../Formula.bs.js":8,"rescript/lib/es6/js_math.js":5}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1869,4 +1883,4 @@ class MathSolver {
 
 window.MathSolver = MathSolver;
 
-},{"./Equation/Examples.bs":6,"./Equation/QuadraticEquation.bs":7,"./Formula/FormulaCleaner.bs":9,"./Formula/FormulaRenderer.bs":10}]},{},[14,13,6,7,8,12,15,16,11,10,9]);
+},{"./Equation/Examples.bs":6,"./Equation/QuadraticEquation.bs":7,"./Formula/FormulaCleaner.bs":9,"./Formula/FormulaRenderer.bs":10}]},{},[14,13,6,7,8,15,16,11,10,9,12]);

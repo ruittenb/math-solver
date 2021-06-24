@@ -89,7 +89,7 @@ let _multiplicationSymbolLookupIndex = (factor: expression): string => {
         | SumExpression(_)               => "SumExpression"
         | ProductExpression(_)           => "ProductExpression"
         | FractionExpression(_)          => "FractionExpression"
-        | PowerExpression(_)             => "PowerExpression"
+        | PowerExpression({ base })      => "PowerExpression"
         | SquarerootExpression(_)        => "SquarerootExpression"
         | RootExpression(_)              => "RootExpression"
     }
