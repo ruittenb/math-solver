@@ -37,27 +37,38 @@ let createVarPrimitiveExpression = (
 }
 
 let createIntPrimitiveExpression = (~sign: sign = Plus, value: int): expression => {
+    let (correctedSign, correctedInt) = FormulaTools.pairWithSign(~sign=sign, value)
+    IntPrimitiveExpression({ sign: correctedSign, value: correctedInt })
+    /*
     if value < 0 {
         IntPrimitiveExpression({ sign: FormulaTools.flipSign(sign), value: -value })
     } else {
         IntPrimitiveExpression({ sign: sign, value: value })
     }
+    */
 }
 
-let createFractionPrimitiveExpression = (integer: int, numerator: int, denominator: int): expression => {
-    if integer < 0 {
-        FractionPrimitiveExpression({
-            sign       : Minus,
-            integer    : -integer,
-            numerator  : numerator,
-            denominator: denominator,
-        })
+// the sign of numerator and denominator will be disregarded.
+let createFractionPrimitiveExpression = (
+    ~sign: sign = Plus,
+    integer: int,
+    numerator: int,
+    denominator: int
+): expression => {
+    if denominator === 0 {
+        let message = "[createFractionPrimitiveExpression: denominator must not be zero]"
+        createTextExpression(message)
     } else {
+        let correctedSign = if integer < 0 {
+            FormulaTools.flipSign(sign)
+        } else {
+            sign
+        }
         FractionPrimitiveExpression({
-            sign       : Plus,
-            integer    : integer,
-            numerator  : numerator,
-            denominator: denominator,
+            sign       : correctedSign,
+            integer    : Js.Math.abs_int(integer),
+            numerator  : Js.Math.abs_int(numerator),
+            denominator: Js.Math.abs_int(denominator)
         })
     }
 }

@@ -50,8 +50,16 @@ let examples: array<formula> = [
     createEquationFormula([
         createVarPrimitiveExpression("x"),
         createSumExpression([
+            createFractionPrimitiveExpression(1, 2, 1),
             createFractionPrimitiveExpression(0, 1, 2),
-            createFractionPrimitiveExpression(0, 1, 3)
+            createFractionPrimitiveExpression(1, 0, 3),
+            createFractionPrimitiveExpression(1, 1, -4),
+            createFractionPrimitiveExpression(1, -3, 5),
+            createFractionPrimitiveExpression(1, -3, -6),
+            createFractionPrimitiveExpression(-1, 3, 7),
+            createFractionPrimitiveExpression(-1, 3, -8),
+            createFractionPrimitiveExpression(-1, -3, 9),
+            createFractionPrimitiveExpression(-1, -3, -10),
         ])
     ]),
     // x = 3 2/9 - 1 1/12 + 1/6

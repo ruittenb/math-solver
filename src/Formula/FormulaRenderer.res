@@ -19,14 +19,7 @@ let texDelimiter: string = "$$"
 // Format Greek letters in variables (single-character only, FIXME)
 let _unicodeToTex = (variable: string): string => {
     Greek.lookupTex(variable)
-    // Both solutions below show no support of UTF-8. These just cut up the string in byte-sized chars.
-    /*
-    let charPattern = %re("/[\xce\xcf]?./g") // Js.Re.fromString(".")
-    variable->Js.String2.unsafeReplaceBy0(charPattern, (foundChar, _, _) => {
-        Js.log2("found char: ", foundChar)
-        foundChar->Greek.lookupTex
-    })
-    */
+    // This solution does not support UTF-8. It just cuts up the string in byte-sized chars.
     /*
     variable
         ->Js.String2.split("")
@@ -37,7 +30,9 @@ let _unicodeToTex = (variable: string): string => {
 
 // Format text
 let _textToTex = (text: string): string => {
-    _unicodeToTex(text)
+    text
+        ->_unicodeToTex
+        ->Js.String2.replaceByRe(%re("/ /g"), "\\ ")
 }
 
 // Return the correct sign for a node, but suppress

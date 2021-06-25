@@ -8,32 +8,50 @@ open Formula
 
 // sum constants
 
+// sum constant fractions
+
+// multiply constants
+
 // add like terms
 
 // simplify fractions
 
-// add constant fractions
+// fraction with numerator zero
 
-// multiply constants
+// fraction with denominator one
 
 // reverse some orders like [ FractionExpression, constPrimitive ]
 
 // multiply by zero
 
-// replace 1^x by 1
+// -1 · x^2 => -x^2
 
 // replace x^0 by 1 unless x == 0
 
 // replace (expr)^ -1 with 1 / expr ?
 
-// replace {x}√(y^x) with y
+// replace {x}√(y^x) with y => allowed? consider odd/even exponents
 // replace ({x}√y)^x with y => what about y < 0 ?
-
-// cancel sqrt(x^2) etc.
+// sqrt(x^2) => x
 
 // no roots in the denominator
 
 // no fractions under a radical sign
+
+let _addConstants = (terms: array<expression>): array<expression> => {
+    /*
+    terms->Js.Array2.filter(
+        (term: expression): bool => {
+            switch term {
+                | IntPrimitiveExpression(primitive)   if primitive.value === 0  => false
+                | FloatPrimitiveExpression(primitive) if primitive.value === 0. => false
+                | _ => true
+            }
+        }
+    )
+    */
+    terms
+}
 
 let _removeAddZero = (terms: array<expression>): array<expression> => {
     terms->Js.Array2.filter(
@@ -67,9 +85,25 @@ let rec _recurse = (expressions: array<expression>): array<expression> => {
     expressions->Js.Array2.map(_cleanupExpression)
 }
 
+and _cleanupFractionPrimitiveToExpression = (fraction: fractionPrimitive): expression => {
+    if fraction.numerator === 0 {
+        createIntPrimitiveExpression(~sign=fraction.sign, fraction.integer)
+    } else if fraction.denominator === 1 {
+        createIntPrimitiveExpression(~sign=fraction.sign, fraction.integer + fraction.numerator)
+    } else {
+        createFractionPrimitiveExpression(
+            ~sign=fraction.sign,
+            fraction.integer,
+            fraction.numerator,
+            fraction.denominator
+        )
+    }
+}
+
 and _cleanupSumToExpression = (sum: sum): expression => {
     sum.terms
         ->_removeAddZero
+        ->_addConstants
         ->_recurse
         // -> dismantle: if only one term is left, promote it
         ->createSumExpression
@@ -98,6 +132,7 @@ and _cleanupPowerToExpression = (power: power): expression => {
         | FloatPrimitiveExpression({ sign: Plus, value: 1. }) => constOne
         | _ => createPowerExpression(
             ~sign=power.sign,
+            // recurse
             _cleanupExpression(power.base),
             _cleanupExpression(power.exponent)
         )
@@ -109,14 +144,14 @@ and _cleanupExpression = (expression: expression): expression => {
         | TextExpression(_)                      => expression
         | VarPrimitiveExpression(_)              => expression
         | IntPrimitiveExpression(_)              => expression
-        | FractionPrimitiveExpression(_)         => expression // _fractionPrimitiveNodeToTex(primitive, NoPlus)
+        | FractionPrimitiveExpression(fraction)  => fraction->_cleanupFractionPrimitiveToExpression
         | FloatPrimitiveExpression(_)            => expression
         | SumExpression(sum)                     => sum->_cleanupSumToExpression
         | ProductExpression(product)             => product->_cleanupProductToExpression
         | FractionExpression(fraction)           => fraction->_cleanupFractionToExpression
         | PowerExpression(power)                 => power->_cleanupPowerToExpression
-        | SquarerootExpression(_)                => expression // _squarerootNodeToTex(squareroot, NoPlus)
-        | RootExpression(_)                      => expression // _rootNodeToTex(root, NoPlus)
+        | SquarerootExpression(_)                => expression // _cleanupSquarerootToExpression
+        | RootExpression(_)                      => expression // _cleanupRootToExpression
     }
 }
 
