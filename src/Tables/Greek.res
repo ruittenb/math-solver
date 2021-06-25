@@ -63,7 +63,7 @@ let table = Js.Dict.fromArray([
 
 let lookupTex = (str: string): string => {
     switch Js.Dict.get(table, str) {
-        | Some(texString) => " " ++ texString ++ " "
+        | Some(texString) => texString ++ " "
         | None            => str
     }
 }

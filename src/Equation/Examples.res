@@ -240,7 +240,9 @@ let examples: array<formula> = [
     createEquationFormula([
         createProductExpression([
             createVarPrimitiveExpression("B", ~subscript="λ"),
-            createTextExpression("(λ,T)"),
+            createTextExpression("("),
+            createTextExpression("λ"),
+            createTextExpression(",T)"),
         ]),
         createProductExpression([
             createFractionExpression(

@@ -16,9 +16,28 @@ let texDelimiter: string = "$$"
  * Conversions of attributes and leaf nodes to Tex
  */
 
+// Format Greek letters in variables (single-character only, FIXME)
+let _unicodeToTex = (variable: string): string => {
+    Greek.lookupTex(variable)
+    // Both solutions below show no support of UTF-8. These just cut up the string in byte-sized chars.
+    /*
+    let charPattern = %re("/[\xce\xcf]?./g") // Js.Re.fromString(".")
+    variable->Js.String2.unsafeReplaceBy0(charPattern, (foundChar, _, _) => {
+        Js.log2("found char: ", foundChar)
+        foundChar->Greek.lookupTex
+    })
+    */
+    /*
+    variable
+        ->Js.String2.split("")
+        ->Js.Array2.map(Greek.lookupTex)
+        ->Js.Array2.joinWith("")
+    */
+}
+
 // Format text
 let _textToTex = (text: string): string => {
-    ` \\\\text{ ${text} } `
+    _unicodeToTex(text)
 }
 
 // Return the correct sign for a node, but suppress
@@ -34,11 +53,6 @@ let _signAttrToTex = (sign: sign, signMode: signMode): string => {
         | Plus if signMode === AllSign => "+"
         | Plus => ""
     }
-}
-
-// Format Greek letters in variables
-let _unicodeToTex = (variable: string): string => {
-    Greek.lookupTex(variable)
 }
 
 // Format font as "Roman" or "Italic"
@@ -80,7 +94,7 @@ let _fractionPrimitiveNodeToTex = (fractionPrimitive: fractionPrimitive, signMod
     let fractionNumerator = Belt.Int.toString(fractionPrimitive.numerator)
     let fractionDenominator = Belt.Int.toString(fractionPrimitive.denominator)
     _signAttrToTex(fractionPrimitive.sign, signMode) ++
-    ` ${fractionInteger} \\\\frac{ ${fractionNumerator} } { ${fractionDenominator} } `
+    ` ${fractionInteger}\\\\frac{${fractionNumerator}}{${fractionDenominator}} `
 }
 
 // Format a float primitive
@@ -189,14 +203,14 @@ and _powerNodeToTex = (power: power, signMode: signMode): string => {
         | ProductExpression(_)                         => ` ( ${texBase} ) `
         | _                                            => texBase
     }
-    ` ${texSign}${texParenBase}^{ ${texExponent} } `
+    ` ${texSign}${texParenBase}^{${texExponent}} `
 }
 
 // Format a square root
 and _squarerootNodeToTex = (squareroot: squareroot, signMode: signMode): string => {
     let texSign     = _signAttrToTex(squareroot.sign, signMode)
     let texRadicand = _expressionNodeToTex(squareroot.radicand)
-    ` ${texSign} \\\\sqrt{ ${texRadicand} } `
+    ` ${texSign}\\\\sqrt{${texRadicand}} `
 }
 
 // Format any root
@@ -204,7 +218,7 @@ and _rootNodeToTex = (root: root, signMode: signMode): string => {
     let texSign     = _signAttrToTex(root.sign, signMode)
     let texIndex    = _expressionNodeToTex(root.index)
     let texRadicand = _expressionNodeToTex(root.radicand)
-    ` ${texSign} \\\\sqrt[ ${texIndex} ]{ ${texRadicand} }`
+    ` ${texSign}\\\\sqrt[${texIndex}]{${texRadicand}}`
 }
 
 /** **********************************************************************

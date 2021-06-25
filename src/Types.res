@@ -8,7 +8,7 @@
 @@warning("-30")
 
 /** ****************************************************************************
- * Primitives
+ * Data types
  */
 
 type fontStyle =
@@ -21,6 +21,10 @@ type sign =
     | Minus
     | PlusMinus
     | MinusPlus
+
+/** ****************************************************************************
+ * Primitives (leaf nodes)
+ */
 
 type varPrimitive = {
     sign: sign,
