@@ -344,6 +344,476 @@ function option_unwrap(x) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.app = app;
+exports._1 = _1;
+exports.__1 = __1;
+exports._2 = _2;
+exports.__2 = __2;
+exports._3 = _3;
+exports.__3 = __3;
+exports._4 = _4;
+exports.__4 = __4;
+exports._5 = _5;
+exports.__5 = __5;
+exports._6 = _6;
+exports.__6 = __6;
+exports._7 = _7;
+exports.__7 = __7;
+exports._8 = _8;
+exports.__8 = __8;
+
+var Caml_array = _interopRequireWildcard(require("./caml_array.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function app(_f, _args) {
+  while (true) {
+    var args = _args;
+    var f = _f;
+    var init_arity = f.length;
+    var arity = init_arity === 0 ? 1 : init_arity;
+    var len = args.length;
+    var d = arity - len | 0;
+
+    if (d === 0) {
+      return f.apply(null, args);
+    }
+
+    if (d >= 0) {
+      return function (f, args) {
+        return function (x) {
+          return app(f, args.concat([x]));
+        };
+      }(f, args);
+    }
+
+    _args = Caml_array.sub(args, arity, -d | 0);
+    _f = f.apply(null, Caml_array.sub(args, 0, arity));
+    continue;
+  }
+
+  ;
+}
+
+function _1(o, a0) {
+  var arity = o.length;
+
+  if (arity === 1) {
+    return o(a0);
+  } else {
+    switch (arity) {
+      case 1:
+        return o(a0);
+
+      case 2:
+        return function (param) {
+          return o(a0, param);
+        };
+
+      case 3:
+        return function (param, param$1) {
+          return o(a0, param, param$1);
+        };
+
+      case 4:
+        return function (param, param$1, param$2) {
+          return o(a0, param, param$1, param$2);
+        };
+
+      case 5:
+        return function (param, param$1, param$2, param$3) {
+          return o(a0, param, param$1, param$2, param$3);
+        };
+
+      case 6:
+        return function (param, param$1, param$2, param$3, param$4) {
+          return o(a0, param, param$1, param$2, param$3, param$4);
+        };
+
+      case 7:
+        return function (param, param$1, param$2, param$3, param$4, param$5) {
+          return o(a0, param, param$1, param$2, param$3, param$4, param$5);
+        };
+
+      default:
+        return app(o, [a0]);
+    }
+  }
+}
+
+function __1(o) {
+  var arity = o.length;
+
+  if (arity === 1) {
+    return o;
+  } else {
+    return function (a0) {
+      return _1(o, a0);
+    };
+  }
+}
+
+function _2(o, a0, a1) {
+  var arity = o.length;
+
+  if (arity === 2) {
+    return o(a0, a1);
+  } else {
+    switch (arity) {
+      case 1:
+        return app(o(a0), [a1]);
+
+      case 2:
+        return o(a0, a1);
+
+      case 3:
+        return function (param) {
+          return o(a0, a1, param);
+        };
+
+      case 4:
+        return function (param, param$1) {
+          return o(a0, a1, param, param$1);
+        };
+
+      case 5:
+        return function (param, param$1, param$2) {
+          return o(a0, a1, param, param$1, param$2);
+        };
+
+      case 6:
+        return function (param, param$1, param$2, param$3) {
+          return o(a0, a1, param, param$1, param$2, param$3);
+        };
+
+      case 7:
+        return function (param, param$1, param$2, param$3, param$4) {
+          return o(a0, a1, param, param$1, param$2, param$3, param$4);
+        };
+
+      default:
+        return app(o, [a0, a1]);
+    }
+  }
+}
+
+function __2(o) {
+  var arity = o.length;
+
+  if (arity === 2) {
+    return o;
+  } else {
+    return function (a0, a1) {
+      return _2(o, a0, a1);
+    };
+  }
+}
+
+function _3(o, a0, a1, a2) {
+  var arity = o.length;
+
+  if (arity === 3) {
+    return o(a0, a1, a2);
+  } else {
+    switch (arity) {
+      case 1:
+        return app(o(a0), [a1, a2]);
+
+      case 2:
+        return app(o(a0, a1), [a2]);
+
+      case 3:
+        return o(a0, a1, a2);
+
+      case 4:
+        return function (param) {
+          return o(a0, a1, a2, param);
+        };
+
+      case 5:
+        return function (param, param$1) {
+          return o(a0, a1, a2, param, param$1);
+        };
+
+      case 6:
+        return function (param, param$1, param$2) {
+          return o(a0, a1, a2, param, param$1, param$2);
+        };
+
+      case 7:
+        return function (param, param$1, param$2, param$3) {
+          return o(a0, a1, a2, param, param$1, param$2, param$3);
+        };
+
+      default:
+        return app(o, [a0, a1, a2]);
+    }
+  }
+}
+
+function __3(o) {
+  var arity = o.length;
+
+  if (arity === 3) {
+    return o;
+  } else {
+    return function (a0, a1, a2) {
+      return _3(o, a0, a1, a2);
+    };
+  }
+}
+
+function _4(o, a0, a1, a2, a3) {
+  var arity = o.length;
+
+  if (arity === 4) {
+    return o(a0, a1, a2, a3);
+  } else {
+    switch (arity) {
+      case 1:
+        return app(o(a0), [a1, a2, a3]);
+
+      case 2:
+        return app(o(a0, a1), [a2, a3]);
+
+      case 3:
+        return app(o(a0, a1, a2), [a3]);
+
+      case 4:
+        return o(a0, a1, a2, a3);
+
+      case 5:
+        return function (param) {
+          return o(a0, a1, a2, a3, param);
+        };
+
+      case 6:
+        return function (param, param$1) {
+          return o(a0, a1, a2, a3, param, param$1);
+        };
+
+      case 7:
+        return function (param, param$1, param$2) {
+          return o(a0, a1, a2, a3, param, param$1, param$2);
+        };
+
+      default:
+        return app(o, [a0, a1, a2, a3]);
+    }
+  }
+}
+
+function __4(o) {
+  var arity = o.length;
+
+  if (arity === 4) {
+    return o;
+  } else {
+    return function (a0, a1, a2, a3) {
+      return _4(o, a0, a1, a2, a3);
+    };
+  }
+}
+
+function _5(o, a0, a1, a2, a3, a4) {
+  var arity = o.length;
+
+  if (arity === 5) {
+    return o(a0, a1, a2, a3, a4);
+  } else {
+    switch (arity) {
+      case 1:
+        return app(o(a0), [a1, a2, a3, a4]);
+
+      case 2:
+        return app(o(a0, a1), [a2, a3, a4]);
+
+      case 3:
+        return app(o(a0, a1, a2), [a3, a4]);
+
+      case 4:
+        return app(o(a0, a1, a2, a3), [a4]);
+
+      case 5:
+        return o(a0, a1, a2, a3, a4);
+
+      case 6:
+        return function (param) {
+          return o(a0, a1, a2, a3, a4, param);
+        };
+
+      case 7:
+        return function (param, param$1) {
+          return o(a0, a1, a2, a3, a4, param, param$1);
+        };
+
+      default:
+        return app(o, [a0, a1, a2, a3, a4]);
+    }
+  }
+}
+
+function __5(o) {
+  var arity = o.length;
+
+  if (arity === 5) {
+    return o;
+  } else {
+    return function (a0, a1, a2, a3, a4) {
+      return _5(o, a0, a1, a2, a3, a4);
+    };
+  }
+}
+
+function _6(o, a0, a1, a2, a3, a4, a5) {
+  var arity = o.length;
+
+  if (arity === 6) {
+    return o(a0, a1, a2, a3, a4, a5);
+  } else {
+    switch (arity) {
+      case 1:
+        return app(o(a0), [a1, a2, a3, a4, a5]);
+
+      case 2:
+        return app(o(a0, a1), [a2, a3, a4, a5]);
+
+      case 3:
+        return app(o(a0, a1, a2), [a3, a4, a5]);
+
+      case 4:
+        return app(o(a0, a1, a2, a3), [a4, a5]);
+
+      case 5:
+        return app(o(a0, a1, a2, a3, a4), [a5]);
+
+      case 6:
+        return o(a0, a1, a2, a3, a4, a5);
+
+      case 7:
+        return function (param) {
+          return o(a0, a1, a2, a3, a4, a5, param);
+        };
+
+      default:
+        return app(o, [a0, a1, a2, a3, a4, a5]);
+    }
+  }
+}
+
+function __6(o) {
+  var arity = o.length;
+
+  if (arity === 6) {
+    return o;
+  } else {
+    return function (a0, a1, a2, a3, a4, a5) {
+      return _6(o, a0, a1, a2, a3, a4, a5);
+    };
+  }
+}
+
+function _7(o, a0, a1, a2, a3, a4, a5, a6) {
+  var arity = o.length;
+
+  if (arity === 7) {
+    return o(a0, a1, a2, a3, a4, a5, a6);
+  } else {
+    switch (arity) {
+      case 1:
+        return app(o(a0), [a1, a2, a3, a4, a5, a6]);
+
+      case 2:
+        return app(o(a0, a1), [a2, a3, a4, a5, a6]);
+
+      case 3:
+        return app(o(a0, a1, a2), [a3, a4, a5, a6]);
+
+      case 4:
+        return app(o(a0, a1, a2, a3), [a4, a5, a6]);
+
+      case 5:
+        return app(o(a0, a1, a2, a3, a4), [a5, a6]);
+
+      case 6:
+        return app(o(a0, a1, a2, a3, a4, a5), [a6]);
+
+      case 7:
+        return o(a0, a1, a2, a3, a4, a5, a6);
+
+      default:
+        return app(o, [a0, a1, a2, a3, a4, a5, a6]);
+    }
+  }
+}
+
+function __7(o) {
+  var arity = o.length;
+
+  if (arity === 7) {
+    return o;
+  } else {
+    return function (a0, a1, a2, a3, a4, a5, a6) {
+      return _7(o, a0, a1, a2, a3, a4, a5, a6);
+    };
+  }
+}
+
+function _8(o, a0, a1, a2, a3, a4, a5, a6, a7) {
+  var arity = o.length;
+
+  if (arity === 8) {
+    return o(a0, a1, a2, a3, a4, a5, a6, a7);
+  } else {
+    switch (arity) {
+      case 1:
+        return app(o(a0), [a1, a2, a3, a4, a5, a6, a7]);
+
+      case 2:
+        return app(o(a0, a1), [a2, a3, a4, a5, a6, a7]);
+
+      case 3:
+        return app(o(a0, a1, a2), [a3, a4, a5, a6, a7]);
+
+      case 4:
+        return app(o(a0, a1, a2, a3), [a4, a5, a6, a7]);
+
+      case 5:
+        return app(o(a0, a1, a2, a3, a4), [a5, a6, a7]);
+
+      case 6:
+        return app(o(a0, a1, a2, a3, a4, a5), [a6, a7]);
+
+      case 7:
+        return app(o(a0, a1, a2, a3, a4, a5, a6), [a7]);
+
+      default:
+        return app(o, [a0, a1, a2, a3, a4, a5, a6, a7]);
+    }
+  }
+}
+
+function __8(o) {
+  var arity = o.length;
+
+  if (arity === 8) {
+    return o;
+  } else {
+    return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+      return _8(o, a0, a1, a2, a3, a4, a5, a6, a7);
+    };
+  }
+}
+/* No side effect */
+
+},{"./caml_array.js":1}],7:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.get = get;
 exports.entries = entries;
 exports.values = values;
@@ -441,7 +911,7 @@ function map(f, source) {
 }
 /* No side effect */
 
-},{"./caml_option.js":5}],7:[function(require,module,exports){
+},{"./caml_option.js":5}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -498,7 +968,7 @@ var $$Error$1 = Caml_js_exceptions.$$Error;
 
 exports.$$Error = $$Error$1;
 
-},{"./caml_js_exceptions.js":4}],8:[function(require,module,exports){
+},{"./caml_js_exceptions.js":4}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -518,7 +988,7 @@ var min = -2147483648;
 
 exports.min = min;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -576,7 +1046,7 @@ var floor = floor_int;
 
 exports.floor = floor;
 
-},{"./js_int.js":8}],10:[function(require,module,exports){
+},{"./js_int.js":9}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -604,7 +1074,7 @@ var examples = [Formula$MathSolver.createEquationFormula([Formula$MathSolver.cre
 
 exports.examples = examples;
 
-},{"../Formula.bs.js":12}],11:[function(require,module,exports){
+},{"../Formula.bs.js":13}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -700,7 +1170,7 @@ function generate(param) {
 }
 /* No side effect */
 
-},{"../Formula.bs.js":12,"../Helpers/Random.bs.js":17}],12:[function(require,module,exports){
+},{"../Formula.bs.js":13,"../Helpers/Random.bs.js":19}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -963,7 +1433,7 @@ function createLogicalOrFormula(atoms) {
 }
 /* No side effect */
 
-},{"./Helpers/FormulaTools.bs.js":16}],13:[function(require,module,exports){
+},{"./Helpers/FormulaTools.bs.js":18}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1166,7 +1636,7 @@ function cleanup(formula) {
 }
 /* No side effect */
 
-},{"../Formula.bs.js":12}],14:[function(require,module,exports){
+},{"../Formula.bs.js":13}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1630,11 +2100,63 @@ function formulaNodeToTex(formula) {
 }
 /* Greek-MathSolver Not a pure module */
 
-},{"../Tables/Greek.bs.js":19,"../Tables/MultiplicationSymbol.bs.js":20,"rescript/lib/es6/caml_array.js":1}],15:[function(require,module,exports){
+},{"../Tables/Greek.bs.js":21,"../Tables/MultiplicationSymbol.bs.js":22,"rescript/lib/es6/caml_array.js":1}],16:[function(require,module,exports){
 // Generated by ReScript, PLEASE EDIT WITH CARE
 /* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.add = add;
+exports.compact = compact;
+exports.lijst2 = exports.lijst1 = void 0;
+
+var TypeTools$MathSolver = _interopRequireWildcard(require("./TypeTools.bs.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Generated by ReScript, PLEASE EDIT WITH CARE
+var lijst1 = [1, 3, undefined, 5, undefined, 7, 9, 11, undefined];
+exports.lijst1 = lijst1;
+var lijst2 = [undefined, undefined, -1, -3, -5];
+exports.lijst2 = lijst2;
+
+function add(v1, v2) {
+  return v1 + v2 | 0;
+}
+
+function compact(lijssie) {
+  var match = lijssie.reduce(function (param, currentElement, index) {
+    var newLijssie = param[1];
+
+    if (index === 0) {
+      return [currentElement, newLijssie];
+    }
+
+    var lastElement = param[0];
+    var sumElement = TypeTools$MathSolver.map2(currentElement, lastElement, add);
+
+    if (sumElement !== undefined) {
+      return [sumElement, newLijssie];
+    } else {
+      return [currentElement, newLijssie.concat([lastElement])];
+    }
+  }, [undefined, []]);
+  return match[1].concat([match[0]]);
+}
+
+console.log("Original :", lijst1);
+console.log("Compacted:", compact(lijst1));
+console.log("Original :", lijst2);
+console.log("Compacted:", compact(lijst2));
+/*  Not a pure module */
+
+},{"./TypeTools.bs.js":20}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1642,6 +2164,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.flipSign = flipSign;
 exports.pairWithSign = pairWithSign;
+exports.fractionPrimitiveExpressionToOption = fractionPrimitiveExpressionToOption;
 exports._calculateLeastCommonMultiple = _calculateLeastCommonMultiple;
 exports.findLeastCommonMultiple = findLeastCommonMultiple;
 exports.addFractions = addFractions;
@@ -1701,6 +2224,14 @@ function pairWithSign(signOpt, n) {
     return [flipSign(sign), -n | 0];
   } else {
     return [sign, n];
+  }
+}
+
+function fractionPrimitiveExpressionToOption(expression) {
+  if (expression.TAG ===
+  /* FractionPrimitiveExpression */
+  3) {
+    return expression._0;
   }
 }
 
@@ -1771,7 +2302,7 @@ function isPowerBaseConstant(power) {
 }
 /* No side effect */
 
-},{"rescript/lib/es6/caml_int32.js":3,"rescript/lib/es6/js_exn.js":7}],17:[function(require,module,exports){
+},{"rescript/lib/es6/caml_int32.js":3,"rescript/lib/es6/js_exn.js":8}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1824,13 +2355,17 @@ var limit = 2;
 
 exports.limit = limit;
 
-},{"../Formula.bs.js":12,"rescript/lib/es6/js_math.js":9}],18:[function(require,module,exports){
+},{"../Formula.bs.js":13,"rescript/lib/es6/js_math.js":10}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports._withDefault = _withDefault;
+exports.withDefault = withDefault;
+exports.map2 = map2;
+exports.andThen2 = andThen2;
+
+var Curry = _interopRequireWildcard(require("rescript/lib/es6/curry.js"));
 
 var Caml_option = _interopRequireWildcard(require("rescript/lib/es6/caml_option.js"));
 
@@ -1839,16 +2374,28 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Generated by ReScript, PLEASE EDIT WITH CARE
-function _withDefault(opt, $$default) {
+function withDefault(opt, $$default) {
   if (opt !== undefined) {
     return Caml_option.valFromOption(opt);
   } else {
     return $$default;
   }
 }
+
+function map2(opt1, opt2, fn) {
+  if (opt1 !== undefined && opt2 !== undefined) {
+    return Caml_option.some(Curry._2(fn, Caml_option.valFromOption(opt1), Caml_option.valFromOption(opt2)));
+  }
+}
+
+function andThen2(opt1, opt2, fn) {
+  if (opt1 !== undefined && opt2 !== undefined) {
+    return Curry._2(fn, Caml_option.valFromOption(opt1), Caml_option.valFromOption(opt2));
+  }
+}
 /* No side effect */
 
-},{"rescript/lib/es6/caml_option.js":5}],19:[function(require,module,exports){
+},{"rescript/lib/es6/caml_option.js":5,"rescript/lib/es6/curry.js":6}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1878,7 +2425,7 @@ function lookupTex(str) {
 }
 /* table Not a pure module */
 
-},{"rescript/lib/es6/js_dict.js":6}],20:[function(require,module,exports){
+},{"rescript/lib/es6/js_dict.js":7}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2115,9 +2662,9 @@ function lookupTex(factorLeft, factorRight) {
 }
 /* _tableRowText Not a pure module */
 
-},{"../Helpers/FormulaTools.bs.js":16,"rescript/lib/es6/caml_option.js":5,"rescript/lib/es6/js_dict.js":6}],21:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],22:[function(require,module,exports){
+},{"../Helpers/FormulaTools.bs.js":18,"rescript/lib/es6/caml_option.js":5,"rescript/lib/es6/js_dict.js":7}],23:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"dup":16}],24:[function(require,module,exports){
 "use strict";
 
 var FormulaRenderer = _interopRequireWildcard(require("./Formula/FormulaRenderer.bs"));
@@ -2192,4 +2739,4 @@ class MathSolver {
 
 window.MathSolver = MathSolver;
 
-},{"./Equation/Examples.bs":10,"./Equation/QuadraticEquation.bs":11,"./Formula/FormulaCleaner.bs":13,"./Formula/FormulaRenderer.bs":14}]},{},[20,19,10,11,12,21,22,15,14,13,18,17,16]);
+},{"./Equation/Examples.bs":11,"./Equation/QuadraticEquation.bs":12,"./Formula/FormulaCleaner.bs":14,"./Formula/FormulaRenderer.bs":15}]},{},[22,21,11,12,13,23,24,16,15,14,20,19,18,17]);

@@ -22,6 +22,13 @@ let pairWithSign = (~sign=Plus, n: int): (sign, int) => {
     }
 }
 
+let fractionPrimitiveExpressionToOption = (expression: expression): option<fractionPrimitive> => {
+    switch expression {
+        | FractionPrimitiveExpression(fraction) => Some(fraction)
+        | _ => None
+    }
+}
+
 /** ****************************************************************************
  * Fractions
  */

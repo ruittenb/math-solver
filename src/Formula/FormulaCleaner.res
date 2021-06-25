@@ -40,8 +40,7 @@ open Formula
 
 let _addConstants = (terms: array<expression>): array<expression> => {
     /*
-    terms->Js.Array2.filter(
-        (term: expression): bool => {
+        let term = terms[i]
             switch term {
                 | IntPrimitiveExpression(primitive)   if primitive.value === 0  => false
                 | FloatPrimitiveExpression(primitive) if primitive.value === 0. => false
