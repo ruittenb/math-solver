@@ -7,6 +7,10 @@
 // in both types 'product' and 'power'" etc.
 @@warning("-30")
 
+type either<'t, 'v> =
+    | Left('t)
+    | Right('v)
+
 /** ****************************************************************************
  * Data types
  */
@@ -121,6 +125,13 @@ type formula =
     | LogicalOr(logicalOr)
     | Equation(equation)
     | Text(string)
+
+/** ****************************************************************************
+ * Either types (used while cleaning)
+ */
+
+//type varPrimitiveEither = either<expression, fractionPrimitive>
+type floatPrimitiveEither = either<expression, floatPrimitive>
 
 /** ****************************************************************************
  * Steps to solve

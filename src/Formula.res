@@ -39,13 +39,6 @@ let createVarPrimitiveExpression = (
 let createIntPrimitiveExpression = (~sign: sign = Plus, value: int): expression => {
     let (correctedSign, correctedInt) = FormulaTools.pairWithSign(~sign=sign, value)
     IntPrimitiveExpression({ sign: correctedSign, value: correctedInt })
-    /*
-    if value < 0 {
-        IntPrimitiveExpression({ sign: FormulaTools.flipSign(sign), value: -value })
-    } else {
-        IntPrimitiveExpression({ sign: sign, value: value })
-    }
-    */
 }
 
 // the sign of numerator and denominator will be disregarded.

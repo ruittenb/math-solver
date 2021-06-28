@@ -5,10 +5,9 @@
 
 open Types
 open Formula
+open FormulaTools
 
 // sum constants
-
-// sum constant fractions
 
 // multiply constants
 
@@ -38,20 +37,6 @@ open Formula
 
 // no fractions under a radical sign
 
-let _addConstants = (terms: array<expression>): array<expression> => {
-    /*
-        let term = terms[i]
-            switch term {
-                | IntPrimitiveExpression(primitive)   if primitive.value === 0  => false
-                | FloatPrimitiveExpression(primitive) if primitive.value === 0. => false
-                | _ => true
-            }
-        }
-    )
-    */
-    terms
-}
-
 let _removeAddZero = (terms: array<expression>): array<expression> => {
     terms->Js.Array2.filter(
         (term: expression): bool => {
@@ -74,6 +59,30 @@ let _removeMultiplyByOne = (factors: array<expression>): array<expression> => {
             }
         }
     )
+}
+
+/** ****************************************************************************
+ * Compacting (taking together multiple terms like in x + 4 - 2)
+ */
+
+let _compactFractionPrimitives = (terms: array<expression>): array<expression> => {
+    terms
+        ->Js.Array2.map(fractionPrimitiveExpressionToEither)
+        ->FormulaTools.compactFractionPrimitives
+        ->Js.Array2.map(fractionEitherToExpression)
+}
+
+let _compactIntPrimitives = (terms: array<expression>): array<expression> => {
+    terms
+        ->Js.Array2.map(intPrimitiveExpressionToEither)
+//        ->FormulaTools.compactIntPrimitives
+        ->Js.Array2.map(intEitherToExpression)
+}
+
+let _addConstants = (terms: array<expression>): array<expression> => {
+    terms
+        ->_compactFractionPrimitives
+        ->_compactIntPrimitives
 }
 
 /** ****************************************************************************
@@ -103,16 +112,17 @@ and _cleanupSumToExpression = (sum: sum): expression => {
     sum.terms
         ->_removeAddZero
         ->_addConstants
-        ->_recurse
-        // -> dismantle: if only one term is left, promote it
+        ->_recurse // process subexpressions as well
+        // -> dismantle // if only one term is left, promote it
         ->createSumExpression
 }
 
 and _cleanupProductToExpression = (product: product): expression => {
     product.factors
         ->_removeMultiplyByOne
-        ->_recurse
-        // -> dismantle: if only one factor is left, promote it
+        // ->_multiplyConstants
+        ->_recurse // process subexpressions as well
+        // -> dismantle // if only one factor is left, promote it
         ->createProductExpression(~sign=product.sign)
 }
 
@@ -131,9 +141,8 @@ and _cleanupPowerToExpression = (power: power): expression => {
         | FloatPrimitiveExpression({ sign: Plus, value: 1. }) => constOne
         | _ => createPowerExpression(
             ~sign=power.sign,
-            // recurse
-            _cleanupExpression(power.base),
-            _cleanupExpression(power.exponent)
+            _cleanupExpression(power.base),    // recurse
+            _cleanupExpression(power.exponent) // recurse
         )
     }
 }
