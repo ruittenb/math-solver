@@ -145,7 +145,7 @@ let generate = (): formula => {
         | 8 => _generateShapeSquareLinear(rightMember)
         | 9 => _generateShapeFullQuadratic(0)
         | 10 => _generateShapeFullQuadratic(rightMember)
-        | _ => Text("")
+        | _ => Text([])
     }
 }
 

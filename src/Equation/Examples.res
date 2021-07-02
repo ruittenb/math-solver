@@ -176,6 +176,18 @@ let examples: array<formula> = [
             createIntPrimitiveExpression(27)
         )
     ]),
+    // i^2 = -1, i elementof C
+    createEquationFormula([
+        createPowerExpression(
+            createVarPrimitiveExpression("i"),
+            createIntPrimitiveExpression(2)
+        ),
+        createTextExpression([
+            "-1,  i",
+            Symbols.lookupTex("∈"),
+            Symbols.lookupTex("ℂ")
+        ]),
+    ]),
     // y = (3x)^5
     createEquationFormula([
         createVarPrimitiveExpression("y"),
@@ -248,9 +260,9 @@ let examples: array<formula> = [
     createEquationFormula([
         createProductExpression([
             createVarPrimitiveExpression("B", ~subscript="λ"),
-            createTextExpression("("),
-            createTextExpression("λ"),
-            createTextExpression(",T)"),
+            createTextExpression([
+                "(", "λ", ",T)"
+            ])
         ]),
         createProductExpression([
             createFractionExpression(

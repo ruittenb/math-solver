@@ -16,11 +16,12 @@ let texDelimiter: string = "$$"
  * Conversions of attributes and leaf nodes to Tex
  */
 
-// Format Greek letters in variables (single-character only, FIXME)
+// Format Greek letters in variables. These characters must be included
+// as separate strings in the text array.
 let _unicodeToTex = (variable: string): string => {
     Greek.lookupTex(variable)
-    // This solution does not support UTF-8. It just cuts up the string in byte-sized chars.
     /*
+    // This solution does not support UTF-8. It just cuts up the string in byte-sized chars.
     variable
         ->Js.String2.split("")
         ->Js.Array2.map(Greek.lookupTex)
@@ -29,10 +30,14 @@ let _unicodeToTex = (variable: string): string => {
 }
 
 // Format text
-let _textToTex = (text: string): string => {
-    text
-        ->_unicodeToTex
-        ->Js.String2.replaceByRe(%re("/ /g"), "\\ ")
+let _textToTex = (texts: array<string>): string => {
+    texts
+        ->Js.Array2.map((text) => {
+                text
+                ->_unicodeToTex
+                ->Js.String2.replaceByRe(%re("/ /g"), "\\ ")
+            })
+        ->Js.Array2.joinWith("")
 }
 
 // Return the correct sign for a node, but suppress
@@ -105,7 +110,7 @@ let _floatPrimitiveNodeToTex = (floatPrimitive: floatPrimitive, signMode: signMo
 // Format any expression
 let rec _expressionNodeToTex = (expression: expression): string => {
     switch expression {
-        | TextExpression(text)                   => _textToTex(text)
+        | TextExpression(texts)                  => _textToTex(texts)
         | VarPrimitiveExpression(primitive)      => _varPrimitiveNodeToTex(primitive, NoPlus)
         | IntPrimitiveExpression(primitive)      => _intPrimitiveNodeToTex(primitive, NoPlus)
         | FractionPrimitiveExpression(primitive) => _fractionPrimitiveNodeToTex(primitive, NoPlus)
@@ -123,7 +128,7 @@ let rec _expressionNodeToTex = (expression: expression): string => {
 // as sign between the terms; e.g. sum(prim(4), prim(-5)) is rendered as "4 - 5"
 and _termNodeToTex = (expression: expression, signMode: signMode): string => {
     switch expression {
-        | TextExpression(text)                   => _textToTex(text)                          // has no sign property
+        | TextExpression(texts)                  => _textToTex(texts)                         // has no sign property
         | SumExpression(sum)                     => _sumNodeToTex(sum)                        // has no sign property
         | VarPrimitiveExpression(primitive)      => _signAttrToTex(primitive.sign,  signMode) ++ " " ++ _varPrimitiveNodeToTex(primitive, NoSign)
         | IntPrimitiveExpression(primitive)      => _signAttrToTex(primitive.sign,  signMode) ++ " " ++ _intPrimitiveNodeToTex(primitive, NoSign)
@@ -239,7 +244,7 @@ let formulaNodeToTex = (formula: formula): string => {
     let texFormula = switch formula {
         | LogicalOr(logicalOr) => _logicalOrNodeToTex(logicalOr)
         | Equation(eq)         => _equationNodeToTex(eq)
-        | Text(text)           => _textToTex(text)
+        | Text(texts)          => _textToTex(texts)
     }
     texDelimiter ++ texFormula ++ texDelimiter
 }

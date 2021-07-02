@@ -10,8 +10,8 @@ open Types
  */
 
 // For consistency. You may also use TextExpression(text)
-let createTextExpression = (text: string): expression => {
-    text->TextExpression
+let createTextExpression = (texts: array<string>): expression => {
+    texts->TextExpression
 }
 
 let createVarPrimitiveExpression = (
@@ -50,7 +50,7 @@ let createFractionPrimitiveExpression = (
 ): expression => {
     if denominator === 0 {
         let message = "[createFractionPrimitiveExpression: denominator must not be zero]"
-        createTextExpression(message)
+        createTextExpression([message])
     } else {
         let correctedSign = if integer < 0 {
             FormulaTools.flipSign(sign)

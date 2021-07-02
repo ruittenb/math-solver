@@ -33,25 +33,25 @@ type sign =
 type varPrimitive = {
     sign: sign,
     value: string,
-    subscript: option<string>,
+    subscript: option<string>, // option<(string, fontStyle)>
     subscriptFontStyle: fontStyle
 }
 
 type intPrimitive = {
     sign: sign,
-    value: int
+    value: int       // always positive
 }
 
 and fractionPrimitive = {
     sign: sign,
-    integer: int,
-    numerator: int,
-    denominator: int
+    integer: int,    // always positive
+    numerator: int,  // always positive
+    denominator: int // always positive
 }
 
 type floatPrimitive = {
     sign: sign,
-    value: float
+    value: float     // always positive
 }
 
 /** ****************************************************************************
@@ -95,7 +95,7 @@ and root = {
 // x element of R etc.
 
 and expression =
-    | TextExpression(string)
+    | TextExpression(array<string>)
     | VarPrimitiveExpression(varPrimitive)
     | IntPrimitiveExpression(intPrimitive)
     | FractionPrimitiveExpression(fractionPrimitive)
@@ -124,7 +124,7 @@ type logicalOr = {
 type formula =
     | LogicalOr(logicalOr)
     | Equation(equation)
-    | Text(string)
+    | Text(array<string>)
 
 /** ****************************************************************************
  * Either types (used while cleaning)
@@ -142,9 +142,9 @@ type step =
     | MultiplyConstant(option<float>) // *n both sides
     | Power(option<float>)            // ^n both sides
     | TakeRoot(option<float>)         // n√ both sides
-    | Factor                          // x^2 + x => x (x + 1)
+    | Factorize                       // x^2 + x => x (x + 1)
     | Distribute                      // x (x + 2) => x^2 + 2x
-    | Gather                          // X^2 + 4 + x - 3 + 5x => x^2 + 6x + 1
+    | Gather                          // x^2 + 4 + x - 3 + 5x => x^2 + 6x + 1
     | Reverse                         // a = b => b = a
 
 // vim: set ts=4 sw=4 et list nu fdm=marker:

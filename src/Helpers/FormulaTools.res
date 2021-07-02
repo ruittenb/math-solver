@@ -22,6 +22,10 @@ let pairWithSign = (~sign=Plus, n: int): (sign, int) => {
     }
 }
 
+let signedIntValue = (primitive: intPrimitive) => {
+    if primitive.sign === Plus { primitive.value } else { -primitive.value } // FIXME what about PlusMinus?
+}
+
 /** ****************************************************************************
  * Integers
  */
@@ -42,6 +46,36 @@ let intEitherToExpression = (wrappedExpression: intPrimitiveEither): expression 
     }
 }
 
+let addIntPrimitives = (a: intPrimitive, b: intPrimitive): intPrimitive => {
+    let (sign, value) = pairWithSign(a.value + b.value) // TODO fix sign
+    { sign, value }
+}
+
+let compactIntPrimitives = (lijssie: array<intPrimitiveEither>): array<intPrimitiveEither> => {
+    let dummyExpression = TextExpression([])
+    let (lastElement, newLijssie) = lijssie->Js.Array2.reducei(
+        (
+            (lastElement: intPrimitiveEither, newLijssie: array<intPrimitiveEither>),
+            currentElement: intPrimitiveEither,
+            index: int
+        ) => {
+            if index === 0 {
+                (currentElement, newLijssie)
+            } else {
+                let sumElement = TypeTools.eMap2(lastElement, currentElement, addIntPrimitives)
+                switch sumElement {
+                    | Right(_) => ( sumElement, newLijssie)
+                    | Left(_) => (
+                        currentElement,
+                        newLijssie->Js.Array2.concat([ lastElement ])
+                    )
+                }
+            }
+        },
+        (Left(dummyExpression), [])
+    )
+    newLijssie->Js.Array2.concat([ lastElement ])
+}
 
 
 /** ****************************************************************************
@@ -99,7 +133,7 @@ let addFractionPrimitives = (fraction1: fractionPrimitive, fraction2: fractionPr
     let (resultingSign, commonNumerator) =
         if fraction1.sign === fraction2.sign {
             (fraction1.sign, vulgarNumerator1 * multiplier1 + vulgarNumerator2 * multiplier2)
-        } else if fraction1.sign === Plus { // fraction2.sign is Minus
+        } else if fraction1.sign === Plus { // fraction2.sign is Minus // FIXME what about PlusMinus?
             (vulgarNumerator1 * multiplier1 - vulgarNumerator2 * multiplier2)->pairWithSign
         } else { // fraction1.sign is Minus, fraction2.sign is Plus
             (vulgarNumerator2 * multiplier2 - vulgarNumerator1 * multiplier1)->pairWithSign
@@ -129,7 +163,7 @@ let fractionEitherToExpression = (wrappedExpression: fractionPrimitiveEither): e
 }
 
 let compactFractionPrimitives = (lijssie: array<fractionPrimitiveEither>): array<fractionPrimitiveEither> => {
-    let dummyExpression = TextExpression("")
+    let dummyExpression = TextExpression([])
     let (lastElement, newLijssie) = lijssie->Js.Array2.reducei(
         (
             (lastElement: fractionPrimitiveEither, newLijssie: array<fractionPrimitiveEither>),

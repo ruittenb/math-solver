@@ -1056,6 +1056,8 @@ exports.examples = void 0;
 
 var Formula$MathSolver = _interopRequireWildcard(require("../Formula.bs.js"));
 
+var Symbols$MathSolver = _interopRequireWildcard(require("../Tables/Symbols.bs.js"));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -1065,16 +1067,16 @@ var examples = [Formula$MathSolver.createEquationFormula([Formula$MathSolver.cre
 /* Minus */
 1, Formula$MathSolver.createIntPrimitiveExpression(undefined, 1), Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 3)])), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 2), Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 0)]))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createFractionPrimitiveExpression(undefined, 1, 2, 1), Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 1, 2), Formula$MathSolver.createFractionPrimitiveExpression(undefined, 1, 0, 3), Formula$MathSolver.createFractionPrimitiveExpression(undefined, 1, 1, -4), Formula$MathSolver.createFractionPrimitiveExpression(undefined, 1, -3, 5), Formula$MathSolver.createFractionPrimitiveExpression(undefined, 1, -3, -6), Formula$MathSolver.createFractionPrimitiveExpression(undefined, -1, 3, 7), Formula$MathSolver.createFractionPrimitiveExpression(undefined, -1, 3, -8), Formula$MathSolver.createFractionPrimitiveExpression(undefined, -1, -3, 9), Formula$MathSolver.createFractionPrimitiveExpression(undefined, -1, -3, -10)])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createFractionPrimitiveExpression(undefined, 3, 2, 9), Formula$MathSolver.createFractionPrimitiveExpression(undefined, -1, 1, 12), Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 1, 6)])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 2), Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 5), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "a"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "b"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "a"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2)), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "b")])])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createSumExpression([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 2), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x")]), Formula$MathSolver.createIntPrimitiveExpression(undefined, -1)]), Formula$MathSolver.createIntPrimitiveExpression(undefined, 0)]), Formula$MathSolver.createLogicalOrFormula([Formula$MathSolver.createEquation([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 1)]), Formula$MathSolver.createEquation([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 4)])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "y"), Formula$MathSolver.createProductExpression(
 /* PlusMinus */
-2, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xcf\x86"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 1, 2), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 1, 2), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 5))])])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "V"), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 4, 3), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xcf\x80"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "r"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 3))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createRootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createIntPrimitiveExpression(undefined, 27))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "y"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x")]), Formula$MathSolver.createIntPrimitiveExpression(undefined, 5))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "y"), Formula$MathSolver.createRootExpression(undefined, Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 5)]), Formula$MathSolver.createIntPrimitiveExpression(undefined, 3125))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression("1,2", undefined, "x"), Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "-b"), Formula$MathSolver.createSquarerootExpression(
+2, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xcf\x86"), Formula$MathSolver.createSumExpression([Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 1, 2), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 1, 2), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 5))])])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "V"), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionPrimitiveExpression(undefined, 0, 4, 3), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xcf\x80"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "r"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 3))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createRootExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createIntPrimitiveExpression(undefined, 27))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "i"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2)), Formula$MathSolver.createTextExpression(["-1,  i", Symbols$MathSolver.lookupTex("\xe2\x88\x88"), Symbols$MathSolver.lookupTex("\xe2\x84\x82")])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "y"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 3), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x")]), Formula$MathSolver.createIntPrimitiveExpression(undefined, 5))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "y"), Formula$MathSolver.createRootExpression(undefined, Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "x"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 5)]), Formula$MathSolver.createIntPrimitiveExpression(undefined, 3125))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression("1,2", undefined, "x"), Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createSumExpression([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "-b"), Formula$MathSolver.createSquarerootExpression(
 /* PlusMinus */
-2, Formula$MathSolver.createSumExpression([Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "b"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2)), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, -4), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "a"), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "c")])]))]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 2), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "a")]))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "h"), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFloatPrimitiveExpression(13.1), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "Q"), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression("0", undefined, "\xce\xbc"), Formula$MathSolver.createVarPrimitiveExpression("0", undefined, "\xcf\xb5"))), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xce\xb6"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression("\xce\xbb", undefined, "B"), Formula$MathSolver.createTextExpression("("), Formula$MathSolver.createTextExpression("\xce\xbb"), Formula$MathSolver.createTextExpression(",T)")]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 2), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "h"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "c"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))]), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xce\xbb"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 5))), Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 1), Formula$MathSolver.createSumExpression([Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "e"), Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "h"), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "c")]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xce\xbb"), Formula$MathSolver.createVarPrimitiveExpression("B",
+2, Formula$MathSolver.createSumExpression([Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "b"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2)), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, -4), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "a"), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "c")])]))]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 2), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "a")]))]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "h"), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFloatPrimitiveExpression(13.1), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "Q"), Formula$MathSolver.createSquarerootExpression(undefined, Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression("0", undefined, "\xce\xbc"), Formula$MathSolver.createVarPrimitiveExpression("0", undefined, "\xcf\xb5"))), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xce\xb6"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))])]), Formula$MathSolver.createEquationFormula([Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression("\xce\xbb", undefined, "B"), Formula$MathSolver.createTextExpression(["(", "\xce\xbb", ",T)"])]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createIntPrimitiveExpression(undefined, 2), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "h"), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "c"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 2))]), Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xce\xbb"), Formula$MathSolver.createIntPrimitiveExpression(undefined, 5))), Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createIntPrimitiveExpression(undefined, 1), Formula$MathSolver.createSumExpression([Formula$MathSolver.createPowerExpression(undefined, Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "e"), Formula$MathSolver.createFractionExpression(undefined, Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "h"), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "c")]), Formula$MathSolver.createProductExpression(undefined, [Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "\xce\xbb"), Formula$MathSolver.createVarPrimitiveExpression("B",
 /* Upright */
 0, "k"), Formula$MathSolver.createVarPrimitiveExpression(undefined, undefined, "T")]))), Formula$MathSolver.createIntPrimitiveExpression(undefined, -1)]))])])];
 /* examples Not a pure module */
 
 exports.examples = examples;
 
-},{"../Formula.bs.js":13}],12:[function(require,module,exports){
+},{"../Formula.bs.js":13,"../Tables/Symbols.bs.js":22}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1164,7 +1166,7 @@ function generate(param) {
         TAG:
         /* Text */
         2,
-        _0: ""
+        _0: []
       };
   }
 }
@@ -1198,12 +1200,12 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 // Generated by ReScript, PLEASE EDIT WITH CARE
-function createTextExpression(text) {
+function createTextExpression(texts) {
   return {
     TAG:
     /* TextExpression */
     0,
-    _0: text
+    _0: texts
   };
 }
 
@@ -1269,7 +1271,7 @@ function createFractionPrimitiveExpression(signOpt, integer, numerator, denomina
       TAG:
       /* TextExpression */
       0,
-      _0: "[createFractionPrimitiveExpression: denominator must not be zero]"
+      _0: ["[createFractionPrimitiveExpression: denominator must not be zero]"]
     };
   }
 
@@ -1553,6 +1555,22 @@ function _cleanupExpression(expression) {
   }
 }
 
+function _cleanupProductToExpression(product) {
+  var expressions = _removeMultiplyByOne(product.factors);
+
+  return Formula$MathSolver.createProductExpression(product.sign, expressions.map(_cleanupExpression));
+}
+
+function _cleanupFractionPrimitiveToExpression(fraction) {
+  if (fraction.numerator === 0) {
+    return Formula$MathSolver.createIntPrimitiveExpression(fraction.sign, fraction.integer);
+  } else if (fraction.denominator === 1) {
+    return Formula$MathSolver.createIntPrimitiveExpression(fraction.sign, fraction.integer + fraction.numerator | 0);
+  } else {
+    return Formula$MathSolver.createFractionPrimitiveExpression(fraction.sign, fraction.integer, fraction.numerator, fraction.denominator);
+  }
+}
+
 function _cleanupFractionToExpression(fraction) {
   return Formula$MathSolver.createFractionExpression(fraction.sign, fraction.numerator, fraction.denominator);
 }
@@ -1588,22 +1606,6 @@ function _cleanupPowerToExpression(power) {
   }
 
   return Formula$MathSolver.createPowerExpression(power.sign, _cleanupExpression(power.base), _cleanupExpression(power.exponent));
-}
-
-function _cleanupProductToExpression(product) {
-  var expressions = _removeMultiplyByOne(product.factors);
-
-  return Formula$MathSolver.createProductExpression(product.sign, expressions.map(_cleanupExpression));
-}
-
-function _cleanupFractionPrimitiveToExpression(fraction) {
-  if (fraction.numerator === 0) {
-    return Formula$MathSolver.createIntPrimitiveExpression(fraction.sign, fraction.integer);
-  } else if (fraction.denominator === 1) {
-    return Formula$MathSolver.createIntPrimitiveExpression(fraction.sign, fraction.integer + fraction.numerator | 0);
-  } else {
-    return Formula$MathSolver.createFractionPrimitiveExpression(fraction.sign, fraction.integer, fraction.numerator, fraction.denominator);
-  }
 }
 
 function _cleanupSumToExpression(sum) {
@@ -1694,8 +1696,10 @@ exports.texDelimiter = texDelimiter;
 var _unicodeToTex = Greek$MathSolver.lookupTex;
 exports._unicodeToTex = _unicodeToTex;
 
-function _textToTex(text) {
-  return Greek$MathSolver.lookupTex(text).replace(/ /g, "\\ ");
+function _textToTex(texts) {
+  return texts.map(function (text) {
+    return Greek$MathSolver.lookupTex(text).replace(/ /g, "\\ ");
+  }).join("");
 }
 
 function _signAttrToTex(sign, signMode) {
@@ -2126,8 +2130,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.flipSign = flipSign;
 exports.pairWithSign = pairWithSign;
+exports.signedIntValue = signedIntValue;
 exports.intPrimitiveExpressionToEither = intPrimitiveExpressionToEither;
 exports.intEitherToExpression = intEitherToExpression;
+exports.addIntPrimitives = addIntPrimitives;
+exports.compactIntPrimitives = compactIntPrimitives;
 exports._calculateLeastCommonMultiple = _calculateLeastCommonMultiple;
 exports.findLeastCommonMultiple = findLeastCommonMultiple;
 exports.findGreatestCommonDivisor = findGreatestCommonDivisor;
@@ -2196,6 +2203,16 @@ function pairWithSign(signOpt, n) {
   }
 }
 
+function signedIntValue(primitive) {
+  if (primitive.sign ===
+  /* Plus */
+  0) {
+    return primitive.value;
+  } else {
+    return -primitive.value | 0;
+  }
+}
+
 function intPrimitiveExpressionToEither(expression) {
   if (expression.TAG ===
   /* IntPrimitiveExpression */
@@ -2229,6 +2246,47 @@ function intEitherToExpression(wrappedExpression) {
       _0: wrappedExpression._0
     };
   }
+}
+
+function addIntPrimitives(a, b) {
+  var match = pairWithSign(undefined, a.value + b.value | 0);
+  return {
+    sign: match[0],
+    value: match[1]
+  };
+}
+
+function compactIntPrimitives(lijssie) {
+  var dummyExpression = {
+    TAG:
+    /* TextExpression */
+    0,
+    _0: []
+  };
+  var match = lijssie.reduce(function (param, currentElement, index) {
+    var newLijssie = param[1];
+
+    if (index === 0) {
+      return [currentElement, newLijssie];
+    }
+
+    var lastElement = param[0];
+    var sumElement = TypeTools$MathSolver.eMap2(lastElement, currentElement, addIntPrimitives);
+
+    if (sumElement.TAG ===
+    /* Left */
+    0) {
+      return [currentElement, newLijssie.concat([lastElement])];
+    } else {
+      return [sumElement, newLijssie];
+    }
+  }, [{
+    TAG:
+    /* Left */
+    0,
+    _0: dummyExpression
+  }, []]);
+  return match[1].concat([match[0]]);
 }
 
 function _calculateLeastCommonMultiple(firstA, firstB, _a, _b) {
@@ -2330,6 +2388,12 @@ function fractionEitherToExpression(wrappedExpression) {
 }
 
 function compactFractionPrimitives(lijssie) {
+  var dummyExpression = {
+    TAG:
+    /* TextExpression */
+    0,
+    _0: []
+  };
   var match = lijssie.reduce(function (param, currentElement, index) {
     var newLijssie = param[1];
 
@@ -2351,12 +2415,7 @@ function compactFractionPrimitives(lijssie) {
     TAG:
     /* Left */
     0,
-    _0: {
-      TAG:
-      /* TextExpression */
-      0,
-      _0: ""
-    }
+    _0: dummyExpression
   }, []]);
   return match[1].concat([match[0]]);
 }
@@ -2763,8 +2822,38 @@ function lookupTex(factorLeft, factorRight) {
 /* _tableRowText Not a pure module */
 
 },{"../Helpers/FormulaTools.bs.js":17,"rescript/lib/es6/caml_option.js":5,"rescript/lib/es6/js_dict.js":7}],22:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.lookupTex = lookupTex;
+exports.table = void 0;
+
+var Js_dict = _interopRequireWildcard(require("rescript/lib/es6/js_dict.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Generated by ReScript, PLEASE EDIT WITH CARE
+var table = Js_dict.fromArray([["\xe2\x88\x85", "\\varnothing"], ["\xe2\x84\x99", "\\mathbb{P}"], ["\xe2\x84\x95", "\\N"], ["\xe2\x84\xa4", "\\Z"], ["\xe2\x84\x9a", "\\Q"], ["\xf0\x9d\x94\xb8", "\\mathbb{A}"], ["\xe2\x84\x9d", "\\R"], ["\xe2\x84\x82", "\\mathbb{C}"], ["\xe2\x84\x8d", "\\mathbb{H}"], ["\xf0\x9d\x95\x86", "\\mathbb{O}"], ["\xf0\x9d\x95\x8a", "\\mathbb{S}"], ["\xe2\x88\x88", "\\in"], ["\xe2\x88\x89", "\\notin"], ["\xe2\x8a\x82", "\\subset"], ["\xe2\x88\xaa", "\\cup"], ["\xe2\x88\xa9", "\\cap"], ["\xe2\x88\x80", "\\forall"], ["\xe2\x88\x83", "\\exists"], ["\xe2\x88\x84", "\\nexists"], ["\xc2\xac", "\\neg"], ["\xe2\x88\xa8", "\\lor"], ["\xe2\x88\xa7", "\\land"], ["\xe2\x87\x92", "\\implies"], ["\xe2\x87\x94", "\\iff"], ["\xe2\x84\x8f", "\\hbar"], ["\xe2\x8a\x97", "\\otimes"], ["\xe2\x8a\x95", "\\oplus"], ["\xe2\x88\x87", "\\nabla"], ["\xe2\x88\x82", "\\partial"]]);
+exports.table = table;
+
+function lookupTex(str) {
+  var texString = Js_dict.get(table, str);
+
+  if (texString !== undefined) {
+    return texString + " ";
+  } else {
+    return str;
+  }
+}
+/* table Not a pure module */
+
+},{"rescript/lib/es6/js_dict.js":7}],23:[function(require,module,exports){
 arguments[4][16][0].apply(exports,arguments)
-},{"dup":16}],23:[function(require,module,exports){
+},{"dup":16}],24:[function(require,module,exports){
 "use strict";
 
 var FormulaRenderer = _interopRequireWildcard(require("./Formula/FormulaRenderer.bs"));
@@ -2839,4 +2928,4 @@ class MathSolver {
 
 window.MathSolver = MathSolver;
 
-},{"./Equation/Examples.bs":11,"./Equation/QuadraticEquation.bs":12,"./Formula/FormulaCleaner.bs":14,"./Formula/FormulaRenderer.bs":15}]},{},[21,20,11,12,13,22,23,16,15,14,19,18,17]);
+},{"./Equation/Examples.bs":11,"./Equation/QuadraticEquation.bs":12,"./Formula/FormulaCleaner.bs":14,"./Formula/FormulaRenderer.bs":15}]},{},[21,22,20,11,12,13,23,24,16,15,14,19,18,17]);
