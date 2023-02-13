@@ -1,7 +1,7 @@
 
 # MathSolver
 
-A browser script for rendering and parsing mathematical equations.
+A browser script for rendering and parsing mathematical equations. WIP
 
 ## Modules
 
